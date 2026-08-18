@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Technician Dashboard - DBU MSRTS</title>
+
+    <style>
+        /* =====================================================
+           GLOBAL
+        ===================================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+
+            min-height: 100vh;
+
+            color: #444;
+
+            /* BLUE + BLACK BACKGROUND */
+            background:
+                radial-gradient(circle at top right,
+                    rgba(0, 123, 255, 0.35),
+                    transparent 35%),
+
+                radial-gradient(circle at bottom left,
+                    rgba(0, 80, 180, 0.30),
+                    transparent 40%),
+
+                linear-gradient(135deg,
+                    #020617 0%,
+                    #06152f 45%,
+                    #0a2a55 100%);
+
+            background-attachment: fixed;
+            background-size: cover;
+        }
+
+
+        /* =====================================================
+           LEFT SIDEBAR
+        ===================================================== */
+
+        .sidebar {
+
+            position: fixed;
+
+            left: 0;
+            top: 0;
+
+            width: 250px;
+            height: 100vh;
+
+            padding: 25px 15px;
+
+            display: flex;
+            flex-direction: column;
+
+            background:
+                linear-gradient(180deg,
+                    #020617 0%,
+                    #061b3a 50%,
+                    #082b5c 100%);
+
+            border-right: 1px solid rgba(255, 255, 255, 0.10);
+
+            box-shadow:
+                5px 0 25px rgba(0, 0, 0, 0.35);
+
+            z-index: 1000;
+
+            overflow-y: auto;
+        }
+
+
+        /* =====================================================
+           SIDEBAR LOGO / TITLE
+        ===================================================== */
+
+        .sidebar-header {
+
+            padding: 10px 12px 25px;
+
+            margin-bottom: 15px;
+
+            border-bottom:
+                1px solid rgba(255, 255, 255, 0.10);
+        }
+
+
+        .sidebar-header h2 {
+
+            color: white;
+
+            font-size: 20px;
+
+            font-weight: 700;
+
+            line-height: 1.3;
+        }
+
+
+        .sidebar-header span {
+
+            display: block;
+
+            margin-top: 6px;
+
+            color: #60a5fa;
+
+            font-size: 12px;
+
+            font-weight: 500;
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+        ===================================================== */
+
+        .nav-links {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 8px;
+
+            width: 100%;
+        }
+
+
+        .nav-links a {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            width: 100%;
+
+            padding: 13px 15px;
+
+            color: #cbd5e1;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            border-radius: 9px;
+
+            transition:
+                all 0.25s ease;
+        }
+
+
+        .nav-icon {
+
+            width: 25px;
+
+            text-align: center;
+
+            font-size: 17px;
+        }
+
+
+        .nav-links a:hover {
+
+            color: white;
+
+            background:
+                rgba(37, 99, 235, 0.25);
+
+            transform: translateX(4px);
+        }
+
+
+        /* =====================================================
+           ACTIVE NAVIGATION
+        ===================================================== */
+
+        .nav-links a.active {
+
+            color: white;
+
+            background:
+                linear-gradient(135deg,
+                    #2563eb,
+                    #0ea5e9);
+
+            box-shadow:
+                0 5px 15px rgba(37, 99, 235, 0.35);
+        }
+
+
+        /* =====================================================
+           LOGOUT
+        ===================================================== */
+
+        .nav-links a.logout {
+
+            margin-top: 15px;
+
+            color: #fca5a5;
+
+            border-top:
+                1px solid rgba(255, 255, 255, 0.08);
+
+            padding-top: 18px;
+        }
+
+
+        .nav-links a.logout:hover {
+
+            color: white;
+
+            background:
+                rgba(220, 38, 38, 0.25);
+
+            transform: translateX(4px);
+        }
+
+
+        /* =====================================================
+           SIDEBAR FOOTER
+        ===================================================== */
+
+        .sidebar-footer {
+
+            margin-top: auto;
+
+            padding: 20px 10px 5px;
+
+            text-align: center;
+
+            color: #64748b;
+
+            font-size: 11px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =====================================================
+           MAIN AREA
+        ===================================================== */
+
+        .main-content {
+
+            margin-left: 250px;
+
+            min-height: 100vh;
+
+            padding: 30px;
+        }
+
+
+        /* =====================================================
+           MAIN CONTAINER
+        ===================================================== */
+
+        .container {
+
+            width: 100%;
+
+            max-width: 1180px;
+
+            margin: 0 auto;
+        }
+
+
+        /* =====================================================
+           WELCOME BOX
+        ===================================================== */
+
+        .welcome-box {
+
+            background:
+                rgba(255, 255, 255, 0.97);
+
+            border-radius: 15px;
+
+            padding: 25px 30px;
+
+            margin-bottom: 25px;
+
+            border-left:
+                6px solid #2563eb;
+
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.25);
+
+            position: relative;
+
+            overflow: hidden;
+        }
+
+
+        .welcome-box::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 170px;
+
+            height: 170px;
+
+            right: -70px;
+
+            top: -80px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(37, 99, 235, 0.12);
+        }
+
+
+        .welcome-box h1 {
+
+            color: #0f2f63;
+
+            font-size: 28px;
+
+            margin-bottom: 7px;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        .welcome-box p {
+
+            color: #777;
+
+            font-size: 14px;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        /* =====================================================
+           SUMMARY CARDS
+        ===================================================== */
+
+        .card-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 20px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .card {
+
+            background:
+                rgba(255, 255, 255, 0.97);
+
+            border-radius: 14px;
+
+            padding: 23px;
+
+            min-height: 145px;
+
+            position: relative;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 7px 22px rgba(0, 0, 0, 0.20);
+
+            transition:
+                transform 0.3s ease,
+                box-shadow 0.3s ease;
+        }
+
+
+        .card:hover {
+
+            transform:
+                translateY(-5px);
+
+            box-shadow:
+                0 12px 28px rgba(0, 0, 0, 0.30);
+        }
+
+
+        /* CARD LEFT BORDER */
+
+        .card.assigned {
+
+            border-left:
+                6px solid #2563eb;
+        }
+
+
+        .card.pending {
+
+            border-left:
+                6px solid #f59e0b;
+        }
+
+
+        .card.completed {
+
+            border-left:
+                6px solid #22c55e;
+        }
+
+
+        .card h3 {
+
+            color: #777;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            margin-bottom: 12px;
+        }
+
+
+        .count {
+
+            font-size: 34px;
+
+            font-weight: 700;
+
+            color: #2563eb;
+
+            margin-bottom: 5px;
+        }
+
+
+        .pending .count {
+
+            color: #d97706;
+        }
+
+
+        .completed .count {
+
+            color: #16a34a;
+        }
+
+
+        .card-description {
+
+            color: #999;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =====================================================
+           JOB SECTION
+        ===================================================== */
+
+        .tasks-section {
+
+            background:
+                rgba(255, 255, 255, 0.97);
+
+            padding: 25px;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.25);
+        }
+
+
+        .tasks-section h2 {
+
+            color: #0f2f63;
+
+            font-size: 21px;
+
+            margin-bottom: 6px;
+        }
+
+
+        .section-description {
+
+            color: #999;
+
+            font-size: 13px;
+
+            margin-bottom: 20px;
+        }
+
+
+        /* =====================================================
+           TABLE CONTAINER
+        ===================================================== */
+
+        .table-container {
+
+            width: 100%;
+
+            overflow-x: auto;
+        }
+
+
+        /* =====================================================
+           TABLE
+        ===================================================== */
+
+        table {
+
+            width: 100%;
+
+            border-collapse: separate;
+
+            border-spacing: 0;
+
+            min-width: 750px;
+
+            overflow: hidden;
+
+            border-radius: 10px;
+        }
+
+
+        /* TABLE HEADER */
+
+        th {
+
+            background:
+                linear-gradient(90deg,
+                    #0f3b78,
+                    #2563eb);
+
+            color: white;
+
+            padding: 14px;
+
+            text-align: left;
+
+            font-size: 13px;
+
+            font-weight: 600;
+        }
+
+
+        th:first-child {
+
+            border-top-left-radius: 8px;
+        }
+
+
+        th:last-child {
+
+            border-top-right-radius: 8px;
+        }
+
+
+        /* TABLE DATA */
+
+        td {
+
+            padding: 15px 14px;
+
+            border-bottom:
+                1px solid #eeeeee;
+
+            color: #555;
+
+            font-size: 13px;
+
+            background:
+                rgba(255, 255, 255, 0.95);
+        }
+
+
+        tbody tr {
+
+            transition:
+                background 0.2s ease;
+        }
+
+
+        tbody tr:hover td {
+
+            background:
+                #eef6ff;
+        }
+
+
+        tbody tr:last-child td {
+
+            border-bottom: none;
+        }
+
+
+        /* =====================================================
+           REQUEST ID
+        ===================================================== */
+
+        td:first-child {
+
+            color: #1554a5;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           STATUS
+        ===================================================== */
+
+        .status {
+
+            display: inline-block;
+
+            padding: 6px 12px;
+
+            border-radius: 20px;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            white-space: nowrap;
+        }
+
+
+        /* IN PROGRESS */
+
+        .in-progress {
+
+            background:
+                #dbeafe;
+
+            color:
+                #1d4ed8;
+        }
+
+
+        /* PENDING */
+
+        .pending-status {
+
+            background:
+                #fff1ce;
+
+            color:
+                #a87908;
+        }
+
+
+        /* COMPLETED */
+
+        .completed-status {
+
+            background:
+                #ddf4e1;
+
+            color:
+                #318641;
+        }
+
+
+        /* =====================================================
+           ACTION BUTTON
+        ===================================================== */
+
+        .btn-action {
+
+            display: inline-block;
+
+            padding: 8px 14px;
+
+            border-radius: 6px;
+
+            color: white;
+
+            text-decoration: none;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            background:
+                linear-gradient(135deg,
+                    #2563eb,
+                    #0284c7);
+
+            box-shadow:
+                0 3px 8px rgba(37, 99, 235, 0.25);
+
+            transition:
+                0.3s ease;
+        }
+
+
+        .btn-action:hover {
+
+            background:
+                linear-gradient(135deg,
+                    #1d4ed8,
+                    #0369a1);
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 5px 12px rgba(37, 99, 235, 0.35);
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .footer {
+
+            text-align: center;
+
+            color: #cbd5e1;
+
+            font-size: 12px;
+
+            padding: 25px 0 30px;
+
+            text-shadow:
+                0 1px 3px rgba(0, 0, 0, 0.4);
+        }
+
+
+        /* =====================================================
+           TABLET
+        ===================================================== */
+
+        @media (max-width: 1000px) {
+
+            .sidebar {
+
+                width: 220px;
+            }
+
+
+            .main-content {
+
+                margin-left: 220px;
+
+                padding: 25px;
+            }
+
+
+            .card-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .sidebar {
+
+                position: relative;
+
+                width: 100%;
+
+                height: auto;
+
+                min-height: auto;
+
+                padding: 15px;
+
+                border-right: none;
+
+                border-bottom:
+                    1px solid rgba(255, 255, 255, 0.10);
+            }
+
+
+            .sidebar-header {
+
+                text-align: center;
+
+                padding-bottom: 15px;
+            }
+
+
+            .nav-links {
+
+                display: grid;
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+                gap: 7px;
+            }
+
+
+            .nav-links a {
+
+                justify-content: center;
+
+                font-size: 12px;
+
+                padding: 10px 5px;
+            }
+
+
+            .nav-icon {
+
+                display: none;
+            }
+
+
+            .nav-links a.logout {
+
+                margin-top: 0;
+
+                padding-top: 10px;
+
+                border-top: none;
+            }
+
+
+            .sidebar-footer {
+
+                display: none;
+            }
+
+
+            .main-content {
+
+                margin-left: 0;
+
+                padding: 20px 15px;
+            }
+
+
+            .card-grid {
+
+                grid-template-columns: 1fr;
+
+                gap: 15px;
+            }
+
+
+            .welcome-box {
+
+                padding: 20px;
+            }
+
+
+            .welcome-box h1 {
+
+                font-size: 23px;
+            }
+
+
+            .card {
+
+                min-height: 125px;
+
+                padding: 20px;
+            }
+
+
+            .tasks-section {
+
+                padding: 17px;
+            }
+
+
+            .tasks-section h2 {
+
+                font-size: 18px;
+            }
+        }
+
+
+        /* =====================================================
+           VERY SMALL MOBILE
+        ===================================================== */
+
+        @media (max-width: 400px) {
+
+            .sidebar-header h2 {
+
+                font-size: 17px;
+            }
+
+
+            .nav-links {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .welcome-box h1 {
+
+                font-size: 20px;
+            }
+
+
+            .count {
+
+                font-size: 29px;
+            }
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         LEFT SIDEBAR
+    ===================================================== -->
+
+    <aside class="sidebar">
+
+
+        <!-- SIDEBAR HEADER -->
+
+        <div class="sidebar-header">
+
+            <h2>
+                DBU Technician Portal
+            </h2>
+
+            <span>
+                Computer Maintenance System
+            </span>
+
+        </div>
+
+
+        <!-- NAVIGATION -->
+
+        <nav class="nav-links">
+
+
+            <!-- DASHBOARD -->
+
+            <a href="dashboard.html" class="active">
+
+                <span class="nav-icon">📊</span>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </a>
+
+
+            <!-- ASSIGNED TASKS -->
+
+            <a href="assigned-request.html">
+
+                <span class="nav-icon">🛠️</span>
+
+                <span>
+                    Assigned Tasks
+                </span>
+
+            </a>
+
+
+            <!-- UPDATE STATUS -->
+
+            <a href="update-status.html">
+
+                <span class="nav-icon">🔄</span>
+
+                <span>
+                    Update Status
+                </span>
+
+            </a>
+
+
+            <!-- SCHEDULE -->
+
+            <a href="schedule.html">
+
+                <span class="nav-icon">📅</span>
+
+                <span>
+                    Schedule
+                </span>
+
+            </a>
+
+
+            <!-- PROFILE -->
+
+            <a href="profile.html">
+
+                <span class="nav-icon">👤</span>
+
+                <span>
+                    Profile
+                </span>
+
+            </a>
+
+
+            <!-- LOGOUT -->
+
+            <a href="#" class="logout" onclick="logout()">
+
+                <span class="nav-icon">🚪</span>
+
+                <span>
+                    Logout
+                </span>
+
+            </a>
+
+
+        </nav>
+
+
+        <!-- SIDEBAR FOOTER -->
+
+        <div class="sidebar-footer">
+
+            DBU MSRTS
+
+            <br>
+
+            Technician Portal
+
+            <br>
+
+            © 2026
+
+        </div>
+
+
+    </aside>
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ===================================================== -->
+
+    <main class="main-content">
+
+
+        <div class="container">
+
+
+            <!-- =================================================
+                 WELCOME
+            ================================================= -->
+
+            <div class="welcome-box">
+
+                <h1>
+                    Technician Dashboard
+                </h1>
+
+                <p>
+                    Manage your assigned maintenance
+                    requests, feedback, and schedule.
+                </p>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 SUMMARY CARDS
+            ================================================= -->
+
+            <div class="card-grid">
+
+
+                <!-- ASSIGNED -->
+
+                <div class="card assigned">
+
+                    <h3>
+                        Assigned Tasks
+                    </h3>
+
+                    <div class="count" id="assignedCount">
+                        2
+                    </div>
+
+                    <p class="card-description">
+
+                        Computer maintenance requests
+                        assigned to you.
+
+                    </p>
+
+                </div>
+
+
+
+                <!-- PENDING -->
+
+                <div class="card pending">
+
+                    <h3>
+                        Pending Tasks
+                    </h3>
+
+                    <div class="count" id="pendingCount">
+                        1
+                    </div>
+
+                    <p class="card-description">
+
+                        Tasks waiting for action.
+
+                    </p>
+
+                </div>
+
+
+
+                <!-- COMPLETED -->
+
+                <div class="card completed">
+
+                    <h3>
+                        Completed Tasks
+                    </h3>
+
+                    <div class="count" id="completedCount">
+                        5
+                    </div>
+
+                    <p class="card-description">
+
+                        Successfully completed
+                        maintenance tasks.
+
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 ASSIGNED JOBS
+            ================================================= -->
+
+            <div class="tasks-section">
+
+
+                <h2>
+                    Assigned Computer Maintenance Jobs
+                </h2>
+
+
+                <p class="section-description">
+
+                    View the maintenance requests
+                    assigned to you.
+
+                </p>
+
+
+
+                <!-- TABLE -->
+
+                <div class="table-container">
+
+                    <table>
+
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Request ID
+                                </th>
+
+                                <th>
+                                    Equipment / Problem
+                                </th>
+
+                                <th>
+                                    Department
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+
+                        <tbody>
+
+
+                            <!-- REQUEST 1 -->
+
+                            <tr>
+
+                                <td>
+                                    REQ-2026-01
+                                </td>
+
+                                <td>
+                                    Computer / Laptop Repair
+                                </td>
+
+                                <td>
+                                    ICT
+                                </td>
+
+                                <td>
+
+                                    <span class="status in-progress">
+
+                                        In Progress
+
+                                    </span>
+
+                                </td>
+
+                                <td>
+
+                                    <a href="update-status.html" class="btn-action">
+
+                                        Update Status
+
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+
+
+                            <!-- REQUEST 2 -->
+
+                            <tr>
+
+                                <td>
+                                    REQ-2026-02
+                                </td>
+
+                                <td>
+                                    Network / Internet Problem
+                                </td>
+
+                                <td>
+                                    ICT
+                                </td>
+
+                                <td>
+
+                                    <span class="status in-progress">
+
+                                        In Progress
+
+                                    </span>
+
+                                </td>
+
+                                <td>
+
+                                    <a href="update-status.html" class="btn-action">
+
+                                        Update Status
+
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+
+
+                            <!-- REQUEST 3 -->
+
+                            <tr>
+
+                                <td>
+                                    REQ-2026-03
+                                </td>
+
+                                <td>
+                                    Printer Maintenance
+                                </td>
+
+                                <td>
+                                    Administration
+                                </td>
+
+                                <td>
+
+                                    <span class="status pending-status">
+
+                                        Pending
+
+                                    </span>
+
+                                </td>
+
+                                <td>
+
+                                    <a href="update-status.html" class="btn-action">
+
+                                        Update Status
+
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+
+                        </tbody>
+
+
+                    </table>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 FOOTER
+            ================================================= -->
+
+            <div class="footer">
+
+                DBU Computer Maintenance Service Request
+                &amp; Tracking System
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         LOGOUT SCRIPT
+    ===================================================== -->
+
+    <script>
+
+        function logout ()
+        {
+
+            const confirmLogout = confirm(
+                "Are you sure you want to logout?"
+            );
+
+            if ( !confirmLogout )
+            {
+                return;
+            }
+
+            /*
+             * Clear authentication information
+             */
+
+            localStorage.removeItem( "token" );
+
+            localStorage.removeItem( "user" );
+
+            localStorage.removeItem( "role" );
+
+            localStorage.removeItem( "userId" );
+
+
+            /*
+             * Redirect to login page
+             */
+
+            window.location.href = "../login.html";
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>

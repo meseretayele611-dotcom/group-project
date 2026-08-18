@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DBU computer Maintenance Service Request and Tracking system Form</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+
+
+            background:
+                linear-gradient(rgba(3, 15, 35, 0.90),
+                    rgba(0, 35, 75, 0.90)),
+                url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+            padding: 40px 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 700px;
+            width: 100%;
+            background: #ffffff;
+            padding: 35px;
+            border-radius: 14px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #fce4ec;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .header h2 {
+            color: #73155d;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            color: #777;
+            font-size: 13px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            font-size: 13px;
+            margin-bottom: 6px;
+            color: #444;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #9c27b0;
+            outline: none;
+            box-shadow: 0 0 8px rgba(156, 39, 176, 0.2);
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        /* Tickbox Signature Box */
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #faf2f8;
+            padding: 12px;
+            border: 1px solid #f3e5f5;
+            border-radius: 8px;
+            margin-top: 5px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #9c27b0;
+        }
+
+        .checkbox-group label {
+            margin-bottom: 0;
+            font-weight: normal;
+            cursor: pointer;
+            font-size: 13px;
+            color: #555;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #e91e63, #9c27b0);
+            color: #ffffff;
+            border: none;
+            padding: 13px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 15px;
+            transition: 0.3s;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(233, 30, 99, 0.35);
+        }
+
+        .alert {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            font-size: 13px;
+        }
+
+        .alert-success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
+        }
+
+        .alert-danger {
+            background-color: #ffebee;
+            color: #c62828;
+            border: 1px solid #ffcdd2;
+        }
+
+        @media(max-width: 600px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h2>Debre Berhan University</h2>
+            <p>computer Maintenance Service Request and Tracking System Form </p>
+        </div>
+
+        <div id="alertBox" class="alert"></div>
+
+        <form id="requestForm">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="applicantName">Applicant Name  </label>
+                    <input type="text" id="applicantName" placeholder="Enter your full name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="department">Department </label>
+                    <input type="text" id="department" placeholder=" IT Department" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phoneNo">Phone Number </label>
+                    <input type="tel" id="phoneNo" placeholder="0911223344" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="equipmentType">Equipment Type  </label>
+                    <select id="equipmentType" required>
+                        <option value="">-- Select Equipment --</option>
+                        <option value="Computer / Laptop">Computer / Laptop</option>
+                        <option value="Printer / Scanner">Printer / Scanner</option>
+                        <option value="Network / Wi-Fi">Network / Wi-Fi</option>
+                        <option value="Projector">Projector</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="problemDescription">Problem Description </label>
+                    <textarea id="problemDescription" rows="4" placeholder="Describe the issue in detail..."
+                        required></textarea>
+                </div>
+
+                <!-- Checkbox Digital Signature -->
+                <div class="form-group full-width">
+                    <label>Applicant Signature / Confirmation</label>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="signatureCheck" required>
+                        <label for="signatureCheck">
+                            I confirm that the information provided above is accurate and true.
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit">Submit Request </button>
+        </form>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000/api/M-requests';
+
+        const requestForm = document.getElementById( 'requestForm' );
+        const alertBox = document.getElementById( 'alertBox' );
+
+        function showAlert ( message, type )
+        {
+            alertBox.textContent = message;
+            alertBox.className = `alert alert-${ type }`;
+            alertBox.style.display = 'block';
+
+            setTimeout( () =>
+            {
+                alertBox.style.display = 'none';
+            }, 5000 );
+        }
+
+        requestForm.addEventListener( 'submit', async ( e ) =>
+        {
+            e.preventDefault();
+
+            const isSigned = document.getElementById( 'signatureCheck' ).checked;
+
+            if ( !isSigned )
+            {
+                showAlert( 'Please check the confirmation checkbox!', 'danger' );
+                return;
+            }
+
+            const applicantName = document.getElementById( 'applicantName' ).value.trim();
+
+            const requestData = {
+                applicantName: applicantName,
+                department: document.getElementById( 'department' ).value.trim(),
+                phoneNo: document.getElementById( 'phoneNo' ).value.trim(),
+                equipmentType: document.getElementById( 'equipmentType' ).value.trim(),
+                problemDescription: document.getElementById( 'problemDescription' ).value.trim(),
+                signature: `Confirmed by ${ applicantName }`
+            };
+
+            try
+            {
+                const response = await fetch( API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify( requestData )
+                } );
+
+                const result = await response.json();
+
+                if ( response.ok )
+                {
+                    showAlert( ' Maintenance request submitted successfully!', 'success' );
+                    requestForm.reset();
+                } else
+                {
+                    showAlert( 'Failed: ' + ( result.message || result.error || 'Unable to send request' ), 'danger' );
+                }
+            } catch ( err )
+            {
+                console.error( 'Submit Error:', err );
+                showAlert( 'Network/Server Error: "Please check the server connection"!', 'danger' );
+            }
+        } ); 
+    </script>
+</body>
+
+</html>

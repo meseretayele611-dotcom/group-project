@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Feedback - MSRTS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-purple: #6c5ce7;
+            --secondary-pink: #fd79a8;
+            --dark-purple: #2d3436;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #a29bfe 0%, #fd79a8 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 30px 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .feedback-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 480px;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(108, 92, 231, 0.2);
+        }
+
+        .header-title {
+            margin: 0 0 8px 0;
+            color: #4a154b;
+            font-size: 22px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .header-desc {
+            color: #636e72;
+            font-size: 13px;
+            margin: 0 0 20px 0;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #2d3436;
+            margin-bottom: 6px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #dfe6e9;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 14px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--primary-purple);
+            box-shadow: 0 0 8px rgba(108, 92, 231, 0.2);
+        }
+
+        /* Star Rating Styling */
+        .star-rating {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin: 10px 0;
+            direction: rtl;
+            /* For hover effect */
+        }
+
+        .star-rating input {
+            display: none;
+        }
+
+        .star-rating label {
+            font-size: 28px;
+            color: #dfe6e9;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .star-rating input:checked~label,
+        .star-rating label:hover,
+        .star-rating label:hover~label {
+            color: #f1c40f;
+        }
+
+        .btn-submit {
+            background: linear-gradient(90deg, var(--primary-purple), var(--secondary-pink));
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            opacity: 0.95;
+            transform: translateY(-1px);
+        }
+
+        #msg {
+            text-align: center;
+            font-size: 13px;
+            margin-top: 12px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="feedback-card">
+        <h2 class="header-title">Service Feedback</h2>
+        <p class="header-desc">“Please share your feedback about the service you received.”
+        </p>
+
+        <form id="feedbackForm">
+            <!-- Service Request Selector -->
+            <div class="form-group">
+                <label for="serviceRequestId">Service Request ID:</label>
+                <select id="serviceRequestId" required>
+                    <option value="">“Select a question.”
+                        ...</option>
+                    <option value="REQ-001">REQ-001 (Screen Replacement)</option>
+                    <option value="REQ-002">REQ-002 (Battery Repair)</option>
+                </select>
+            </div>
+
+            <!-- Interactive Star Rating -->
+            <div class="form-group">
+                <label style="text-align: center;">Rating:</label>
+                <div class="star-rating">
+                    <input type="radio" id="star5" name="rating" value="5" checked /><label for="star5"
+                        class="fa-solid fa-star"></label>
+                    <input type="radio" id="star4" name="rating" value="4" /><label for="star4"
+                        class="fa-solid fa-star"></label>
+                    <input type="radio" id="star3" name="rating" value="3" /><label for="star3"
+                        class="fa-solid fa-star"></label>
+                    <input type="radio" id="star2" name="rating" value="2" /><label for="star2"
+                        class="fa-solid fa-star"></label>
+                    <input type="radio" id="star1" name="rating" value="1" /><label for="star1"
+                        class="fa-solid fa-star"></label>
+                </div>
+            </div>
+
+            <!-- Comment Box -->
+            <div class="form-group">
+                <label for="comment">Comment :</label>
+                <textarea id="comment" rows="4" placeholder="“Please write your feedback about the service you received here…”
+" required></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit">Send Feedback</button>
+        </form>
+
+        <p id="msg"></p>
+    </div>
+
+    <script>
+        document.getElementById( 'feedbackForm' ).addEventListener( 'submit', async ( e ) =>
+        {
+            e.preventDefault();
+
+            const serviceRequestId = document.getElementById( 'serviceRequestId' ).value;
+            const rating = Number( document.querySelector( 'input[name="rating"]:checked' ).value );
+            const comment = document.getElementById( 'comment' ).value;
+
+            const msgDiv = document.getElementById( 'msg' );
+            msgDiv.style.color = '#6c5ce7';
+            msgDiv.textContent = 'Submitting';
+
+            try
+            {
+                const res = await fetch( 'http://localhost:5000/api/requests/feedback', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem( 'token' )
+                    },
+                    body: JSON.stringify( { serviceRequestId, rating, comment } )
+                } );
+
+                const data = await res.json();
+
+                if ( res.ok )
+                {
+                    msgDiv.style.color = '#27ae60';
+                    msgDiv.textContent = data.message || 'Feedback successfully sent!';
+                    document.getElementById( 'feedbackForm' ).reset();
+                } else
+                {
+                    msgDiv.style.color = '#e74c3c';
+                    msgDiv.textContent = data.error || 'An error occurred; please try again.';
+                }
+
+            } catch ( err )
+            {
+                msgDiv.style.color = '#e74c3c';
+                msgDiv.textContent = 'A network error occurred.';
+            }
+        }
+        );
+    </script>
+</body>
+
+</html>

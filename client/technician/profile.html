@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications - ICT Maintenance</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 font-sans">
+
+    <!-- Main Content -->
+    <div class="min-h-screen">
+
+        <!-- Header -->
+        <header class="bg-white shadow-sm px-6 py-4 flex justify-between items-center">
+            <div>
+                <h2 class="text-xl font-bold text-gray-800">
+                    🔔 Notifications
+                </h2>
+                <p class="text-sm text-gray-500 mt-1">
+                    Stay updated about your maintenance requests
+                </p>
+            </div>
+
+            <button onclick="markAllAsRead()"
+                class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-semibold transition">
+                ✓ Mark all as read
+            </button>
+        </header>
+
+        <!-- Notification List -->
+        <main class="p-6 max-w-4xl mx-auto w-full space-y-4" id="notificationList">
+
+            <!-- Notification Item 1 -->
+            <div
+                class="bg-white p-5 rounded-xl shadow-sm border-l-4 border-indigo-500 flex justify-between items-start transition hover:shadow-md">
+
+                <div class="space-y-2">
+
+                    <div class="flex items-center space-x-2">
+                        <span class="text-xs font-bold text-indigo-700 bg-indigo-50 px-2 py-1 rounded">
+                            IN PROGRESS
+                        </span>
+
+                        <span class="text-xs text-gray-400">
+                            10 mins ago
+                        </span>
+                    </div>
+
+                    <p class="text-sm font-semibold text-gray-800">
+                        Technician Abebe Kebede has started working on your
+                        hardware ticket
+                        <span class="font-mono text-blue-600">
+                            #ICT-201
+                        </span>.
+                    </p>
+
+                </div>
+
+                <span class="w-2.5 h-2.5 bg-indigo-500 rounded-full mt-1.5 notification-dot">
+                </span>
+
+            </div>
+
+
+            <!-- Notification Item 2 -->
+            <div
+                class="bg-white p-5 rounded-xl shadow-sm border-l-4 border-emerald-500 flex justify-between items-start transition hover:shadow-md">
+
+                <div class="space-y-2">
+
+                    <div class="flex items-center space-x-2">
+
+                        <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-1 rounded">
+                            COMPLETED
+                        </span>
+
+                        <span class="text-xs text-gray-400">
+                            2 hours ago
+                        </span>
+
+                    </div>
+
+                    <p class="text-sm font-semibold text-gray-800">
+                        Your maintenance request
+                        <span class="font-mono text-emerald-600">
+                            #ICT-200
+                        </span>
+                        has been marked as completed.
+                    </p>
+
+                    <div class="pt-2">
+
+                        <a href="feedback.html"
+                            class="inline-block text-xs bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-2 rounded-lg font-semibold shadow transition">
+                            ⭐ Rate Service & Review
+                        </a>
+
+                    </div>
+
+                </div>
+
+                <span class="w-2.5 h-2.5 bg-emerald-500 rounded-full mt-1.5 notification-dot">
+                </span>
+
+            </div>
+
+
+            <!-- Notification Item 3 -->
+            <div
+                class="bg-white p-5 rounded-xl shadow-sm border-l-4 border-blue-500 flex justify-between items-start transition hover:shadow-md">
+
+                <div class="space-y-2">
+
+                    <div class="flex items-center space-x-2">
+
+                        <span class="text-xs font-bold text-blue-700 bg-blue-50 px-2 py-1 rounded">
+                            ASSIGNED
+                        </span>
+
+                        <span class="text-xs text-gray-400">
+                            Yesterday
+                        </span>
+
+                    </div>
+
+                    <p class="text-sm font-semibold text-gray-800">
+                        Your ticket
+                        <span class="font-mono text-blue-600">
+                            #ICT-202
+                        </span>
+                        was assigned to an IT technician for printer maintenance.
+                    </p>
+
+                </div>
+
+                <span class="w-2.5 h-2.5 bg-blue-500 rounded-full mt-1.5 notification-dot">
+                </span>
+
+            </div>
+
+
+            <!-- Notification Item 4 -->
+            <div
+                class="bg-white p-5 rounded-xl shadow-sm border-l-4 border-amber-500 flex justify-between items-start transition hover:shadow-md">
+
+                <div class="space-y-2">
+
+                    <div class="flex items-center space-x-2">
+
+                        <span class="text-xs font-bold text-amber-700 bg-amber-50 px-2 py-1 rounded">
+                            SUBMITTED
+                        </span>
+
+                        <span class="text-xs text-gray-400">
+                            3 days ago
+                        </span>
+
+                    </div>
+
+                    <p class="text-sm font-semibold text-gray-800">
+                        Your maintenance request
+                        <span class="font-mono text-amber-600">
+                            #ICT-202
+                        </span>
+                        was successfully submitted and is pending review.
+                    </p>
+
+                </div>
+
+                <span class="w-2.5 h-2.5 bg-amber-500 rounded-full mt-1.5 notification-dot">
+                </span>
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+    <script>
+
+        function markAllAsRead ()
+        {
+
+            const dots = document.querySelectorAll( '.notification-dot' );
+
+            dots.forEach( dot =>
+            {
+                dot.remove();
+            } );
+
+            alert( 'All notifications marked as read.' );
+
+        }
+
+    </script>
+
+</body>
+
+</html>

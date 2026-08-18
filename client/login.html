@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login - DBU ICT Maintenance Portal</title>
+
+
+    <style>
+        /* =========================
+           GLOBAL
+        ========================== */
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI',
+                Tahoma,
+                Geneva,
+                Verdana,
+                sans-serif;
+
+            margin: 0;
+            padding: 0;
+        }
+
+
+        /* =========================
+           BODY / BACKGROUND
+        ========================== */
+
+        body {
+
+            min-height: 100vh;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            padding: 20px;
+
+            background:
+                linear-gradient(135deg,
+                    #4b0082,
+                    #800080,
+                    #c71585);
+
+            position: relative;
+
+            overflow: hidden;
+        }
+
+
+        /* =========================
+           BACKGROUND MAIN TEXT
+        ========================== */
+
+        body::before {
+
+            content:
+                "DBU ICT MAINTENANCE PORTAL";
+
+            position: absolute;
+
+            top: 50%;
+            left: 50%;
+
+            transform:
+                translate(-50%, -50%) rotate(-25deg);
+
+            font-size: 70px;
+
+            font-weight: 900;
+
+            letter-spacing: 8px;
+
+            color:
+                rgba(255, 255, 255, 0.08);
+
+            white-space: nowrap;
+
+            z-index: 0;
+
+            pointer-events: none;
+        }
+
+
+        /* =========================
+           BACKGROUND SECOND TEXT
+        ========================== */
+
+        body::after {
+
+            content:
+                "MAINTENANCE • REQUEST • TRACKING • SYSTEM";
+
+            position: absolute;
+
+            top: 68%;
+            left: 50%;
+
+            transform:
+                translate(-50%, -50%) rotate(-25deg);
+
+            font-size: 24px;
+
+            font-weight: bold;
+
+            letter-spacing: 5px;
+
+            color:
+                rgba(255, 255, 255, 0.10);
+
+            white-space: nowrap;
+
+            z-index: 0;
+
+            pointer-events: none;
+        }
+
+
+        /* =========================
+           LOGIN CARD
+        ========================== */
+
+        .login-card {
+
+            position: relative;
+
+            z-index: 2;
+
+            background: #ffe4f2;
+
+            padding: 40px 30px;
+
+            border-radius: 15px;
+
+            border: 2px solid #f48fb1;
+
+            box-shadow:
+                0 10px 30px rgba(0, 0, 0, 0.35);
+
+            width: 100%;
+
+            max-width: 420px;
+
+            text-align: center;
+        }
+
+
+        /* =========================
+           TITLE
+        ========================== */
+
+        .login-card h2 {
+
+            margin-bottom: 8px;
+
+            color: #e91e63;
+
+            font-size: 28px;
+
+            font-weight: 700;
+        }
+
+
+        .login-card p {
+
+            color: #ad1457;
+
+            font-size: 14px;
+
+            margin-bottom: 25px;
+        }
+
+
+        /* =========================
+           FORM GROUP
+        ========================== */
+
+        .form-group {
+
+            margin-bottom: 20px;
+
+            text-align: left;
+        }
+
+
+        .form-group label {
+
+            display: block;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            color: #880e4f;
+
+            margin-bottom: 8px;
+        }
+
+
+        /* =========================
+           INPUT
+        ========================== */
+
+        .form-group input {
+
+            width: 100%;
+
+            padding: 12px 15px;
+
+            border: 1px solid #f48fb1;
+
+            border-radius: 8px;
+
+            background: #ffffff;
+
+            color: #333333;
+
+            font-size: 14px;
+
+            outline: none;
+
+            transition:
+                border-color 0.3s,
+                box-shadow 0.3s;
+        }
+
+
+        .form-group input:focus {
+
+            border-color: #e91e63;
+
+            box-shadow:
+                0 0 7px rgba(233, 30, 99, 0.3);
+        }
+
+
+        /* =========================
+           LOGIN BUTTON
+        ========================== */
+
+        .btn-login {
+
+            width: 100%;
+
+            background: #e91e63;
+
+            color: #ffffff;
+
+            border: none;
+
+            padding: 12px;
+
+            border-radius: 8px;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: all 0.3s;
+
+            margin-top: 5px;
+        }
+
+
+        .btn-login:hover {
+
+            background: #ad1457;
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 5px 12px rgba(173, 20, 87, 0.35);
+        }
+
+
+        /* =========================
+           ERROR MESSAGE
+        ========================== */
+
+        .error-msg {
+
+            color: #dc3545;
+
+            background: #ffe0e6;
+
+            border-radius: 6px;
+
+            padding: 8px;
+
+            font-size: 13px;
+
+            margin-top: 12px;
+
+            display: none;
+        }
+
+
+        /* =========================
+           REGISTER LINK
+        ========================== */
+
+        .register-link {
+
+            margin-top: 20px;
+
+            font-size: 14px;
+
+            color: #880e4f;
+        }
+
+
+        .register-link a {
+
+            color: #e91e63;
+
+            text-decoration: none;
+
+            font-weight: bold;
+        }
+
+
+        .register-link a:hover {
+
+            color: #ad1457;
+
+            text-decoration: underline;
+        }
+
+
+        /* =========================
+           BACK HOME
+        ========================== */
+
+        .back-home {
+
+            display: inline-block;
+
+            margin-top: 15px;
+
+            font-size: 13px;
+
+            color: #ad1457;
+
+            text-decoration: none;
+        }
+
+
+        .back-home:hover {
+
+            color: #e91e63;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================== */
+
+        @media (max-width: 600px) {
+
+            body::before {
+
+                font-size: 35px;
+
+                letter-spacing: 4px;
+            }
+
+
+            body::after {
+
+                font-size: 14px;
+
+                letter-spacing: 2px;
+            }
+
+
+            .login-card {
+
+                padding: 30px 25px;
+            }
+
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         LOGIN CARD
+    ========================== -->
+
+    <div class="login-card">
+
+        <h2>
+            Welcome Back
+        </h2>
+
+
+        <p>
+            Login to DBU ICT Maintenance Portal
+        </p>
+
+
+        <form id="loginForm">
+
+
+            <!-- EMAIL -->
+
+            <div class="form-group">
+
+                <label for="email">
+                    Email Address
+                </label>
+
+                <input type="email" id="email" placeholder="Enter your university email" required>
+
+            </div>
+
+
+            <!-- PASSWORD -->
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input type="password" id="password" placeholder="Enter your password" required>
+
+            </div>
+
+
+            <!-- LOGIN BUTTON -->
+
+            <button type="submit" class="btn-login">
+
+                Login
+
+            </button>
+
+
+            <!-- ERROR MESSAGE -->
+
+            <div id="errorMsg" class="error-msg">
+            </div>
+
+
+            <!-- REGISTER -->
+
+            <div class="register-link">
+
+                Don't have an account?
+
+                <a href="register.html">
+                    Register here
+                </a>
+
+            </div>
+
+
+            <!-- BACK HOME -->
+
+            <a href="index.html" class="back-home">
+
+                &larr; Back to Home
+
+            </a>
+
+
+        </form>
+
+    </div>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
+
+    <script>
+
+        const API_URL =
+            'http://localhost:5000/api/auth/login';
+
+
+        document
+            .getElementById( 'loginForm' )
+            .addEventListener(
+                'submit',
+                async ( e ) =>
+                {
+
+                    e.preventDefault();
+
+
+                    const email =
+                        document
+                            .getElementById( 'email' )
+                            .value
+                            .trim();
+
+
+                    const password =
+                        document
+                            .getElementById( 'password' )
+                            .value;
+
+
+                    const errorMsg =
+                        document
+                            .getElementById( 'errorMsg' );
+
+
+                    errorMsg.style.display =
+                        'none';
+
+
+                    try
+                    {
+
+                        const res =
+                            await fetch(
+                                API_URL,
+                                {
+                                    method: 'POST',
+
+                                    headers: {
+                                        'Content-Type':
+                                            'application/json'
+                                    },
+
+                                    body:
+                                        JSON.stringify( {
+                                            email,
+                                            password
+                                        } )
+                                }
+                            );
+
+
+                        const data =
+                            await res.json();
+
+
+                        if ( res.ok )
+                        {
+
+                            localStorage.setItem(
+                                'token',
+                                data.token
+                            );
+
+
+                            localStorage.setItem(
+                                'userRole',
+                                data.role
+                            );
+
+
+                            if (
+                                data.role === 'admin'
+                            )
+                            {
+
+                                window.location.href =
+                                    'admin.html';
+
+                            }
+
+                            else if (
+                                data.role === 'technician'
+                            )
+                            {
+
+                                window.location.href =
+                                    'technician.html';
+
+                            }
+
+                            else
+                            {
+
+                                window.location.href =
+                                    'index.html';
+                            }
+
+
+                        }
+
+                        else
+                        {
+
+                            errorMsg.innerText =
+                                data.message ||
+                                'Invalid credentials!';
+
+
+                            errorMsg.style.display =
+                                'block';
+                        }
+
+
+                    }
+
+                    catch ( err )
+                    {
+
+                        errorMsg.innerText =
+                            'Unable to connect to server!';
+
+
+                        errorMsg.style.display =
+                            'block';
+                    }
+
+                }
+            );
+
+    </script>
+
+
+</body>
+
+</html>

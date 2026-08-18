@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Resolution - Technician Portal</title>
+    <style>
+        /* Main Theme: Purple Background and Pink Text */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background: #6a0dad;
+            /* Purple Background */
+            color: #ffc0cb;
+            /* Pink Text */
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            background: #4b0082;
+            /* Dark Purple */
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h2 {
+            margin: 0;
+            font-size: 20px;
+            color: #ffc0cb;
+        }
+
+        .nav-links a {
+            color: #ffc0cb;
+            /* Pink Text */
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Form Container */
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 0 15px;
+        }
+
+        .form-card {
+            background: #4b0082;
+            /* Dark Purple */
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-card h3 {
+            margin-top: 0;
+            color: #ff69b4;
+            /* Hot Pink */
+            border-bottom: 1px solid #ffb6c1;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Form Inputs */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ffb6c1;
+            /* Light Pink */
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ffb6c1;
+            border-radius: 4px;
+            background: #800080;
+            /* Standard Purple for inputs */
+            color: #ffc0cb;
+            box-sizing: border-box;
+            font-family: inherit;
+            font-size: 14px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #ff69b4;
+            /* Hot Pink border on focus */
+        }
+
+        /* Buttons */
+        .btn-submit {
+            background: #ff69b4;
+            /* Hot Pink */
+            color: #4b0082;
+            /* Dark Purple Text */
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn-cancel {
+            background: transparent;
+            color: #ff69b4;
+            border: 1px solid #ff69b4;
+            padding: 12px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body>
+    [8/16/2026 12:56 AM] 𝑴𝒆𝒓𝒄𝒚🦋🦋🦋: <div class="navbar">
+        <h2>DBU Technician Portal</h2>
+        <div class="nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="assigned-request.html">Assigned Tasks</a>
+            <a href="add-resolution.html">Add Resolution</a>
+            <a href="schedule.html">Schedule</a>
+            <a href="profile.html">Profile</a>
+            <a href="#" onclick="logout()" style="color: #ff9999;">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="form-card">
+            <h3>Submit Task Resolution</h3>
+            <form action="dashboard.html" method="GET">
+
+                <div class="form-group">
+                    <label for="requestId">Request ID</label>
+                    <input type="text" id="requestId" name="requestId" value="REQ-2026-01" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="issue">Equipment / Issue Summary</label>
+                    <input type="text" id="issue" name="issue" value="Computer / Laptop Repair" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="resolutionDetails">Resolution Details (What did you fix?)</label>
+                    <textarea id="resolutionDetails" name="resolutionDetails" rows="5"
+                        placeholder="Explain the steps taken to resolve the issue..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="partsUsed">Parts Replaced / Used (Optional)</label>
+                    <input type="text" id="partsUsed" name="partsUsed" placeholder="e.g., 1x Hard Drive">
+                </div>
+
+                <div class="form-group">
+                    <label for="finalStatus">Final Status</label>
+                    <select id="finalStatus" name="finalStatus" required>
+                        <option value="Resolved">Resolved (Fixed)</option>
+                        <option value="Incomplete">Incomplete (Needs more parts)</option>
+                        <option value="Cannot Fix">Cannot Fix (Beyond Repair)</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-submit">Submit Resolution</button>
+                <a href="dashboard.html" class="btn-cancel">Cancel / Back</a>
+
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function logout ()
+        {
+            localStorage.clear();
+            window.location.href = '../login.html';
+        }
+    </script>
+</body>
+
+</html>
+`

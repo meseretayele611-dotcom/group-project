@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="am">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request History - MSRTS</title>
+    <style>
+        :root {
+            --primary-purple: #0a043b;
+            --secondary-pink: #e779fd;
+            --dark-purple: #2d3436;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+
+            color: #111827;
+
+            background:
+                linear-gradient(rgba(3, 15, 35, 0.90),
+                    rgba(0, 35, 75, 0.90)),
+                url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+
+            background-size: cover;
+            min-height: 100vh;
+            margin: 0;
+            padding: 30px 15px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .history-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 800px;
+            padding: 28px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(108, 92, 231, 0.2);
+        }
+
+        .header-title {
+            margin: 0 0 8px 0;
+            color: #4a154b;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .header-desc {
+            color: #636e72;
+            font-size: 14px;
+            margin: 0 0 20px 0;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            background: linear-gradient(90deg, var(--primary-purple), var(--secondary-pink));
+            color: #ffffff;
+            padding: 14px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        th:first-child {
+            border-top-left-radius: 8px;
+        }
+
+        th:last-child {
+            border-top-right-radius: 8px;
+        }
+
+        td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #f1f2f6;
+            color: #2d3436;
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background-color: #fbf9ff;
+        }
+
+        .req-id {
+            color: var(--primary-purple);
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="history-card">
+        <h2 class="header-title">Request History</h2>
+        <p class="header-desc">Your submitted request history and dates።</p>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Request ID</th>
+                        <th>Description</th>
+                        <th>Date Submitted</th>
+                    </tr>
+                </thead>
+                <tbody id="historyBody">
+                    <tr>
+                        <td class="req-id">REQ-001</td>
+                        <td>Screen Replacement</td>
+                        <td>Aug 10, 2026</td>
+                    </tr>
+                    <tr>
+                        <td class="req-id">REQ-002</td>
+                        <td>Battery Replacement</td>
+                        <td>Aug 14, 2026</td>
+                    </tr>
+                    <tr>
+                        <td class="req-id">REQ-003</td>
+                        <td>Software Update</td>
+                        <td>Aug 16, 2026</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+
+</html>

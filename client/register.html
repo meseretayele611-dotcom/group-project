@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Register - DBU Computer Maintenance Portal</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+
+        /* ================= BODY ================= */
+
+        body {
+
+            min-height: 100vh;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            padding: 30px 15px;
+
+            background:
+                linear-gradient(135deg,
+                    #6a0dad,
+                    #4b0082,
+                    #7b1fa2);
+
+            color: #ff69b4;
+        }
+
+
+        /* ================= REGISTER CONTAINER ================= */
+
+        .register-container {
+
+            width: 700px;
+
+            max-width: 95%;
+
+            background: #071a2b;
+
+            padding: 35px;
+
+            border-radius: 15px;
+
+            border: 1px solid #ff69b4;
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, .55),
+                0 0 25px rgba(255, 105, 180, .2);
+        }
+
+
+        /* ================= LOGO ================= */
+
+        .logo {
+
+            text-align: center;
+
+            margin-bottom: 15px;
+        }
+
+
+        .logo img {
+
+            width: 75px;
+
+            height: 75px;
+
+            object-fit: cover;
+
+            border-radius: 50%;
+
+            border: 3px solid #ff69b4;
+
+            background: white;
+
+            padding: 2px;
+
+            box-shadow:
+                0 0 15px rgba(255, 105, 180, .5);
+        }
+
+
+        /* ================= TITLE ================= */
+
+        h1 {
+
+            text-align: center;
+
+            color: #ff69b4;
+
+            font-size: 25px;
+
+            margin-bottom: 7px;
+
+            text-shadow:
+                0 0 10px rgba(255, 105, 180, .35);
+        }
+
+
+        .subtitle {
+
+            text-align: center;
+
+            color: #ffb6d9;
+
+            font-size: 14px;
+
+            margin-bottom: 25px;
+
+            line-height: 1.5;
+        }
+
+
+        /* ================= FORM GRID ================= */
+
+        #registerForm {
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            column-gap: 20px;
+
+            row-gap: 0;
+        }
+
+
+        /* ================= FORM GROUP ================= */
+
+        .form-group {
+
+            margin-bottom: 17px;
+        }
+
+
+        /* ================= LABEL ================= */
+
+        label {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            font-weight: 600;
+
+            color: #ff69b4;
+        }
+
+
+        /* ================= INPUT ================= */
+
+        input {
+
+            width: 100%;
+
+            padding: 12px;
+
+            background: #102a43;
+
+            color: #ffb6d9;
+
+            border: 1px solid #34506b;
+
+            border-radius: 7px;
+
+            font-size: 15px;
+
+            outline: none;
+
+            transition: .3s;
+        }
+
+
+        input::placeholder {
+
+            color: #a87f96;
+        }
+
+
+        input:focus {
+
+            border-color: #ff69b4;
+
+            box-shadow:
+                0 0 0 3px rgba(255, 105, 180, .12),
+                0 0 12px rgba(255, 105, 180, .2);
+        }
+
+
+        /* ================= ROLE BOX ================= */
+
+        .user-role {
+
+            grid-column: 1 / -1;
+
+            background: #0b2239;
+
+            border: 1px solid #ff69b4;
+
+            color: #ffb6d9;
+
+            padding: 12px;
+
+            border-radius: 7px;
+
+            font-size: 14px;
+
+            margin-bottom: 20px;
+
+            line-height: 1.5;
+        }
+
+
+        .user-role strong {
+
+            display: block;
+
+            margin-bottom: 3px;
+
+            color: #ff69b4;
+        }
+
+
+        .user-role small {
+
+            color: #d99ab8;
+        }
+
+
+        /* ================= BUTTON ================= */
+
+        button {
+
+            grid-column: 1 / -1;
+
+            width: 100%;
+
+            padding: 13px;
+
+            border: none;
+
+            border-radius: 7px;
+
+            background: #ff69b4;
+
+            color: #071a2b;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: .3s;
+
+            box-shadow:
+                0 5px 15px rgba(255, 105, 180, .25);
+        }
+
+
+        button:hover {
+
+            background: #ff85c1;
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 8px 20px rgba(255, 105, 180, .35);
+        }
+
+
+        button:disabled {
+
+            background: #9b5277;
+
+            color: #d8a8bd;
+
+            cursor: not-allowed;
+
+            transform: none;
+
+            box-shadow: none;
+        }
+
+
+        /* ================= MESSAGE ================= */
+
+        .message {
+
+            margin-top: 15px;
+
+            padding: 10px;
+
+            border-radius: 6px;
+
+            text-align: center;
+
+            font-size: 14px;
+
+            display: none;
+        }
+
+
+        .success {
+
+            display: block;
+
+            background: #102f27;
+
+            color: #7fffd4;
+
+            border: 1px solid #7fffd4;
+        }
+
+
+        .error {
+
+            display: block;
+
+            background: #321421;
+
+            color: #ff8fab;
+
+            border: 1px solid #ff69b4;
+        }
+
+
+        /* ================= LOGIN LINK ================= */
+
+        .login-link {
+
+            text-align: center;
+
+            margin-top: 20px;
+
+            color: #d99ab8;
+
+            font-size: 14px;
+        }
+
+
+        .login-link a {
+
+            color: #ff69b4;
+
+            font-weight: bold;
+
+            text-decoration: none;
+
+            transition: .3s;
+        }
+
+
+        .login-link a:hover {
+
+            color: #ffb6d9;
+
+            text-decoration: underline;
+        }
+
+
+        /* ================= RESPONSIVE ================= */
+
+        @media(max-width: 650px) {
+
+            .register-container {
+
+                width: 95%;
+
+                padding: 25px;
+            }
+
+
+            #registerForm {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .user-role,
+            button {
+
+                grid-column: auto;
+            }
+
+
+            h1 {
+
+                font-size: 22px;
+            }
+
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= REGISTER CONTAINER ================= -->
+
+    <div class="register-container">
+
+
+        <!-- LOGO -->
+
+        <div class="logo">
+
+            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/Debre_Berhan_University_logo.jpg"
+                alt="DBU Logo">
+
+        </div>
+
+
+        <!-- TITLE -->
+
+        <h1>
+            Create Account
+        </h1>
+
+
+        <p class="subtitle">
+
+            DBU Computer Maintenance Service Request & Tracking System
+
+        </p>
+
+
+        <!-- ================= REGISTER FORM ================= -->
+
+        <form id="registerForm">
+
+
+            <!-- FULL NAME -->
+
+            <div class="form-group">
+
+                <label for="name">
+                    Full Name
+                </label>
+
+                <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+
+            </div>
+
+
+            <!-- EMAIL -->
+
+            <div class="form-group">
+
+                <label for="email">
+                    Email Address
+                </label>
+
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+
+            </div>
+
+
+            <!-- PHONE -->
+
+            <div class="form-group">
+
+                <label for="phone">
+                    Phone Number
+                </label>
+
+                <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+
+            </div>
+
+
+            <!-- DEPARTMENT -->
+
+            <div class="form-group">
+
+                <label for="department">
+                    Department
+                </label>
+
+                <input type="text" id="department" name="department" placeholder="Enter your department" required>
+
+            </div>
+
+
+            <!-- PASSWORD -->
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input type="password" id="password" name="password" placeholder="Enter password" minlength="6"
+                    required>
+
+            </div>
+
+
+            <!-- CONFIRM PASSWORD -->
+
+            <div class="form-group">
+
+                <label for="confirmPassword">
+                    Confirm Password
+                </label>
+
+                <input type="password" id="confirmPassword" placeholder="Confirm password" minlength="6" required>
+
+            </div>
+
+            <!-- REGISTER BUTTON -->
+
+            <button type="submit" id="registerBtn">
+
+                Create Account
+
+            </button>
+
+
+        </form>
+
+
+        <!-- MESSAGE -->
+
+        <div id="message" class="message">
+        </div>
+
+
+        <!-- LOGIN -->
+
+        <div class="login-link">
+
+            Already have an account?
+
+            <a href="login.html">
+                Login here
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+        const registerForm =
+            document.getElementById( "registerForm" );
+
+        const message =
+            document.getElementById( "message" );
+
+        const registerBtn =
+            document.getElementById( "registerBtn" );
+
+
+        registerForm.addEventListener(
+            "submit",
+            async function ( e )
+            {
+
+                e.preventDefault();
+
+
+                const name =
+                    document.getElementById( "name" )
+                        .value.trim();
+
+
+                const email =
+                    document.getElementById( "email" )
+                        .value.trim();
+
+
+                const phone =
+                    document.getElementById( "phone" )
+                        .value.trim();
+
+
+                const department =
+                    document.getElementById( "department" )
+                        .value.trim();
+
+
+                const password =
+                    document.getElementById( "password" )
+                        .value;
+
+
+                const confirmPassword =
+                    document.getElementById( "confirmPassword" )
+                        .value;
+
+
+                /* ================= PASSWORD CHECK ================= */
+
+                if ( password !== confirmPassword )
+                {
+
+                    showMessage(
+                        "Passwords do not match.",
+                        "error"
+                    );
+
+                    return;
+                }
+
+
+                if ( password.length < 6 )
+                {
+
+                    showMessage(
+                        "Password must be at least 6 characters.",
+                        "error"
+                    );
+
+                    return;
+                }
+
+
+                registerBtn.disabled = true;
+
+                registerBtn.textContent =
+                    "Creating Account...";
+
+
+                try
+                {
+
+                    /* ================= API REQUEST ================= */
+
+                    const response =
+                        await fetch(
+                            "http://localhost:5000/api/auth/register",
+                            {
+
+                                method: "POST",
+
+                                headers: {
+
+                                    "Content-Type":
+                                        "application/json"
+
+                                },
+
+                                body: JSON.stringify( {
+
+                                    name: name,
+
+                                    email: email,
+
+                                    phone: phone,
+
+                                    department: department,
+
+                                    password: password
+
+                                } )
+
+                            }
+                        );
+
+
+                    const data =
+                        await response.json();
+
+
+                    /* ================= ERROR ================= */
+
+                    if ( !response.ok )
+                    {
+
+                        showMessage(
+                            data.message ||
+                            "Registration failed.",
+                            "error"
+                        );
+
+                        registerBtn.disabled = false;
+
+                        registerBtn.textContent =
+                            "Create Account";
+
+                        return;
+                    }
+
+
+                    /* ================= SUCCESS ================= */
+
+                    showMessage(
+                        "Account created successfully! Redirecting to login...",
+                        "success"
+                    );
+
+
+                    registerForm.reset();
+
+
+                    setTimeout(
+                        function ()
+                        {
+
+                            window.location.href =
+                                "login.html";
+
+                        },
+                        1800
+                    );
+
+
+                }
+
+                catch ( error )
+                {
+
+                    console.error( error );
+
+                    showMessage(
+                        "Unable to connect to server. Make sure your backend server is running on port 5000.",
+                        "error"
+                    );
+
+                    registerBtn.disabled = false;
+
+                    registerBtn.textContent =
+                        "Create Account";
+
+                }
+
+            }
+        );
+
+
+        /* ================= MESSAGE FUNCTION ================= */
+
+        function showMessage ( text, type )
+        {
+
+            message.textContent = text;
+
+            message.className =
+                "message " + type;
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>

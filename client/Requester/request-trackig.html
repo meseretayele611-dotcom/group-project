@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Request - DBU MSRTS</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: linear-gradient(rgba(45, 0, 70, 0.85), rgba(120, 0, 100, 0.85)),
+                url('https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1920&q=80') center/cover fixed;
+            min-height: 100vh;
+            padding: 40px 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 100%;
+            background: white;
+            padding: 30px;
+            border-radius: 14px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header h2 {
+            color: #73155d;
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            color: #777;
+            font-size: 13px;
+        }
+
+        input {
+            width: 100%;
+            padding: 11px 14px;
+            margin: 10px 0 15px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: #9c27b0;
+            box-shadow: 0 0 8px rgba(156, 39, 176, 0.2);
+        }
+
+        button {
+            background: linear-gradient(135deg, #e91e63, #9c27b0);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            width: 100%;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(233, 30, 99, 0.35);
+        }
+
+        .result-box {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .result-success {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
+        }
+
+        .result-error {
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #ffcdd2;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Track Request Status</h2>
+            <p>የጥገና ጥያቄዎ ያሉበትን ደረጃ ይከታተሉ</p>
+        </div>
+
+        <input type="text" id="trackId" placeholder="Enter Request ID (መለያ ቁጥር ያስገቡ)" />
+        <button id="trackBtn">Check Status (ሁኔታውን አሳይ)</button>
+
+        <div id="trackResult" class="result-box"></div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000/api/requests'; // ከ backend  ጋር የሚያገናኘው አድራሻ
+
+        document.getElementById( 'trackBtn' ).addEventListener( 'click', async () =>
+        {
+            const id = document.getElementById( 'trackId' ).value.trim();
+            const resultBox = document.getElementById( 'trackResult' );
+
+            if ( !id )
+            {
+                resultBox.style.display = 'block';
+                resultBox.className = 'result-box result-error';
+                resultBox.textContent = 'እባክዎን የጥገና መለያ ቁጥር (Request ID) ያስገቡ!';
+                return;
+            }
+
+            resultBox.style.display = 'block';
+            resultBox.className = 'result-box result-success';
+            resultBox.textContent = ' በመፈለግ ላይ... (Checking...)';
+
+            try
+            {
+                // ሰርቨሩን በመጠየቅ ላይ
+                const response = await fetch( `${ API_URL }/${ id }` );
+                const data = await response.json();
+
+                if ( response.ok )
+                {
+                    resultBox.className = 'result-box result-success';
+                    resultBox.innerHTML = `
+                        <strong>የጥገና መረጃ:</strong><br>
+                        - ባለቤት: ${ data.applicantName || 'N/A' }<br>
+                        - ዕቃ: ${ data.equipmentType || 'N/A' }<br>
+                        - የአሁን ሁኔታ (Status): <strong>${ data.status || 'Pending' }</strong>
+                    `;
+                } else
+                {
+                    resultBox.className = 'result-box result-error';
+                    resultBox.textContent = data.message || 'ያለ መለያ ቁጥሩ የተገኘ ጥያቄ የለም።';
+                }
+            } catch ( err )
+            {
+                console.error( 'Tracking Error:', err );
+                resultBox.className = 'result-box result-error';
+                resultBox.textContent = 'የሰርቨር ግንኙነት ተቋርጧል (Network Error)!';
+            }
+        } ); 
+    </script>
+</body>
+
+</html>

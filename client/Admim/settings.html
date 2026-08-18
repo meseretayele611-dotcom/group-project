@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Settings - DBU Admin</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        body {
+
+            min-height: 100vh;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            padding: 20px;
+
+            background:
+                linear-gradient(135deg,
+                    #020617,
+                    #061a35,
+                    #001f3f,
+                    #000000);
+
+        }
+
+
+        /* =========================
+           SETTINGS CARD
+        ========================== */
+
+        .settings-card {
+
+            width: 100%;
+
+            max-width: 480px;
+
+            background: #ffffff;
+
+            padding: 28px;
+
+            border-radius: 14px;
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, 0.45);
+
+        }
+
+
+        /* =========================
+           HEADER
+        ========================== */
+
+        .header {
+
+            text-align: center;
+
+            margin-bottom: 25px;
+
+        }
+
+        .icon {
+
+            width: 55px;
+
+            height: 55px;
+
+            margin: 0 auto 10px;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(135deg,
+                    #006eff,
+                    #003b8f);
+
+            color: white;
+
+            font-size: 25px;
+
+        }
+
+        .header h1 {
+
+            color: #073b73;
+
+            font-size: 24px;
+
+            margin-bottom: 5px;
+
+        }
+
+        .header p {
+
+            color: #777;
+
+            font-size: 13px;
+
+        }
+
+
+        /* =========================
+           FORM
+        ========================== */
+
+        .form-group {
+
+            margin-bottom: 18px;
+
+        }
+
+        label {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #26384d;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+        }
+
+        input,
+        select {
+
+            width: 100%;
+
+            padding: 11px 12px;
+
+            border: 1px solid #d5dce5;
+
+            border-radius: 7px;
+
+            background: #f8fafc;
+
+            outline: none;
+
+            font-size: 13px;
+
+            transition: 0.2s;
+
+        }
+
+        input:focus,
+        select:focus {
+
+            border-color: #0878e8;
+
+            background: white;
+
+            box-shadow:
+                0 0 0 2px rgba(8, 120, 232, 0.10);
+
+        }
+
+
+        /* =========================
+           SAVE BUTTON
+        ========================== */
+
+        .save-btn {
+
+            width: 100%;
+
+            padding: 12px;
+
+            border: none;
+
+            border-radius: 7px;
+
+            background:
+                linear-gradient(135deg,
+                    #006eff,
+                    #00439b);
+
+            color: white;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+
+        }
+
+        .save-btn:hover {
+
+            transform: translateY(-1px);
+
+            background:
+                linear-gradient(135deg,
+                    #0078ff,
+                    #0050b5);
+
+        }
+
+
+        /* =========================
+           SUCCESS MESSAGE
+        ========================== */
+
+        .message {
+
+            display: none;
+
+            margin-top: 15px;
+
+            padding: 10px;
+
+            border-radius: 7px;
+
+            background: #e4f7ea;
+
+            color: #18743b;
+
+            text-align: center;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================== */
+
+        .footer {
+
+            text-align: center;
+
+            margin-top: 18px;
+
+            color: #789;
+
+            font-size: 11px;
+
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================== */
+
+        @media (max-width: 500px) {
+
+            body {
+
+                padding: 15px;
+
+            }
+
+            .settings-card {
+
+                padding: 22px;
+
+            }
+
+            .header h1 {
+
+                font-size: 21px;
+
+            }
+
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="settings-card">
+
+
+        <!-- HEADER -->
+
+        <div class="header">
+
+            <div class="icon">
+                ⚙️
+            </div>
+
+            <h1>
+                System Settings
+            </h1>
+
+            <p>
+                Configure DBU Maintenance Portal
+            </p>
+
+        </div>
+
+
+        <!-- FORM -->
+
+        <form id="settingsForm">
+
+
+            <!-- PORTAL NAME -->
+
+            <div class="form-group">
+
+                <label for="portalName">
+                    Portal Name
+                </label>
+
+                <input type="text" id="portalName" value="DBU ICT Maintenance Portal" placeholder="Enter portal name"
+                    required>
+
+            </div>
+
+
+            <!-- PRIORITY -->
+
+            <div class="form-group">
+
+                <label for="priority">
+                    Default Request Priority
+                </label>
+
+                <select id="priority">
+
+                    <option value="normal">
+                        Normal
+                    </option>
+
+                    <option value="high">
+                        High
+                    </option>
+
+                    <option value="urgent">
+                        Urgent
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- NOTIFICATION -->
+
+            <div class="form-group">
+
+                <label for="notifications">
+                    Notification Status
+                </label>
+
+                <select id="notifications">
+
+                    <option value="enabled">
+                        Enabled
+                    </option>
+
+                    <option value="disabled">
+                        Disabled
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- SAVE -->
+
+            <button type="submit" class="save-btn">
+
+                💾 Save Settings
+
+            </button>
+
+
+        </form>
+
+
+        <!-- MESSAGE -->
+
+        <div id="message" class="message">
+
+            ✅ Settings saved successfully!
+
+        </div>
+
+
+        <div class="footer">
+
+            DBU Maintenance Service Request and Tracking System
+
+        </div>
+
+
+    </div>
+
+
+    <script>
+
+        const form =
+            document.getElementById(
+                "settingsForm"
+            );
+
+        const message =
+            document.getElementById(
+                "message"
+            );
+
+
+        /* =========================
+           LOAD SETTINGS
+        ========================== */
+
+        function loadSettings ()
+        {
+
+            const saved =
+                localStorage.getItem(
+                    "adminSettings"
+                );
+
+            if ( !saved ) return;
+
+            try
+            {
+
+                const settings =
+                    JSON.parse( saved );
+
+
+                if ( settings.portalName )
+                {
+
+                    document.getElementById(
+                        "portalName"
+                    ).value =
+                        settings.portalName;
+
+                }
+
+
+                if ( settings.priority )
+                {
+
+                    document.getElementById(
+                        "priority"
+                    ).value =
+                        settings.priority;
+
+                }
+
+
+                if ( settings.notifications )
+                {
+
+                    document.getElementById(
+                        "notifications"
+                    ).value =
+                        settings.notifications;
+
+                }
+
+            }
+
+            catch ( error )
+            {
+
+                console.error(
+                    "Settings loading error:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        /* =========================
+           SAVE SETTINGS
+        ========================== */
+
+        form.addEventListener(
+            "submit",
+            function ( event )
+            {
+
+                event.preventDefault();
+
+
+                const settings = {
+
+                    portalName:
+                        document.getElementById(
+                            "portalName"
+                        ).value.trim(),
+
+                    priority:
+                        document.getElementById(
+                            "priority"
+                        ).value,
+
+                    notifications:
+                        document.getElementById(
+                            "notifications"
+                        ).value
+
+                };
+
+
+                localStorage.setItem(
+
+                    "adminSettings",
+
+                    JSON.stringify( settings )
+
+                );
+
+
+                message.style.display =
+                    "block";
+
+
+                setTimeout(
+                    function ()
+                    {
+
+                        message.style.display =
+                            "none";
+
+                    },
+                    2500
+                );
+
+            }
+        );
+
+
+        /* =========================
+           START
+        ========================== */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            loadSettings
+        );
+
+    </script>
+
+
+</body>
+
+</html>

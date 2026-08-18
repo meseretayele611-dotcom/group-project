@@ -1,0 +1,3730 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Technicians - DBU Admin Portal</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            color: #222;
+
+            background:
+                linear-gradient(135deg,
+                    rgba(0, 10, 35, .96),
+                    rgba(0, 45, 95, .94),
+                    rgba(8, 8, 25, .97));
+        }
+
+        /* =====================================================
+           MAIN CONTENT
+        ====================================================== */
+
+        .main-content {
+            margin-left: 250px;
+            padding: 30px;
+        }
+
+        /* =====================================================
+           HEADER
+        ====================================================== */
+
+        .header {
+            background: rgba(255, 255, 255, .97);
+
+            padding: 20px 25px;
+
+            border-radius: 15px;
+
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .30);
+
+            margin-bottom: 25px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h2 {
+            color: #063b78;
+            font-size: 24px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .admin-badge {
+            background: #e3f2fd;
+            color: #0756a0;
+
+            padding: 9px 17px;
+
+            border-radius: 20px;
+
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        /* =====================================================
+           STATISTICS
+        ====================================================== */
+
+        .stats {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 20px;
+
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, .97);
+
+            padding: 22px;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 10px 30px rgba(0, 0, 0, .28);
+
+            border-left: 5px solid #0066cc;
+        }
+
+        .stat-card.available {
+            border-left-color: #16a34a;
+        }
+
+        .stat-card.busy {
+            border-left-color: #f59e0b;
+        }
+
+        .stat-card h4 {
+            color: #666;
+
+            font-size: 13px;
+
+            margin-bottom: 10px;
+        }
+
+        .number {
+            font-size: 31px;
+
+            font-weight: 800;
+
+            color: #0756a0;
+        }
+
+        /* =====================================================
+           ACTION BAR
+        ====================================================== */
+
+        .action-bar {
+            background: rgba(255, 255, 255, .97);
+
+            padding: 20px;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 10px 30px rgba(0, 0, 0, .28);
+
+            margin-bottom: 25px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            flex-wrap: wrap;
+        }
+
+        .action-bar h3 {
+            color: #063b78;
+        }
+
+        .actions {
+            display: flex;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            border: none;
+
+            padding: 10px 16px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+            transition: .25s;
+
+            font-size: 13px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 5px 12px rgba(0, 0, 0, .18);
+        }
+
+        .btn-add {
+            background:
+                linear-gradient(135deg,
+                    #008cff,
+                    #005bea);
+
+            color: white;
+        }
+
+        .btn-assign {
+            background:
+                linear-gradient(135deg,
+                    #111827,
+                    #0756a0);
+
+            color: white;
+        }
+
+        .btn-refresh {
+            background: #475569;
+
+            color: white;
+        }
+
+        /* =====================================================
+           TABLE
+        ====================================================== */
+
+        .table-container {
+            background: rgba(255, 255, 255, .97);
+
+            padding: 25px;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 10px 30px rgba(0, 0, 0, .30);
+
+            overflow-x: auto;
+        }
+
+        .table-header {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 18px;
+
+            gap: 15px;
+        }
+
+        .table-header h3 {
+            color: #063b78;
+
+            font-size: 20px;
+        }
+
+        .search {
+            width: 280px;
+
+            padding: 10px 13px;
+
+            border:
+                1px solid #cbd5e1;
+
+            border-radius: 7px;
+
+            outline: none;
+        }
+
+        .search:focus {
+            border-color: #0066cc;
+
+            box-shadow:
+                0 0 0 3px rgba(0, 102, 204, .10);
+        }
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 1000px;
+        }
+
+        th {
+            background:
+                linear-gradient(90deg,
+                    #003b73,
+                    #0066cc);
+
+            color: white;
+
+            padding: 13px;
+
+            text-align: left;
+
+            font-size: 13px;
+        }
+
+        td {
+            padding: 13px;
+
+            font-size: 13px;
+
+            border-bottom:
+                1px solid #e5e7eb;
+
+            color: #555;
+        }
+
+        tr:hover td {
+            background: #eef7ff;
+        }
+
+        /* =====================================================
+           STATUS
+        ====================================================== */
+
+        .status {
+            display: inline-block;
+
+            padding: 5px 10px;
+
+            border-radius: 20px;
+
+            font-size: 11px;
+
+            font-weight: bold;
+        }
+
+        .status-available {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-busy {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-inactive {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* =====================================================
+           TABLE BUTTONS
+        ====================================================== */
+
+        .btn-view {
+            background: #0ea5e9;
+            color: white;
+
+            padding: 7px 10px;
+        }
+
+        .btn-edit {
+            background: #f59e0b;
+            color: white;
+
+            padding: 7px 10px;
+        }
+
+        .btn-delete {
+            background: #dc2626;
+            color: white;
+
+            padding: 7px 10px;
+        }
+
+        /* =====================================================
+           MODAL
+        ====================================================== */
+
+        .modal {
+            display: none;
+
+            position: fixed;
+
+            z-index: 2000;
+
+            left: 0;
+            top: 0;
+
+            width: 100%;
+            height: 100%;
+
+            background:
+                rgba(0, 0, 0, .72);
+
+            justify-content: center;
+
+            align-items: center;
+
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+
+            width: 100%;
+
+            max-width: 700px;
+
+            max-height: 92vh;
+
+            overflow-y: auto;
+
+            border-radius: 15px;
+
+            padding: 25px;
+
+            box-shadow:
+                0 20px 50px rgba(0, 0, 0, .45);
+
+            animation:
+                modalOpen .2s ease;
+        }
+
+        @keyframes modalOpen {
+
+            from {
+                transform: scale(.94);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            border-bottom:
+                1px solid #e5e7eb;
+
+            padding-bottom: 13px;
+
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 {
+            color: #063b78;
+        }
+
+        .close {
+            font-size: 28px;
+
+            cursor: pointer;
+
+            color: #777;
+        }
+
+        .close:hover {
+            color: #dc2626;
+        }
+
+        /* =====================================================
+           FORM
+        ====================================================== */
+
+        .registration-title {
+            background:
+                linear-gradient(135deg,
+                    #003b73,
+                    #0072ce);
+
+            color: white;
+
+            padding: 15px;
+
+            border-radius: 10px;
+
+            margin-bottom: 20px;
+
+            text-align: center;
+        }
+
+        .registration-title h4 {
+            font-size: 18px;
+
+            margin-bottom: 4px;
+        }
+
+        .registration-title p {
+            font-size: 12px;
+
+            opacity: .9;
+        }
+
+        .form-row {
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+            margin-bottom: 6px;
+
+            color: #475569;
+        }
+
+        .required {
+            color: #dc2626;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+
+            padding: 11px;
+
+            border:
+                1px solid #cbd5e1;
+
+            border-radius: 7px;
+
+            outline: none;
+
+            font-size: 13px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+
+            min-height: 85px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #0066cc;
+
+            box-shadow:
+                0 0 0 3px rgba(0, 102, 204, .08);
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-wrapper input {
+            padding-right: 45px;
+        }
+
+        .show-password {
+            position: absolute;
+
+            right: 10px;
+
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            border: none;
+
+            background: transparent;
+
+            cursor: pointer;
+
+            font-size: 16px;
+        }
+
+        .form-help {
+            font-size: 11px;
+
+            color: #777;
+
+            margin-top: 4px;
+        }
+
+        .modal-buttons {
+            display: flex;
+
+            justify-content: flex-end;
+
+            gap: 10px;
+
+            margin-top: 20px;
+
+            padding-top: 15px;
+
+            border-top:
+                1px solid #eee;
+        }
+
+        .btn-save {
+            background:
+                linear-gradient(135deg,
+                    #16a34a,
+                    #15803d);
+
+            color: white;
+
+            padding: 10px 18px;
+        }
+
+        .btn-cancel {
+            background: #64748b;
+
+            color: white;
+
+            padding: 10px 18px;
+        }
+
+        /* =====================================================
+           ASSIGN INFORMATION BOX
+        ====================================================== */
+
+        .assign-info {
+            background: #eff6ff;
+
+            border-left:
+                4px solid #0066cc;
+
+            padding: 13px;
+
+            border-radius: 7px;
+
+            margin-bottom: 18px;
+
+            font-size: 12px;
+
+            color: #334155;
+        }
+
+        .selected-technician {
+            background: #f8fafc;
+
+            border:
+                1px solid #dbeafe;
+
+            padding: 12px;
+
+            border-radius: 7px;
+
+            margin-top: 5px;
+
+            display: none;
+        }
+
+        /* =====================================================
+           SUCCESS MESSAGE
+        ====================================================== */
+
+        .success-message {
+            display: none;
+
+            position: fixed;
+
+            top: 25px;
+
+            right: 25px;
+
+            z-index: 5000;
+
+            background: #16a34a;
+
+            color: white;
+
+            padding: 14px 20px;
+
+            border-radius: 8px;
+
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, .25);
+
+            font-size: 13px;
+
+            font-weight: bold;
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ====================================================== */
+
+        @media(max-width: 1000px) {
+
+            .stats {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+        }
+
+        @media(max-width: 800px) {
+
+            .main-content {
+                margin-left: 70px;
+
+                padding: 20px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+        }
+
+        @media(max-width: 600px) {
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+
+            .table-header {
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+
+            .search {
+                width: 100%;
+            }
+
+            .actions {
+                width: 100%;
+            }
+
+            .actions .btn {
+                width: 100%;
+            }
+
+            .modal-content {
+                padding: 18px;
+            }
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================================
+     SUCCESS MESSAGE
+========================================================= -->
+
+    <div id="successMessage" class="success-message">
+        ✅ Operation completed successfully.
+    </div>
+
+
+    <!-- =========================================================
+     MAIN CONTENT
+     SIDEBAR INTENTIONALLY IGNORED
+========================================================= -->
+
+    <div class="main-content">
+
+
+        <!-- HEADER -->
+
+        <div class="header">
+
+            <div>
+
+                <h2>
+                    Technician Management
+                </h2>
+
+                <p>
+                    Register, view, manage and assign technicians
+                </p>
+
+            </div>
+
+            <div class="admin-badge">
+                Administrator
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+         STATISTICS
+    ====================================================== -->
+
+        <div class="stats">
+
+            <div class="stat-card">
+
+                <h4>
+                    Total Technicians
+                </h4>
+
+                <div class="number" id="totalTechnicians">
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="stat-card available">
+
+                <h4>
+                    Available Technicians
+                </h4>
+
+                <div class="number" id="availableTechnicians">
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="stat-card busy">
+
+                <h4>
+                    Busy Technicians
+                </h4>
+
+                <div class="number" id="busyTechnicians">
+                    0
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+         ACTION BAR
+    ====================================================== -->
+
+        <div class="action-bar">
+
+            <h3>
+                Technician Operations
+            </h3>
+
+            <div class="actions">
+
+                <button class="btn btn-add" onclick="openAddTechnicianModal()">
+
+                    ➕ Add New Technician
+
+                </button>
+
+
+                <button class="btn btn-assign" onclick="openAssignModal()">
+
+                    🔗 Assign Technician
+
+                </button>
+
+
+                <button class="btn btn-refresh" onclick="loadTechnicians()">
+
+                    🔄 Refresh
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+         TECHNICIAN TABLE
+    ====================================================== -->
+
+        <div class="table-container">
+
+            <div class="table-header">
+
+                <h3>
+                    Technician List
+                </h3>
+
+                <input type="text" id="searchInput" class="search" placeholder="🔍 Search technician...">
+
+            </div>
+
+
+            <div style="overflow-x:auto;">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>ID</th>
+
+                            <th>Name</th>
+
+                            <th>Email</th>
+
+                            <th>Phone</th>
+
+                            <th>Specialization</th>
+
+                            <th>Status</th>
+
+                            <th>Actions</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="techniciansTable">
+
+                        <tr>
+
+                            <td colspan="7" style="
+                                text-align:center;
+                                padding:30px;
+                            ">
+
+                                🔄 Loading technicians...
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+     ADD TECHNICIAN MODAL
+========================================================= -->
+
+    <div id="addTechnicianModal" class="modal">
+
+        <div class="modal-content">
+
+
+            <div class="modal-header">
+
+                <h3>
+                    👨‍🔧 Add New Technician
+                </h3>
+
+                <span class="close" onclick="closeModal('addTechnicianModal')">
+
+                    &times;
+
+                </span>
+
+            </div>
+
+
+            <div class="registration-title">
+
+                <h4>
+                    Technician Registration
+                </h4>
+
+                <p>
+                    Create a new technician account
+                </p>
+
+            </div>
+
+
+            <!-- NAME / EMPLOYEE -->
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label>
+                        Full Name
+                        <span class="required">*</span>
+                    </label>
+
+                    <input type="text" id="technicianName" placeholder="Enter full name">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Employee ID
+                        <span class="required">*</span>
+                    </label>
+
+                    <input type="text" id="technicianEmployeeId" placeholder="DBU-TECH-001">
+
+                </div>
+
+            </div>
+
+
+            <!-- EMAIL / PHONE -->
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label>
+                        Email
+                        <span class="required">*</span>
+                    </label>
+
+                    <input type="email" id="technicianEmail" placeholder="technician@dbu.edu.et">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Phone
+                        <span class="required">*</span>
+                    </label>
+
+                    <input type="text" id="technicianPhone" placeholder="09XXXXXXXX">
+
+                </div>
+
+            </div>
+
+
+            <!-- USERNAME / DEPARTMENT -->
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label>
+                        Username
+                        <span class="required">*</span>
+                    </label>
+
+                    <input type="text" id="technicianUsername" placeholder="Enter username">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Department
+                    </label>
+
+                    <input type="text" id="technicianDepartment" placeholder="ICT Directorate">
+
+                </div>
+
+            </div>
+
+
+            <!-- PASSWORD -->
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label>
+                        Password
+                        <span class="required">*</span>
+                    </label>
+
+                    <div class="password-wrapper">
+
+                        <input type="password" id="technicianPassword" placeholder="Enter password">
+
+                        <button type="button" class="show-password" onclick="
+                            togglePassword(
+                                'technicianPassword',
+                                this
+                            )
+                        ">
+
+                            👁
+
+                        </button>
+
+                    </div>
+
+                    <div class="form-help">
+                        Minimum 6 characters
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Confirm Password
+                        <span class="required">*</span>
+                    </label>
+
+                    <div class="password-wrapper">
+
+                        <input type="password" id="technicianConfirmPassword" placeholder="Confirm password">
+
+                        <button type="button" class="show-password" onclick="
+                            togglePassword(
+                                'technicianConfirmPassword',
+                                this
+                            )
+                        ">
+
+                            👁
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- SPECIALIZATION / STATUS -->
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label>
+                        Specialization
+                    </label>
+
+                    <select id="technicianSpecialization">
+
+                        <option value="ICT">
+                            ICT
+                        </option>
+
+                        <option value="Computer Hardware">
+                            Computer Hardware
+                        </option>
+
+                        <option value="Network">
+                            Network
+                        </option>
+
+                        <option value="Printer">
+                            Printer
+                        </option>
+
+                        <option value="Software">
+                            Software
+                        </option>
+
+                        <option value="Electrical">
+                            Electrical
+                        </option>
+
+                        <option value="General">
+                            General Maintenance
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Status
+                    </label>
+
+                    <select id="technicianStatus">
+
+                        <option value="available">
+                            Available
+                        </option>
+
+                        <option value="busy">
+                            Busy
+                        </option>
+
+                        <option value="inactive">
+                            Inactive
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- ADDRESS -->
+
+            <div class="form-group">
+
+                <label>
+                    Address
+                </label>
+
+                <textarea id="technicianAddress" placeholder="Enter technician address">
+            </textarea>
+
+            </div>
+
+
+            <!-- BUTTONS -->
+
+            <div class="modal-buttons">
+
+                <button class="btn btn-cancel" onclick="
+                    closeModal('addTechnicianModal')
+                ">
+
+                    Cancel
+
+                </button>
+
+
+                <button class="btn btn-save" onclick="registerTechnician()">
+
+                    ✅ Add Technician
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+     EDIT TECHNICIAN MODAL
+========================================================= -->
+
+    <div id="editTechnicianModal" class="modal">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h3>
+                    ✏️ Edit Technician
+                </h3>
+
+                <span class="close" onclick="
+                    closeModal('editTechnicianModal')
+                ">
+
+                    &times;
+
+                </span>
+
+            </div>
+
+
+            <input type="hidden" id="editTechnicianId">
+
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label>
+                        Full Name
+                    </label>
+
+                    <input type="text" id="editName">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Email
+                    </label>
+
+                    <input type="email" id="editEmail">
+
+                </div>
+
+            </div>
+
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label>
+                        Phone
+                    </label>
+
+                    <input type="text" id="editPhone">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Specialization
+                    </label>
+
+                    <select id="editSpecialization">
+
+                        <option value="ICT">
+                            ICT
+                        </option>
+
+                        <option value="Computer Hardware">
+                            Computer Hardware
+                        </option>
+
+                        <option value="Network">
+                            Network
+                        </option>
+
+                        <option value="Printer">
+                            Printer
+                        </option>
+
+                        <option value="Software">
+                            Software
+                        </option>
+
+                        <option value="Electrical">
+                            Electrical
+                        </option>
+
+                        <option value="General">
+                            General Maintenance
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Status
+                </label>
+
+                <select id="editStatus">
+
+                    <option value="available">
+                        Available
+                    </option>
+
+                    <option value="busy">
+                        Busy
+                    </option>
+
+                    <option value="inactive">
+                        Inactive
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="modal-buttons">
+
+                <button class="btn btn-cancel" onclick="
+                    closeModal('editTechnicianModal')
+                ">
+
+                    Cancel
+
+                </button>
+
+
+                <button class="btn btn-save" onclick="updateTechnician()">
+
+                    ✅ Update Technician
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+     ASSIGN TECHNICIAN MODAL
+========================================================= -->
+
+    <div id="assignModal" class="modal">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h3>
+                    🔗 Assign Technician
+                </h3>
+
+                <span class="close" onclick="closeModal('assignModal')">
+
+                    &times;
+
+                </span>
+
+            </div>
+
+
+            <div class="assign-info">
+
+                <strong>
+                    📌 Assignment
+                </strong>
+
+                <br>
+
+                Select a maintenance request and an available
+                technician to assign the request.
+
+            </div>
+
+
+            <!-- REQUEST -->
+
+            <div class="form-group">
+
+                <label>
+                    Maintenance Request
+                    <span class="required">*</span>
+                </label>
+
+                <select id="requestSelect">
+
+                    <option value="">
+                        🔄 Loading requests...
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- TECHNICIAN -->
+
+            <div class="form-group">
+
+                <label>
+                    Technician
+                    <span class="required">*</span>
+                </label>
+
+                <select id="assignTechnicianSelect" onchange="showSelectedTechnician()">
+
+                    <option value="">
+                        Select Technician
+                    </option>
+
+                </select>
+
+
+                <div id="selectedTechnician" class="selected-technician">
+
+                </div>
+
+            </div>
+
+
+            <!-- PRIORITY -->
+
+            <div class="form-group">
+
+                <label>
+                    Priority
+                </label>
+
+                <select id="assignmentPriority">
+
+                    <option value="Normal">
+                        Normal
+                    </option>
+
+                    <option value="High">
+                        High
+                    </option>
+
+                    <option value="Urgent">
+                        Urgent
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- NOTE -->
+
+            <div class="form-group">
+
+                <label>
+                    Assignment Note
+                </label>
+
+                <textarea id="assignmentNote" placeholder="Write assignment note...">
+            </textarea>
+
+            </div>
+
+
+            <div class="modal-buttons">
+
+                <button class="btn btn-cancel" onclick="closeModal('assignModal')">
+
+                    Cancel
+
+                </button>
+
+
+                <button class="btn btn-save" onclick="assignTechnician()">
+
+                    🔗 Assign Technician
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+    <script>
+
+        /* =====================================================
+           API
+        ====================================================== */
+
+        const TECHNICIAN_API =
+            "http://localhost:5000/api/technicians";
+
+        const REQUEST_API =
+            "http://localhost:5000/api/requests";
+
+
+        let allTechnicians = [];
+
+        let allRequests = [];
+
+
+        /* =====================================================
+           HEADERS
+        ====================================================== */
+
+        function getHeaders ()
+        {
+
+            const token =
+                localStorage.getItem( "token" );
+
+            const headers = {
+                "Content-Type": "application/json"
+            };
+
+            if ( token )
+            {
+
+                headers["Authorization"] =
+                    "Bearer " + token;
+
+            }
+
+            return headers;
+        }
+
+
+        /* =====================================================
+           LOAD TECHNICIANS
+        ====================================================== */
+
+        async function loadTechnicians ()
+        {
+
+            const table =
+                document.getElementById(
+                    "techniciansTable"
+                );
+
+
+            table.innerHTML = `
+            <tr>
+                <td colspan="7"
+                    style="
+                        text-align:center;
+                        padding:30px;
+                    ">
+
+                    🔄 Loading technicians...
+
+                </td>
+            </tr>
+        `;
+
+
+            try
+            {
+
+                const response =
+                    await fetch(
+                        TECHNICIAN_API,
+                        {
+                            method: "GET",
+                            headers: getHeaders()
+                        }
+                    );
+
+
+                if ( !response.ok )
+                {
+
+                    throw new Error(
+                        "Unable to load technicians"
+                    );
+
+                }
+
+
+                const data =
+                    await response.json();
+
+
+                if ( Array.isArray( data ) )
+                {
+
+                    allTechnicians = data;
+
+                }
+
+                else if (
+                    Array.isArray( data.technicians )
+                )
+                {
+
+                    allTechnicians =
+                        data.technicians;
+
+                }
+
+                else
+                {
+
+                    allTechnicians = [];
+
+                }
+
+
+                displayTechnicians(
+                    allTechnicians
+                );
+
+
+                updateStatistics(
+                    allTechnicians
+                );
+
+
+                loadTechnicianOptions();
+
+            }
+
+            catch ( error )
+            {
+
+                console.error( error );
+
+
+                /*
+                 * Demo data is used only when backend
+                 * is unavailable.
+                 */
+
+                if (
+                    allTechnicians.length === 0
+                )
+                {
+
+                    allTechnicians = [
+                        {
+                            id: "TECH-001",
+                            name: "Abebe Kebede",
+                            employeeId: "DBU-TECH-001",
+                            email: "abebe@dbu.edu.et",
+                            phone: "0911111111",
+                            specialization: "Computer Hardware",
+                            status: "available",
+                            department: "ICT"
+                        },
+
+                        {
+                            id: "TECH-002",
+                            name: "Sara Mohammed",
+                            employeeId: "DBU-TECH-002",
+                            email: "sara@dbu.edu.et",
+                            phone: "0922222222",
+                            specialization: "Network",
+                            status: "busy",
+                            department: "ICT"
+                        }
+                    ];
+
+                }
+
+
+                displayTechnicians(
+                    allTechnicians
+                );
+
+
+                updateStatistics(
+                    allTechnicians
+                );
+
+
+                loadTechnicianOptions();
+
+            }
+
+        }
+
+
+        /* =====================================================
+           DISPLAY TECHNICIANS
+        ====================================================== */
+
+        function displayTechnicians (
+            technicians
+        )
+        {
+
+            const table =
+                document.getElementById(
+                    "techniciansTable"
+                );
+
+
+            if ( !technicians.length )
+            {
+
+                table.innerHTML = `
+                <tr>
+
+                    <td colspan="7"
+                        style="
+                            text-align:center;
+                            padding:35px;
+                        ">
+
+                        👨‍🔧 No technicians found.
+
+                    </td>
+
+                </tr>
+            `;
+
+                return;
+
+            }
+
+
+            table.innerHTML = "";
+
+
+            technicians.forEach(
+                ( technician, index ) =>
+                {
+
+                    const id =
+                        technician._id ||
+                        technician.id ||
+                        index + 1;
+
+
+                    const name =
+                        technician.name ||
+                        technician.fullName ||
+                        technician.username ||
+                        "-";
+
+
+                    const email =
+                        technician.email || "-";
+
+
+                    const phone =
+                        technician.phone || "-";
+
+
+                    const specialization =
+                        technician.specialization ||
+                        technician.department ||
+                        "General";
+
+
+                    const status =
+                        String(
+                            technician.status ||
+                            "available"
+                        ).toLowerCase();
+
+
+                    let statusClass =
+                        "status-inactive";
+
+
+                    if (
+                        status === "available"
+                    )
+                    {
+
+                        statusClass =
+                            "status-available";
+
+                    }
+
+                    else if (
+                        status === "busy"
+                    )
+                    {
+
+                        statusClass =
+                            "status-busy";
+
+                    }
+
+
+                    const row =
+                        document.createElement( "tr" );
+
+
+                    row.innerHTML = `
+
+                    <td>
+                        ${ escapeHtml(
+                        String( id ).slice( -8 )
+                    ) }
+                    </td>
+
+
+                    <td>
+                        <strong>
+                            ${ escapeHtml( name ) }
+                        </strong>
+                    </td>
+
+
+                    <td>
+                        ${ escapeHtml( email ) }
+                    </td>
+
+
+                    <td>
+                        ${ escapeHtml( phone ) }
+                    </td>
+
+
+                    <td>
+                        ${ escapeHtml(
+                        specialization
+                    ) }
+                    </td>
+
+
+                    <td>
+
+                        <span
+                            class="status ${ statusClass }">
+
+                            ${ capitalize( status ) }
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        <button
+                            class="btn btn-view"
+                            onclick="
+                                viewTechnician('${ id }')
+                            ">
+
+                            👁
+
+                        </button>
+
+
+                        <button
+                            class="btn btn-edit"
+                            onclick="
+                                editTechnician('${ id }')
+                            ">
+
+                            ✏
+
+                        </button>
+
+
+                        <button
+                            class="btn btn-delete"
+                            onclick="
+                                deleteTechnician('${ id }')
+                            ">
+
+                            🗑
+
+                        </button>
+
+                    </td>
+
+                `;
+
+
+                    table.appendChild( row );
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           STATISTICS
+        ====================================================== */
+
+        function updateStatistics (
+            technicians
+        )
+        {
+
+            let available = 0;
+
+            let busy = 0;
+
+
+            technicians.forEach(
+                technician =>
+                {
+
+                    const status =
+                        String(
+                            technician.status ||
+                            "available"
+                        ).toLowerCase();
+
+
+                    if (
+                        status === "available"
+                    )
+                        available++;
+
+
+                    if (
+                        status === "busy"
+                    )
+                        busy++;
+
+                }
+            );
+
+
+            document.getElementById(
+                "totalTechnicians"
+            ).textContent =
+                technicians.length;
+
+
+            document.getElementById(
+                "availableTechnicians"
+            ).textContent =
+                available;
+
+
+            document.getElementById(
+                "busyTechnicians"
+            ).textContent =
+                busy;
+
+        }
+
+
+        /* =====================================================
+           FIND TECHNICIAN
+        ====================================================== */
+
+        function findTechnician ( id )
+        {
+
+            return allTechnicians.find(
+                technician =>
+                {
+
+                    const technicianId =
+                        technician._id ||
+                        technician.id;
+
+
+                    return String(
+                        technicianId
+                    ) === String( id );
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           ADD MODAL
+        ====================================================== */
+
+        function openAddTechnicianModal ()
+        {
+
+            document.getElementById(
+                "technicianName"
+            ).value = "";
+
+
+            document.getElementById(
+                "technicianEmployeeId"
+            ).value = "";
+
+
+            document.getElementById(
+                "technicianEmail"
+            ).value = "";
+
+
+            document.getElementById(
+                "technicianPhone"
+            ).value = "";
+
+
+            document.getElementById(
+                "technicianUsername"
+            ).value = "";
+
+
+            document.getElementById(
+                "technicianDepartment"
+            ).value = "";
+
+
+            document.getElementById(
+                "technicianPassword"
+            ).value = "";
+
+
+            document.getElementById(
+                "technicianConfirmPassword"
+            ).value = "";
+
+
+            document.getElementById(
+                "technicianSpecialization"
+            ).value = "ICT";
+
+
+            document.getElementById(
+                "technicianStatus"
+            ).value = "available";
+
+
+            document.getElementById(
+                "technicianAddress"
+            ).value = "";
+
+
+            openModal(
+                "addTechnicianModal"
+            );
+
+        }
+
+
+        /* =====================================================
+           REGISTER TECHNICIAN
+        ====================================================== */
+
+        async function registerTechnician ()
+        {
+
+            const name =
+                document.getElementById(
+                    "technicianName"
+                ).value.trim();
+
+
+            const employeeId =
+                document.getElementById(
+                    "technicianEmployeeId"
+                ).value.trim();
+
+
+            const email =
+                document.getElementById(
+                    "technicianEmail"
+                ).value.trim();
+
+
+            const phone =
+                document.getElementById(
+                    "technicianPhone"
+                ).value.trim();
+
+
+            const username =
+                document.getElementById(
+                    "technicianUsername"
+                ).value.trim();
+
+
+            const department =
+                document.getElementById(
+                    "technicianDepartment"
+                ).value.trim();
+
+
+            const password =
+                document.getElementById(
+                    "technicianPassword"
+                ).value;
+
+
+            const confirmPassword =
+                document.getElementById(
+                    "technicianConfirmPassword"
+                ).value;
+
+
+            const specialization =
+                document.getElementById(
+                    "technicianSpecialization"
+                ).value;
+
+
+            const status =
+                document.getElementById(
+                    "technicianStatus"
+                ).value;
+
+
+            const address =
+                document.getElementById(
+                    "technicianAddress"
+                ).value.trim();
+
+
+            if (
+                !name ||
+                !employeeId ||
+                !email ||
+                !phone ||
+                !username ||
+                !password ||
+                !confirmPassword
+            )
+            {
+
+                alert(
+                    "Please fill all required fields."
+                );
+
+                return;
+            }
+
+
+            if ( password.length < 6 )
+            {
+
+                alert(
+                    "Password must contain at least 6 characters."
+                );
+
+                return;
+            }
+
+
+            if (
+                password !== confirmPassword
+            )
+            {
+
+                alert(
+                    "Password and Confirm Password do not match."
+                );
+
+                return;
+            }
+
+
+            const emailPattern =
+                /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
+            if (
+                !emailPattern.test( email )
+            )
+            {
+
+                alert(
+                    "Please enter a valid email."
+                );
+
+                return;
+            }
+
+
+            const technicianData = {
+
+                name: name,
+
+                fullName: name,
+
+                employeeId: employeeId,
+
+                email: email,
+
+                phone: phone,
+
+                username: username,
+
+                password: password,
+
+                department: department,
+
+                specialization: specialization,
+
+                status: status,
+
+                address: address,
+
+                role: "technician"
+
+            };
+
+
+            try
+            {
+
+                const response =
+                    await fetch(
+                        TECHNICIAN_API,
+                        {
+                            method: "POST",
+
+                            headers: getHeaders(),
+
+                            body:
+                                JSON.stringify(
+                                    technicianData
+                                )
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if ( !response.ok )
+                {
+
+                    throw new Error(
+                        data.message ||
+                        "Registration failed."
+                    );
+
+                }
+
+
+                showSuccess(
+                    "Technician added successfully!"
+                );
+
+
+                closeModal(
+                    "addTechnicianModal"
+                );
+
+
+                loadTechnicians();
+
+            }
+
+            catch ( error )
+            {
+
+                console.error( error );
+
+
+                /*
+                 * Fallback local registration
+                 * if backend is unavailable.
+                 */
+
+                const localTechnician = {
+
+                    id:
+                        "LOCAL-" +
+                        Date.now(),
+
+                    ...technicianData
+
+                };
+
+
+                allTechnicians.push(
+                    localTechnician
+                );
+
+
+                displayTechnicians(
+                    allTechnicians
+                );
+
+
+                updateStatistics(
+                    allTechnicians
+                );
+
+
+                loadTechnicianOptions();
+
+
+                showSuccess(
+                    "Technician added locally. Connect backend to save permanently."
+                );
+
+
+                closeModal(
+                    "addTechnicianModal"
+                );
+
+            }
+
+        }
+
+
+        /* =====================================================
+           EDIT
+        ====================================================== */
+
+        function editTechnician ( id )
+        {
+
+            const technician =
+                findTechnician( id );
+
+
+            if ( !technician )
+            {
+
+                alert(
+                    "Technician not found."
+                );
+
+                return;
+            }
+
+
+            document.getElementById(
+                "editTechnicianId"
+            ).value = id;
+
+
+            document.getElementById(
+                "editName"
+            ).value =
+                technician.name ||
+                technician.fullName ||
+                "";
+
+
+            document.getElementById(
+                "editEmail"
+            ).value =
+                technician.email || "";
+
+
+            document.getElementById(
+                "editPhone"
+            ).value =
+                technician.phone || "";
+
+
+            document.getElementById(
+                "editSpecialization"
+            ).value =
+                technician.specialization ||
+                "ICT";
+
+
+            document.getElementById(
+                "editStatus"
+            ).value =
+                technician.status ||
+                "available";
+
+
+            openModal(
+                "editTechnicianModal"
+            );
+
+        }
+
+
+        /* =====================================================
+           UPDATE
+        ====================================================== */
+
+        async function updateTechnician ()
+        {
+
+            const id =
+                document.getElementById(
+                    "editTechnicianId"
+                ).value;
+
+
+            const name =
+                document.getElementById(
+                    "editName"
+                ).value.trim();
+
+
+            const email =
+                document.getElementById(
+                    "editEmail"
+                ).value.trim();
+
+
+            const phone =
+                document.getElementById(
+                    "editPhone"
+                ).value.trim();
+
+
+            const specialization =
+                document.getElementById(
+                    "editSpecialization"
+                ).value;
+
+
+            const status =
+                document.getElementById(
+                    "editStatus"
+                ).value;
+
+
+            if (
+                !name ||
+                !email ||
+                !phone
+            )
+            {
+
+                alert(
+                    "Please fill all fields."
+                );
+
+                return;
+            }
+
+
+            try
+            {
+
+                const response =
+                    await fetch(
+                        `${ TECHNICIAN_API }/${ id }`,
+                        {
+                            method: "PUT",
+
+                            headers:
+                                getHeaders(),
+
+                            body:
+                                JSON.stringify( {
+                                    name,
+                                    email,
+                                    phone,
+                                    specialization,
+                                    status
+                                } )
+                        }
+                    );
+
+
+                if ( !response.ok )
+                {
+
+                    throw new Error(
+                        "Update failed"
+                    );
+
+                }
+
+
+                showSuccess(
+                    "Technician updated successfully."
+                );
+
+
+                closeModal(
+                    "editTechnicianModal"
+                );
+
+
+                loadTechnicians();
+
+            }
+
+            catch ( error )
+            {
+
+                const technician =
+                    findTechnician( id );
+
+
+                if ( technician )
+                {
+
+                    technician.name = name;
+
+                    technician.email = email;
+
+                    technician.phone = phone;
+
+                    technician.specialization =
+                        specialization;
+
+                    technician.status =
+                        status;
+
+                }
+
+
+                displayTechnicians(
+                    allTechnicians
+                );
+
+
+                updateStatistics(
+                    allTechnicians
+                );
+
+
+                showSuccess(
+                    "Technician updated locally."
+                );
+
+
+                closeModal(
+                    "editTechnicianModal"
+                );
+
+            }
+
+        }
+
+
+        /* =====================================================
+           VIEW
+        ====================================================== */
+
+        function viewTechnician ( id )
+        {
+
+            const technician =
+                findTechnician( id );
+
+
+            if ( !technician )
+            {
+
+                alert(
+                    "Technician not found."
+                );
+
+                return;
+
+            }
+
+
+            alert(
+
+                "👨‍🔧 TECHNICIAN DETAILS\n\n" +
+
+                "Name: " +
+                (
+                    technician.name ||
+                    technician.fullName ||
+                    "-"
+                ) +
+
+                "\nEmployee ID: " +
+                (
+                    technician.employeeId ||
+                    "-"
+                ) +
+
+                "\nUsername: " +
+                (
+                    technician.username ||
+                    "-"
+                ) +
+
+                "\nEmail: " +
+                (
+                    technician.email ||
+                    "-"
+                ) +
+
+                "\nPhone: " +
+                (
+                    technician.phone ||
+                    "-"
+                ) +
+
+                "\nDepartment: " +
+                (
+                    technician.department ||
+                    "-"
+                ) +
+
+                "\nSpecialization: " +
+                (
+                    technician.specialization ||
+                    "-"
+                ) +
+
+                "\nStatus: " +
+                (
+                    technician.status ||
+                    "-"
+                ) +
+
+                "\nAddress: " +
+                (
+                    technician.address ||
+                    "-"
+                )
+
+            );
+
+        }
+
+
+        /* =====================================================
+           DELETE
+        ====================================================== */
+
+        async function deleteTechnician ( id )
+        {
+
+            const technician =
+                findTechnician( id );
+
+
+            if ( !technician )
+            {
+
+                alert(
+                    "Technician not found."
+                );
+
+                return;
+
+            }
+
+
+            const confirmed =
+                confirm(
+                    "Are you sure you want to delete this technician?"
+                );
+
+
+            if ( !confirmed )
+                return;
+
+
+            try
+            {
+
+                const response =
+                    await fetch(
+                        `${ TECHNICIAN_API }/${ id }`,
+                        {
+                            method: "DELETE",
+
+                            headers:
+                                getHeaders()
+                        }
+                    );
+
+
+                if ( !response.ok )
+                {
+
+                    throw new Error(
+                        "Delete failed"
+                    );
+
+                }
+
+
+                showSuccess(
+                    "Technician deleted successfully."
+                );
+
+
+                loadTechnicians();
+
+            }
+
+            catch ( error )
+            {
+
+                allTechnicians =
+                    allTechnicians.filter(
+                        technician =>
+                        {
+
+                            const technicianId =
+                                technician._id ||
+                                technician.id;
+
+
+                            return String(
+                                technicianId
+                            ) !== String( id );
+
+                        }
+                    );
+
+
+                displayTechnicians(
+                    allTechnicians
+                );
+
+
+                updateStatistics(
+                    allTechnicians
+                );
+
+
+                loadTechnicianOptions();
+
+
+                showSuccess(
+                    "Technician deleted locally."
+                );
+
+            }
+
+        }
+
+
+        /* =====================================================
+           LOAD TECHNICIAN OPTIONS
+        ====================================================== */
+
+        function loadTechnicianOptions ()
+        {
+
+            const select =
+                document.getElementById(
+                    "assignTechnicianSelect"
+                );
+
+
+            select.innerHTML = `
+            <option value="">
+                Select Technician
+            </option>
+        `;
+
+
+            allTechnicians.forEach(
+                technician =>
+                {
+
+                    const id =
+                        technician._id ||
+                        technician.id;
+
+
+                    const name =
+                        technician.name ||
+                        technician.fullName ||
+                        technician.username ||
+                        "Unknown";
+
+
+                    const status =
+                        String(
+                            technician.status ||
+                            "available"
+                        ).toLowerCase();
+
+
+                    /*
+                     * Only available technicians
+                     * are preferred for assignment.
+                     */
+
+                    if (
+                        status === "available" ||
+                        status === "busy"
+                    )
+                    {
+
+                        const option =
+                            document.createElement(
+                                "option"
+                            );
+
+
+                        option.value = id;
+
+
+                        option.textContent =
+                            name +
+                            " - " +
+                            capitalize( status );
+
+
+                        select.appendChild(
+                            option
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           SHOW SELECTED TECHNICIAN
+        ====================================================== */
+
+        function showSelectedTechnician ()
+        {
+
+            const id =
+                document.getElementById(
+                    "assignTechnicianSelect"
+                ).value;
+
+
+            const box =
+                document.getElementById(
+                    "selectedTechnician"
+                );
+
+
+            if ( !id )
+            {
+
+                box.style.display =
+                    "none";
+
+                box.innerHTML = "";
+
+                return;
+
+            }
+
+
+            const technician =
+                findTechnician( id );
+
+
+            if ( !technician )
+                return;
+
+
+            box.style.display =
+                "block";
+
+
+            box.innerHTML = `
+
+            <strong>
+                👨‍🔧 Selected Technician
+            </strong>
+
+            <br><br>
+
+            Name:
+            ${ escapeHtml(
+                technician.name ||
+                technician.fullName ||
+                "-"
+            ) }
+
+            <br>
+
+            Specialization:
+            ${ escapeHtml(
+                technician.specialization ||
+                "-"
+            ) }
+
+            <br>
+
+            Status:
+            ${ capitalize(
+                technician.status ||
+                "-"
+            ) }
+
+        `;
+
+        }
+
+
+        /* =====================================================
+           OPEN ASSIGN MODAL
+        ====================================================== */
+
+        async function openAssignModal ()
+        {
+
+            loadTechnicianOptions();
+
+
+            document.getElementById(
+                "assignmentNote"
+            ).value = "";
+
+
+            document.getElementById(
+                "assignmentPriority"
+            ).value = "Normal";
+
+
+            document.getElementById(
+                "selectedTechnician"
+            ).style.display = "none";
+
+
+            openModal(
+                "assignModal"
+            );
+
+
+            await loadRequestsForAssignment();
+
+        }
+
+
+        /* =====================================================
+           LOAD REQUESTS
+        ====================================================== */
+
+        async function loadRequestsForAssignment ()
+        {
+
+            const select =
+                document.getElementById(
+                    "requestSelect"
+                );
+
+
+            select.innerHTML = `
+            <option value="">
+                🔄 Loading requests...
+            </option>
+        `;
+
+
+            try
+            {
+
+                const response =
+                    await fetch(
+                        REQUEST_API,
+                        {
+                            method: "GET",
+
+                            headers:
+                                getHeaders()
+                        }
+                    );
+
+
+                if ( !response.ok )
+                {
+
+                    throw new Error(
+                        "Unable to load requests"
+                    );
+
+                }
+
+
+                const data =
+                    await response.json();
+
+
+                if ( Array.isArray( data ) )
+                {
+
+                    allRequests = data;
+
+                }
+
+                else if (
+                    Array.isArray( data.requests )
+                )
+                {
+
+                    allRequests =
+                        data.requests;
+
+                }
+
+                else
+                {
+
+                    allRequests = [];
+
+                }
+
+
+                populateRequestSelect();
+
+            }
+
+            catch ( error )
+            {
+
+                console.error( error );
+
+
+                /*
+                 * Demo requests for testing.
+                 */
+
+                allRequests = [
+
+                    {
+                        id: "REQ-001",
+
+                        applicantName:
+                            "Meseret Ayele",
+
+                        equipmentType:
+                            "Computer",
+
+                        status:
+                            "pending"
+                    },
+
+                    {
+                        id: "REQ-002",
+
+                        applicantName:
+                            "Abebe Kebede",
+
+                        equipmentType:
+                            "Printer",
+
+                        status:
+                            "pending"
+                    },
+
+                    {
+                        id: "REQ-003",
+
+                        applicantName:
+                            "Sara Mohammed",
+
+                        equipmentType:
+                            "Network",
+
+                        status:
+                            "pending"
+                    }
+
+                ];
+
+
+                populateRequestSelect();
+
+            }
+
+        }
+
+
+        /* =====================================================
+           POPULATE REQUEST SELECT
+        ====================================================== */
+
+        function populateRequestSelect ()
+        {
+
+            const select =
+                document.getElementById(
+                    "requestSelect"
+                );
+
+
+            select.innerHTML = `
+            <option value="">
+                Select Maintenance Request
+            </option>
+        `;
+
+
+            allRequests.forEach(
+                request =>
+                {
+
+                    const id =
+                        request._id ||
+                        request.id;
+
+
+                    const applicant =
+                        request.applicantName ||
+                        request.name ||
+                        request.userName ||
+                        "Unknown Applicant";
+
+
+                    const equipment =
+                        request.equipmentType ||
+                        request.equipment ||
+                        "Equipment";
+
+
+                    const status =
+                        String(
+                            request.status ||
+                            "pending"
+                        ).toLowerCase();
+
+
+                    if (
+                        status !== "completed" &&
+                        status !== "cancelled"
+                    )
+                    {
+
+                        const option =
+                            document.createElement(
+                                "option"
+                            );
+
+
+                        option.value = id;
+
+
+                        option.textContent =
+                            applicant +
+                            " - " +
+                            equipment +
+                            " - " +
+                            String( id ).slice( -6 );
+
+
+                        select.appendChild(
+                            option
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           ASSIGN TECHNICIAN
+        ====================================================== */
+
+        async function assignTechnician ()
+        {
+
+            const requestId =
+                document.getElementById(
+                    "requestSelect"
+                ).value;
+
+
+            const technicianId =
+                document.getElementById(
+                    "assignTechnicianSelect"
+                ).value;
+
+
+            const priority =
+                document.getElementById(
+                    "assignmentPriority"
+                ).value;
+
+
+            const note =
+                document.getElementById(
+                    "assignmentNote"
+                ).value.trim();
+
+
+            if ( !requestId )
+            {
+
+                alert(
+                    "Please select a maintenance request."
+                );
+
+                return;
+
+            }
+
+
+            if ( !technicianId )
+            {
+
+                alert(
+                    "Please select a technician."
+                );
+
+                return;
+
+            }
+
+
+            const technician =
+                findTechnician(
+                    technicianId
+                );
+
+
+            if ( !technician )
+            {
+
+                alert(
+                    "Selected technician not found."
+                );
+
+                return;
+
+            }
+
+
+            const assignmentData = {
+
+                technicianId:
+                    technicianId,
+
+                technicianName:
+                    technician.name ||
+                    technician.fullName ||
+                    technician.username,
+
+                status:
+                    "in progress",
+
+                priority:
+                    priority,
+
+                assignmentNote:
+                    note
+
+            };
+
+
+            try
+            {
+
+                const response =
+                    await fetch(
+                        `${ REQUEST_API }/${ requestId }`,
+                        {
+                            method: "PUT",
+
+                            headers:
+                                getHeaders(),
+
+                            body:
+                                JSON.stringify(
+                                    assignmentData
+                                )
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if ( !response.ok )
+                {
+
+                    throw new Error(
+                        data.message ||
+                        "Assignment failed."
+                    );
+
+                }
+
+
+                /*
+                 * Mark technician as busy
+                 * after successful assignment.
+                 */
+
+                technician.status =
+                    "busy";
+
+
+                showSuccess(
+                    "Technician assigned successfully!"
+                );
+
+
+                closeModal(
+                    "assignModal"
+                );
+
+
+                updateStatistics(
+                    allTechnicians
+                );
+
+
+                displayTechnicians(
+                    allTechnicians
+                );
+
+
+                loadTechnicianOptions();
+
+            }
+
+            catch ( error )
+            {
+
+                console.error( error );
+
+
+                /*
+                 * Local/demo assignment
+                 */
+
+                const request =
+                    allRequests.find(
+                        request =>
+                        {
+
+                            const id =
+                                request._id ||
+                                request.id;
+
+                            return String( id ) ===
+                                String( requestId );
+
+                        }
+                    );
+
+
+                if ( request )
+                {
+
+                    request.technicianId =
+                        technicianId;
+
+                    request.technicianName =
+                        technician.name ||
+                        technician.fullName ||
+                        technician.username;
+
+                    request.status =
+                        "in progress";
+
+                    request.priority =
+                        priority;
+
+                    request.assignmentNote =
+                        note;
+
+                }
+
+
+                technician.status =
+                    "busy";
+
+
+                updateStatistics(
+                    allTechnicians
+                );
+
+
+                displayTechnicians(
+                    allTechnicians
+                );
+
+
+                loadTechnicianOptions();
+
+
+                showSuccess(
+                    "Technician assigned successfully in local mode."
+                );
+
+
+                closeModal(
+                    "assignModal"
+                );
+
+            }
+
+        }
+
+
+        /* =====================================================
+           SEARCH
+        ====================================================== */
+
+        document
+            .getElementById( "searchInput" )
+            .addEventListener(
+                "input",
+                function ()
+                {
+
+                    const search =
+                        this.value
+                            .toLowerCase()
+                            .trim();
+
+
+                    const filtered =
+                        allTechnicians.filter(
+                            technician =>
+                            {
+
+                                const name =
+                                    String(
+                                        technician.name ||
+                                        technician.fullName ||
+                                        ""
+                                    ).toLowerCase();
+
+
+                                const email =
+                                    String(
+                                        technician.email ||
+                                        ""
+                                    ).toLowerCase();
+
+
+                                const phone =
+                                    String(
+                                        technician.phone ||
+                                        ""
+                                    ).toLowerCase();
+
+
+                                const specialization =
+                                    String(
+                                        technician.specialization ||
+                                        ""
+                                    ).toLowerCase();
+
+
+                                const status =
+                                    String(
+                                        technician.status ||
+                                        ""
+                                    ).toLowerCase();
+
+
+                                return (
+
+                                    name.includes( search ) ||
+
+                                    email.includes( search ) ||
+
+                                    phone.includes( search ) ||
+
+                                    specialization.includes( search ) ||
+
+                                    status.includes( search )
+
+                                );
+
+                            }
+                        );
+
+
+                    displayTechnicians(
+                        filtered
+                    );
+
+                }
+            );
+
+
+        /* =====================================================
+           PASSWORD
+        ====================================================== */
+
+        function togglePassword (
+            inputId,
+            button
+        )
+        {
+
+            const input =
+                document.getElementById(
+                    inputId
+                );
+
+
+            if (
+                input.type ===
+                "password"
+            )
+            {
+
+                input.type =
+                    "text";
+
+                button.textContent =
+                    "🙈";
+
+            }
+
+            else
+            {
+
+                input.type =
+                    "password";
+
+                button.textContent =
+                    "👁";
+
+            }
+
+        }
+
+
+        /* =====================================================
+           MODAL
+        ====================================================== */
+
+        function openModal ( id )
+        {
+
+            document.getElementById(
+                id
+            ).style.display =
+                "flex";
+
+        }
+
+
+        function closeModal ( id )
+        {
+
+            document.getElementById(
+                id
+            ).style.display =
+                "none";
+
+        }
+
+
+        window.addEventListener(
+            "click",
+            function ( event )
+            {
+
+                if (
+                    event.target.classList
+                        .contains( "modal" )
+                )
+                {
+
+                    event.target.style.display =
+                        "none";
+
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           SUCCESS MESSAGE
+        ====================================================== */
+
+        function showSuccess ( message )
+        {
+
+            const box =
+                document.getElementById(
+                    "successMessage"
+                );
+
+
+            box.textContent =
+                "✅ " + message;
+
+
+            box.style.display =
+                "block";
+
+
+            setTimeout(
+                function ()
+                {
+
+                    box.style.display =
+                        "none";
+
+                },
+                3000
+            );
+
+        }
+
+
+        /* =====================================================
+           HELPERS
+        ====================================================== */
+
+        function capitalize ( text )
+        {
+
+            return String( text )
+
+                .replace(
+                    /[-_]/g,
+                    " "
+                )
+
+                .replace(
+                    /\b\w/g,
+                    char =>
+                        char.toUpperCase()
+                );
+
+        }
+
+
+        function escapeHtml ( text )
+        {
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+
+            div.textContent =
+                text;
+
+
+            return div.innerHTML;
+
+        }
+
+
+        /* =====================================================
+           START PAGE
+        ====================================================== */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function ()
+            {
+
+                loadTechnicians();
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>

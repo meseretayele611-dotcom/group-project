@@ -1,0 +1,2487 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard - DBU MSRTS</title>
+
+    <style>
+        /* =====================================================
+           GLOBAL
+        ===================================================== */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+
+        /* =====================================================
+           BODY
+        ===================================================== */
+
+        body {
+
+            min-height: 100vh;
+
+            color: #111827;
+
+            background:
+                linear-gradient(rgba(3, 15, 35, 0.90),
+                    rgba(0, 35, 75, 0.90)),
+                url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+
+            background-size: cover;
+
+        }
+
+
+        /* =====================================================
+           SIDEBAR
+        ===================================================== */
+
+        .sidebar {
+
+            width: 230px;
+
+            height: 100vh;
+
+            position: fixed;
+
+            left: 0;
+
+            top: 0;
+
+            background:
+                linear-gradient(180deg,
+                    #7f8aba 0%,
+                    #0f172a 55%,
+                    #0b3b70 100%);
+
+            color: white;
+
+            padding: 20px 10px;
+
+            box-shadow:
+                5px 0 25px rgba(0, 0, 0, 0.35);
+
+            z-index: 1000;
+
+            overflow-y: auto;
+
+        }
+
+
+        /* =====================================================
+           LOGO
+        ===================================================== */
+
+        .sidebar .logo {
+
+            width: 58px;
+
+            height: 58px;
+
+            border-radius: 15px;
+
+            margin: 0 auto 10px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background:
+                linear-gradient(135deg,
+                    #2563eb,
+                    #1e40af);
+
+            font-size: 27px;
+
+            box-shadow:
+                0 8px 20px rgba(37, 99, 235, 0.35);
+
+        }
+
+
+        /* =====================================================
+           SIDEBAR TITLE
+        ===================================================== */
+
+        .sidebar h3 {
+
+            text-align: center;
+
+            margin-bottom: 25px;
+
+            font-size: 17px;
+
+            line-height: 1.4;
+
+            color: #ffffff;
+
+            padding: 0 10px;
+
+        }
+
+
+        /* =====================================================
+           SIDEBAR LINKS
+        ===================================================== */
+
+        .sidebar a {
+
+            padding: 12px 15px;
+
+            margin: 6px 5px;
+
+            border-radius: 9px;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            color: #cbd5e1;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+            transition: all 0.25s ease;
+
+        }
+
+
+        .sidebar a:hover {
+
+            color: white;
+
+            background:
+                rgba(37, 99, 235, 0.20);
+
+            transform:
+                translateX(3px);
+
+        }
+
+
+        .sidebar a.active {
+
+            color: white;
+
+            background:
+                linear-gradient(90deg,
+                    #2563eb,
+                    #1d4ed8);
+
+            box-shadow:
+                0 5px 15px rgba(37, 99, 235, 0.35);
+
+        }
+
+
+        .sidebar a span:first-child {
+
+            width: 25px;
+
+            text-align: center;
+
+            font-size: 17px;
+
+        }
+
+
+        .link-text {
+
+            white-space: nowrap;
+
+        }
+
+
+        /* =====================================================
+           SIDEBAR FOOTER
+        ===================================================== */
+
+        .sidebar-footer {
+
+            position: absolute;
+
+            bottom: 15px;
+
+            left: 10px;
+
+            right: 10px;
+
+            text-align: center;
+
+            color: #94a3b8;
+
+            font-size: 10px;
+
+            line-height: 1.5;
+
+        }
+
+
+        /* =====================================================
+           MAIN CONTENT
+        ===================================================== */
+
+        .main-content {
+
+            margin-left: 230px;
+
+            min-height: 100vh;
+
+            padding: 25px;
+
+        }
+
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .header {
+
+            background:
+                rgba(255, 255, 255, 0.97);
+
+            padding: 17px 22px;
+
+            border-radius: 14px;
+
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.25);
+
+            margin-bottom: 22px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+        }
+
+
+        .header h2 {
+
+            color: #1d4ed8;
+
+            font-size: 22px;
+
+        }
+
+
+        .header p {
+
+            color: #64748b;
+
+            font-size: 12px;
+
+            margin-top: 4px;
+
+        }
+
+
+        /* =====================================================
+           ADMIN BADGE
+        ===================================================== */
+
+        .admin-badge {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            background:
+                #eff6ff;
+
+            border:
+                1px solid #bfdbfe;
+
+            color: #1d4ed8;
+
+            padding: 9px 13px;
+
+            border-radius: 9px;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+        }
+
+
+        .admin-icon {
+
+            width: 30px;
+
+            height: 30px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background:
+                #2563eb;
+
+            color: white;
+
+        }
+
+
+        /* =====================================================
+           STATISTICS
+        ===================================================== */
+
+        .card-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 18px;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .card {
+
+            background:
+                rgba(255, 255, 255, 0.97);
+
+            padding: 21px;
+
+            border-radius: 14px;
+
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.22);
+
+            border-left:
+                5px solid #2563eb;
+
+            transition:
+                transform 0.3s ease,
+                box-shadow 0.3s ease;
+
+        }
+
+
+        .card:hover {
+
+            transform:
+                translateY(-4px);
+
+            box-shadow:
+                0 12px 30px rgba(0, 0, 0, 0.30);
+
+        }
+
+
+        .card h4 {
+
+            margin-bottom: 9px;
+
+            color: #64748b;
+
+            font-size: 13px;
+
+        }
+
+
+        .card .number {
+
+            font-size: 30px;
+
+            font-weight: 800;
+
+            color: #1d4ed8;
+
+        }
+
+
+        .total-card {
+
+            border-left-color:
+                #2563eb;
+
+        }
+
+
+        .pending-card {
+
+            border-left-color:
+                #f59e0b;
+
+        }
+
+
+        .pending-card .number {
+
+            color:
+                #d97706;
+
+        }
+
+
+        .completed-card {
+
+            border-left-color:
+                #16a34a;
+
+        }
+
+
+        .completed-card .number {
+
+            color:
+                #15803d;
+
+        }
+
+
+        /* =====================================================
+           RECENT REQUESTS
+        ===================================================== */
+
+        .table-container {
+
+            background:
+                rgba(255, 255, 255, 0.97);
+
+            padding: 22px;
+
+            border-radius: 14px;
+
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.22);
+
+            overflow-x: auto;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .table-container h3 {
+
+            color:
+                #0f3b70;
+
+            margin-bottom: 15px;
+
+            font-size: 18px;
+
+        }
+
+
+        table {
+
+            width: 100%;
+
+            border-collapse: separate;
+
+            border-spacing: 0;
+
+            overflow: hidden;
+
+            border-radius: 9px;
+
+        }
+
+
+        th {
+
+            background:
+                linear-gradient(90deg,
+                    #64748b,
+                    #1d4ed8);
+
+            color: white;
+
+            padding: 12px;
+
+            text-align: left;
+
+            font-size: 12px;
+
+        }
+
+
+        td {
+
+            padding: 12px;
+
+            font-size: 12px;
+
+            border-bottom:
+                1px solid #e5e7eb;
+
+            color: #475569;
+
+        }
+
+
+        tbody tr:hover td {
+
+            background:
+                #eff6ff;
+
+        }
+
+
+        /* =====================================================
+           STATUS
+        ===================================================== */
+
+        .status {
+
+            padding: 5px 10px;
+
+            border-radius: 20px;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            display: inline-block;
+
+        }
+
+
+        .status.pending {
+
+            background:
+                #fef3c7;
+
+            color:
+                #92400e;
+
+        }
+
+
+        .status.completed {
+
+            background:
+                #dcfce7;
+
+            color:
+                #166534;
+
+        }
+
+
+        .status.progress {
+
+            background:
+                #dbeafe;
+
+            color:
+                #1e40af;
+
+        }
+
+
+        .status.cancelled {
+
+            background:
+                #fee2e2;
+
+            color:
+                #991b1b;
+
+        }
+
+
+        /* =====================================================
+           TECHNICIAN SECTION
+        ===================================================== */
+
+        .technician-section {
+
+            background:
+                rgba(255, 255, 255, 0.97);
+
+            padding: 22px;
+
+            border-radius: 14px;
+
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.22);
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .technician-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 18px;
+
+        }
+
+
+        .technician-header h3 {
+
+            color:
+                #0f3b70;
+
+            font-size: 18px;
+
+        }
+
+
+        /* =====================================================
+           ADD BUTTON
+        ===================================================== */
+
+        .btn-add {
+
+            background:
+                linear-gradient(135deg,
+                    #2563eb,
+                    #1d4ed8);
+
+            color: white;
+
+            border: none;
+
+            padding: 10px 16px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-weight: 700;
+
+            transition: .3s;
+
+        }
+
+
+        .btn-add:hover {
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 6px 15px rgba(37, 99, 235, .35);
+
+        }
+
+
+        /* =====================================================
+           TECHNICIAN FORM
+        ===================================================== */
+
+        .technician-form {
+
+            display: none;
+
+            background:
+                #020617;
+
+            padding: 22px;
+
+            border-radius: 12px;
+
+            margin-bottom: 20px;
+
+            border:
+                1px solid #2563eb;
+
+        }
+
+
+        .technician-form.show {
+
+            display: block;
+
+        }
+
+
+        .technician-form h4 {
+
+            color:
+                #60a5fa;
+
+            margin-bottom: 18px;
+
+            font-size: 17px;
+
+        }
+
+
+        .form-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 15px;
+
+        }
+
+
+        .form-group label {
+
+            display: block;
+
+            color:
+                #bfdbfe;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            margin-bottom: 6px;
+
+        }
+
+
+        .form-group input {
+
+            width: 100%;
+
+            padding: 11px;
+
+            background:
+                #0f172a;
+
+            color:
+                #e2e8f0;
+
+            border:
+                1px solid #334155;
+
+            border-radius: 7px;
+
+            outline: none;
+
+            font-size: 14px;
+
+        }
+
+
+        .form-group input:focus {
+
+            border-color:
+                #2563eb;
+
+            box-shadow:
+                0 0 8px rgba(37, 99, 235, .30);
+
+        }
+
+
+        .form-actions {
+
+            display: flex;
+
+            gap: 10px;
+
+            margin-top: 18px;
+
+        }
+
+
+        .btn-create {
+
+            background:
+                #2563eb;
+
+            color: white;
+
+            border: none;
+
+            padding: 10px 20px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            font-weight: 700;
+
+        }
+
+
+        .btn-create:hover {
+
+            background:
+                #1d4ed8;
+
+        }
+
+
+        .btn-cancel {
+
+            background:
+                #334155;
+
+            color: white;
+
+            border: none;
+
+            padding: 10px 20px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            font-weight: 700;
+
+        }
+
+
+        .btn-cancel:hover {
+
+            background:
+                #1e293b;
+
+        }
+
+
+        /* =====================================================
+           TECHNICIAN TABLE
+        ===================================================== */
+
+        .technician-table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            margin-top: 15px;
+
+        }
+
+
+        .technician-table th {
+
+            background:
+                linear-gradient(90deg,
+                    #020617,
+                    #1d4ed8);
+
+            color: white;
+
+            padding: 11px;
+
+            text-align: left;
+
+            font-size: 12px;
+
+        }
+
+
+        .technician-table td {
+
+            padding: 11px;
+
+            border-bottom:
+                1px solid #e5e7eb;
+
+            font-size: 12px;
+
+            color:
+                #475569;
+
+        }
+
+
+        .technician-table tr:hover td {
+
+            background:
+                #eff6ff;
+
+        }
+
+
+        /* =====================================================
+           ROLE BADGE
+        ===================================================== */
+
+        .role-badge {
+
+            background:
+                #dbeafe;
+
+            color:
+                #1e40af;
+
+            padding:
+                4px 9px;
+
+            border-radius:
+                15px;
+
+            font-size:
+                11px;
+
+            font-weight:
+                700;
+
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .footer {
+
+            text-align:
+                center;
+
+            color:
+                #cbd5e1;
+
+            font-size:
+                12px;
+
+            padding:
+                20px;
+
+        }
+
+
+        /* =====================================================
+           RESPONSIVE TABLET
+        ===================================================== */
+
+        @media (max-width: 900px) {
+
+            .sidebar {
+
+                width:
+                    210px;
+
+            }
+
+
+            .main-content {
+
+                margin-left:
+                    210px;
+
+                padding:
+                    20px;
+
+            }
+
+
+            .card-grid {
+
+                grid-template-columns:
+                    repeat(3, 1fr);
+
+            }
+
+        }
+
+
+        /* =====================================================
+           RESPONSIVE MOBILE
+        ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .sidebar {
+
+                width:
+                    65px;
+
+                padding:
+                    15px 5px;
+
+            }
+
+
+            .sidebar .logo {
+
+                width:
+                    45px;
+
+                height:
+                    45px;
+
+                font-size:
+                    21px;
+
+            }
+
+
+            .sidebar h3 {
+
+                display:
+                    none;
+
+            }
+
+
+            .sidebar a {
+
+                justify-content:
+                    center;
+
+                padding:
+                    12px 5px;
+
+                margin:
+                    5px 2px;
+
+            }
+
+
+            .sidebar a span:first-child {
+
+                margin:
+                    0;
+
+            }
+
+
+            .sidebar .link-text {
+
+                display:
+                    none;
+
+            }
+
+
+            .sidebar-footer {
+
+                display:
+                    none;
+
+            }
+
+
+            .main-content {
+
+                margin-left:
+                    65px;
+
+                padding:
+                    15px;
+
+            }
+
+
+            .card-grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .form-grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ===================================================== */
+
+        @media (max-width: 500px) {
+
+            .header {
+
+                flex-direction:
+                    column;
+
+                gap:
+                    12px;
+
+                text-align:
+                    center;
+
+            }
+
+
+            .technician-header {
+
+                flex-direction:
+                    column;
+
+                gap:
+                    12px;
+
+                align-items:
+                    stretch;
+
+            }
+
+
+            .main-content {
+
+                padding:
+                    10px;
+
+            }
+
+
+            .table-container {
+
+                padding:
+                    15px;
+
+            }
+
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ===================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            🛠️
+        </div>
+
+
+        <h3>
+            DBU Admin Portal
+        </h3>
+
+
+        <!-- DASHBOARD -->
+
+        <a href="dashboard.html">
+
+            <span>📊</span>
+
+            <span class="link-text">
+                Dashboard
+            </span>
+
+        </a>
+
+
+        <!-- MANAGE REQUESTS -->
+
+        <a href="M-requests.html">
+
+            <span>📋</span>
+
+            <span class="link-text">
+                Manage Requests
+            </span>
+
+        </a>
+
+
+        <!-- TECHNICIANS -->
+
+        <a href="technicians.html">
+
+            <span>👨‍🔧</span>
+
+            <span class="link-text">
+                Technicians
+            </span>
+
+        </a>
+
+
+        <!-- USERS -->
+
+        <a href="users.html">
+
+            <span>👥</span>
+
+            <span class="link-text">
+                Users
+            </span>
+
+        </a>
+
+
+        <!-- REPORTS -->
+
+        <a href="reports.html">
+
+            <span>📈</span>
+
+            <span class="link-text">
+                Reports
+            </span>
+
+        </a>
+
+
+        <!-- SETTINGS -->
+
+        <a href="settings.html">
+
+            <span>⚙️</span>
+
+            <span class="link-text">
+                Settings
+            </span>
+
+        </a>
+
+
+        <!-- LOGOUT -->
+
+        <a href="#" onclick="logout(); return false;">
+
+            <span>🚪</span>
+
+            <span class="link-text">
+                Logout
+            </span>
+
+        </a>
+
+
+        <div class="sidebar-footer">
+
+            © 2026 Debre Berhan University
+
+            <br>
+
+            ICT Maintenance System
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ===================================================== -->
+
+    <main class="main-content">
+
+
+        <!-- HEADER -->
+
+        <div class="header">
+
+            <div>
+
+                <h2>
+                    Welcome, Administrator
+                </h2>
+
+                <p>
+                    DBU Computer Maintenance Service Request &
+                    Tracking System
+                </p>
+
+            </div>
+
+
+            <div class="admin-badge">
+
+                <span class="admin-icon">
+                    👤
+                </span>
+
+                Administrator
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             STATISTICS
+        ================================================== -->
+
+        <div class="card-grid">
+
+
+            <div class="card total-card">
+
+                <h4>
+                    Total Requests
+                </h4>
+
+                <div class="number" id="totalReq">
+                    --
+                </div>
+
+            </div>
+
+
+            <div class="card pending-card">
+
+                <h4>
+                    Pending Tasks
+                </h4>
+
+                <div class="number" id="pendingReq">
+                    --
+                </div>
+
+            </div>
+
+
+            <div class="card completed-card">
+
+                <h4>
+                    Completed Tasks
+                </h4>
+
+                <div class="number" id="completedReq">
+                    --
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             RECENT REQUESTS
+        ================================================== -->
+
+        <div class="table-container">
+
+            <h3>
+                Recent Maintenance Requests
+            </h3>
+
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Applicant
+                        </th>
+
+                        <th>
+                            Department
+                        </th>
+
+                        <th>
+                            Equipment
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="recentRequestsTable">
+
+                    <tr>
+
+                        <td colspan="4" style="text-align:center;">
+
+                            Loading data...
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+
+        <!-- =================================================
+             TECHNICIAN MANAGEMENT
+        ================================================== -->
+
+        <div class="technician-section">
+
+
+            <div class="technician-header">
+
+                <h3>
+                    Technician Management
+                </h3>
+
+
+                <button class="btn-add" onclick="toggleTechnicianForm()">
+
+                    + Add Technician
+
+                </button>
+
+            </div>
+
+
+
+            <!-- TECHNICIAN FORM -->
+
+            <div class="technician-form" id="technicianForm">
+
+
+                <h4>
+                    Create New Technician Account
+                </h4>
+
+
+                <div class="form-grid">
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Full Name
+                        </label>
+
+                        <input type="text" id="techName" placeholder="Enter full name">
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Email
+                        </label>
+
+                        <input type="email" id="techEmail" placeholder="Enter email">
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Phone Number
+                        </label>
+
+                        <input type="text" id="techPhone" placeholder="Enter phone number">
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Department
+                        </label>
+
+                        <input type="text" id="techDepartment" placeholder="Enter department">
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Password
+                        </label>
+
+                        <input type="password" id="techPassword" placeholder="Enter password">
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="form-actions">
+
+
+                    <button class="btn-create" onclick="createTechnician()">
+
+                        Create Technician
+
+                    </button>
+
+
+                    <button class="btn-cancel" onclick="toggleTechnicianForm()">
+
+                        Cancel
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- TECHNICIAN TABLE -->
+
+            <div style="overflow-x:auto;">
+
+                <table class="technician-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Name
+                            </th>
+
+                            <th>
+                                Email
+                            </th>
+
+                            <th>
+                                Phone
+                            </th>
+
+                            <th>
+                                Department
+                            </th>
+
+                            <th>
+                                Role
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="techniciansTable">
+
+                        <tr>
+
+                            <td colspan="5" style="text-align:center;">
+
+                                Loading technicians...
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- FOOTER -->
+
+        <div class="footer">
+
+            © 2026 Debre Berhan University
+
+            <br>
+
+            ICT Maintenance Service Request and Tracking System
+
+        </div>
+
+
+    </main>
+
+
+
+    <script>
+
+        /* =====================================================
+           AUTOMATIC ACTIVE SIDEBAR LINK
+        ===================================================== */
+
+
+
+    function setActiveSidebarLink ()
+    {
+
+        const currentPage =
+            window.location.pathname
+                .split( "/" )
+                .pop()
+                .toLowerCase();
+
+
+        const links =
+            document.querySelectorAll(
+                ".sidebar a[data-page]"
+            );
+
+
+        links.forEach( link =>
+        {
+
+            const page =
+                link
+                    .getAttribute( "data-page" )
+                    .toLowerCase();
+
+
+            if ( page === currentPage )
+            {
+
+                link.classList.add( "active" );
+
+            } else
+            {
+
+                link.classList.remove( "active" );
+
+            }
+
+        } );
+    }
+
+        /* =====================================================
+           RUN ACTIVE LINK
+        ===================================================== */
+
+        setActiveSidebarLink();
+
+
+
+        /* =====================================================
+           TOGGLE TECHNICIAN FORM
+        ===================================================== */
+
+        function toggleTechnicianForm ()
+        {
+
+            const form =
+                document.getElementById(
+                    "technicianForm"
+                );
+
+
+            form.classList.toggle( "show" );
+
+        }
+
+
+
+        /* =====================================================
+           CREATE TECHNICIAN
+        ===================================================== */
+
+        async function createTechnician ()
+        {
+
+
+            const name =
+                document.getElementById(
+                    "techName"
+                ).value.trim();
+
+
+            const email =
+                document.getElementById(
+                    "techEmail"
+                ).value.trim();
+
+
+            const phone =
+                document.getElementById(
+                    "techPhone"
+                ).value.trim();
+
+
+            const department =
+                document.getElementById(
+                    "techDepartment"
+                ).value.trim();
+
+
+            const password =
+                document.getElementById(
+                    "techPassword"
+                ).value;
+
+
+            if (
+                !name ||
+                !email ||
+                !phone ||
+                !department ||
+                !password
+            )
+            {
+
+                alert(
+                    "Please fill all technician fields."
+                );
+
+                return;
+
+            }
+
+
+            if ( password.length < 6 )
+            {
+
+                alert(
+                    "Password must be at least 6 characters."
+                );
+
+                return;
+
+            }
+
+
+            try
+            {
+
+                const token =
+                    localStorage.getItem( "token" );
+
+
+                if ( !token )
+                {
+
+                    alert(
+                        "Your session has expired. Please login again."
+                    );
+
+                    window.location.href =
+                        "login.html";
+
+                    return;
+
+                }
+
+
+                const response =
+                    await fetch(
+                        "http://localhost:5000/api/admin/technicians",
+                        {
+
+                            method: "POST",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json",
+
+                                "Authorization":
+                                    "Bearer " + token
+
+                            },
+
+                            body: JSON.stringify( {
+
+                                name:
+                                    name,
+
+                                email:
+                                    email,
+
+                                phone:
+                                    phone,
+
+                                department:
+                                    department,
+
+                                password:
+                                    password
+
+                            } )
+
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if ( !response.ok )
+                {
+
+                    alert(
+                        data.message ||
+                        "Unable to create technician."
+                    );
+
+                    return;
+
+                }
+
+
+                alert(
+                    "Technician account created successfully!"
+                );
+
+
+                document.getElementById(
+                    "techName"
+                ).value = "";
+
+
+                document.getElementById(
+                    "techEmail"
+                ).value = "";
+
+
+                document.getElementById(
+                    "techPhone"
+                ).value = "";
+
+
+                document.getElementById(
+                    "techDepartment"
+                ).value = "";
+
+
+                document.getElementById(
+                    "techPassword"
+                ).value = "";
+
+
+                document.getElementById(
+                    "technicianForm"
+                ).classList.remove( "show" );
+
+
+                fetchTechnicians();
+
+            }
+
+
+            catch ( error )
+            {
+
+                console.error( error );
+
+                alert(
+                    "Network error. Make sure the backend server is running on port 5000."
+                );
+
+            }
+
+        }
+
+
+
+        /* =====================================================
+           FETCH TECHNICIANS
+        ===================================================== */
+
+        async function fetchTechnicians ()
+        {
+
+            const tableBody =
+                document.getElementById(
+                    "techniciansTable"
+                );
+
+
+            try
+            {
+
+                const token =
+                    localStorage.getItem( "token" );
+
+
+                if ( !token )
+                {
+
+                    tableBody.innerHTML = `
+
+                        <tr>
+
+                            <td colspan="5"
+                                style="
+                                    text-align:center;
+                                    color:#dc2626;
+                                ">
+
+                                Please login again.
+
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                    return;
+
+                }
+
+
+                const response =
+                    await fetch(
+                        "http://localhost:5000/api/admin/technicians",
+                        {
+
+                            headers: {
+
+                                "Authorization":
+                                    "Bearer " + token
+
+                            }
+
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if ( !response.ok )
+                {
+
+                    throw new Error(
+                        data.message ||
+                        "Failed to load technicians"
+                    );
+
+                }
+
+
+                const technicians =
+                    data.technicians || [];
+
+
+                if (
+                    technicians.length === 0
+                )
+                {
+
+                    tableBody.innerHTML = `
+
+                        <tr>
+
+                            <td
+                                colspan="5"
+                                style="text-align:center;">
+
+                                No technicians found.
+
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                    return;
+
+                }
+
+
+                tableBody.innerHTML = "";
+
+
+                technicians.forEach(
+                    technician =>
+                    {
+
+                        const row =
+                            document.createElement(
+                                "tr"
+                            );
+
+
+                        row.innerHTML = `
+
+                            <td>
+                                ${ escapeHTML(
+                            technician.name || "N/A"
+                        ) }
+                            </td>
+
+                            <td>
+                                ${ escapeHTML(
+                            technician.email || "N/A"
+                        ) }
+                            </td>
+
+                            <td>
+                                ${ escapeHTML(
+                            technician.phone || "N/A"
+                        ) }
+                            </td>
+
+                            <td>
+                                ${ escapeHTML(
+                            technician.department || "N/A"
+                        ) }
+                            </td>
+
+                            <td>
+
+                                <span class="role-badge">
+
+                                    Technician
+
+                                </span>
+
+                            </td>
+
+                        `;
+
+
+                        tableBody.appendChild( row );
+
+                    }
+                );
+
+            }
+
+
+            catch ( error )
+            {
+
+                console.error( error );
+
+
+                tableBody.innerHTML = `
+
+                    <tr>
+
+                        <td
+                            colspan="5"
+                            style="
+                                text-align:center;
+                                color:#dc2626;
+                                padding:20px;
+                            ">
+
+                            Failed to load technicians.
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
+
+        }
+
+
+
+        /* =====================================================
+           ADMIN DASHBOARD
+        ===================================================== */
+
+        async function fetchAdminDashboard ()
+        {
+
+            try
+            {
+
+                const token =
+                    localStorage.getItem( "token" );
+
+
+                if ( !token )
+                {
+
+                    document.getElementById(
+                        "recentRequestsTable"
+                    ).innerHTML = `
+
+                        <tr>
+
+                            <td
+                                colspan="4"
+                                style="
+                                    text-align:center;
+                                    color:#dc2626;
+                                    padding:25px;
+                                ">
+
+                                Please login again.
+
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                    return;
+
+                }
+
+
+                const response =
+                    await fetch(
+                        "http://localhost:5000/api/admin/dashboard",
+                        {
+
+                            headers: {
+
+                                "Authorization":
+                                    "Bearer " + token
+
+                            }
+
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if ( !response.ok )
+                {
+
+                    throw new Error(
+                        data.message ||
+                        "Failed to load dashboard"
+                    );
+
+                }
+
+
+                /* =================================================
+                   STATISTICS
+                ================================================= */
+
+
+                document.getElementById(
+                    "totalReq"
+                ).textContent =
+                    data.totalRequests ?? 0;
+
+
+                document.getElementById(
+                    "pendingReq"
+                ).textContent =
+                    data.pendingRequests ?? 0;
+
+
+                document.getElementById(
+                    "completedReq"
+                ).textContent =
+                    data.completedRequests ?? 0;
+
+
+
+                /* =================================================
+                   RECENT REQUESTS
+                ================================================= */
+
+                const tableBody =
+                    document.getElementById(
+                        "recentRequestsTable"
+                    );
+
+
+                if (
+                    data.recentRequests &&
+                    data.recentRequests.length > 0
+                )
+                {
+
+                    tableBody.innerHTML = "";
+
+
+                    data.recentRequests.forEach(
+                        req =>
+                        {
+
+
+                            let statusClass =
+                                "pending";
+
+
+                            let statusText =
+                                req.status ||
+                                "Pending";
+
+
+                            const lowerStatus =
+                                statusText
+                                    .toLowerCase();
+
+
+                            if (
+                                lowerStatus.includes(
+                                    "complet"
+                                )
+                            )
+                            {
+
+                                statusClass =
+                                    "completed";
+
+                            }
+
+
+                            else if (
+                                lowerStatus.includes(
+                                    "progress"
+                                ) ||
+                                lowerStatus.includes(
+                                    "process"
+                                )
+                            )
+                            {
+
+                                statusClass =
+                                    "progress";
+
+                            }
+
+
+                            else if (
+                                lowerStatus.includes(
+                                    "cancel"
+                                )
+                            )
+                            {
+
+                                statusClass =
+                                    "cancelled";
+
+                            }
+
+
+                            const row =
+                                document.createElement(
+                                    "tr"
+                                );
+
+
+                            row.innerHTML = `
+
+                                <td>
+                                    ${ escapeHTML(
+                                req.applicant ||
+                                req.userName ||
+                                "N/A"
+                            ) }
+                                </td>
+
+                                <td>
+                                    ${ escapeHTML(
+                                req.department ||
+                                "N/A"
+                            ) }
+                                </td>
+
+                                <td>
+                                    ${ escapeHTML(
+                                req.equipment ||
+                                req.item ||
+                                "N/A"
+                            ) }
+                                </td>
+
+                                <td>
+
+                                    <span
+                                        class="status ${ statusClass }">
+
+                                        ${ escapeHTML(
+                                statusText
+                            ) }
+
+                                    </span>
+
+                                </td>
+
+                            `;
+
+
+                            tableBody.appendChild( row );
+
+                        }
+                    );
+
+                }
+
+
+                else
+                {
+
+                    tableBody.innerHTML = `
+
+                        <tr>
+
+                            <td
+                                colspan="4"
+                                style="
+                                    text-align:center;
+                                    padding:25px;
+                                ">
+
+                                No recent maintenance
+                                requests found.
+
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                }
+
+            }
+
+
+            catch ( error )
+            {
+
+                console.error(
+                    "Error fetching dashboard:",
+                    error
+                );
+
+
+                document.getElementById(
+                    "recentRequestsTable"
+                ).innerHTML = `
+
+                    <tr>
+
+                        <td
+                            colspan="4"
+                            style="
+                                text-align:center;
+                                color:#dc2626;
+                                padding:25px;
+                            ">
+
+                            Network error occurred.
+                            Please make sure the backend
+                            server is running.
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
+
+        }
+
+
+
+        /* =====================================================
+           HTML SECURITY HELPER
+        ===================================================== */
+
+        function escapeHTML ( value )
+        {
+
+            const div =
+                document.createElement( "div" );
+
+            div.textContent =
+                value;
+
+            return div.innerHTML;
+
+        }
+
+
+
+        /* =====================================================
+           LOGOUT
+        ===================================================== */
+
+        function logout ()
+        {
+
+            const confirmLogout =
+                confirm(
+                    "Are you sure you want to logout?"
+                );
+
+
+            if ( !confirmLogout )
+            {
+
+                return;
+
+            }
+
+
+            localStorage.removeItem( "token" );
+
+            localStorage.removeItem( "user" );
+
+            localStorage.removeItem( "role" );
+
+            localStorage.removeItem( "userId" );
+
+
+            window.location.href =
+                "login.html";
+
+        }
+
+
+
+        /* =====================================================
+           LOAD DATA
+        ===================================================== */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function ()
+            {
+
+                setActiveSidebarLink();
+
+                fetchAdminDashboard();
+
+                fetchTechnicians();
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>

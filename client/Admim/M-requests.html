@@ -1,0 +1,2440 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Manage Requests - DBU MSRTS</title>
+
+    <style>
+        /* =====================================================
+           GLOBAL
+        ===================================================== */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #1e293b;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font-family: inherit;
+        }
+
+        /* =====================================================
+           MAIN CONTAINER
+        ===================================================== */
+
+        .manage-container {
+            width: 100%;
+            padding: 28px;
+        }
+
+        /* =====================================================
+           PAGE HEADER
+        ===================================================== */
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            gap: 20px;
+        }
+
+        .page-title h1 {
+            font-size: 28px;
+            color: #0f172a;
+            margin-bottom: 6px;
+        }
+
+        .page-title p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .add-request-btn {
+            border: none;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .add-request-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+        }
+
+        /* =====================================================
+           STATISTICS
+        ===================================================== */
+
+        .statistics {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(15, 23, 42, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::after {
+            content: "";
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            right: -25px;
+            bottom: -25px;
+            background: rgba(37, 99, 235, 0.07);
+        }
+
+        .stat-label {
+            display: block;
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-top: 8px;
+        }
+
+        .stat-icon {
+            position: absolute;
+            right: 18px;
+            top: 18px;
+            font-size: 23px;
+        }
+
+        /* =====================================================
+           SEARCH AND FILTER
+        ===================================================== */
+
+        .filter-container {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 20px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .search-container {
+            position: relative;
+            width: 380px;
+            max-width: 100%;
+        }
+
+        .search-container input {
+            width: 100%;
+            height: 44px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 0 15px 0 42px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .search-container input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 11px;
+            font-size: 18px;
+            color: #64748b;
+        }
+
+        .filter-options {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-options select {
+            height: 44px;
+            min-width: 150px;
+            padding: 0 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            background: white;
+            color: #334155;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .filter-options select:focus {
+            border-color: #2563eb;
+        }
+
+        /* =====================================================
+           REQUEST TABLE
+        ===================================================== */
+
+        .request-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(15, 23, 42, 0.05);
+            overflow: hidden;
+        }
+
+        .request-card-header {
+            padding: 20px;
+            border-bottom: 1px solid #e2e8f0;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .request-card-header h2 {
+            font-size: 18px;
+            color: #0f172a;
+        }
+
+        .request-count {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1150px;
+        }
+
+        thead {
+            background: #f8fafc;
+        }
+
+        th {
+            padding: 14px 15px;
+            text-align: left;
+            color: #475569;
+            font-size: 12px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 15px;
+            border-top: 1px solid #eef2f7;
+            color: #334155;
+            font-size: 13px;
+            vertical-align: middle;
+        }
+
+        tbody tr {
+            transition: 0.2s;
+        }
+
+        tbody tr:hover {
+            background: #f8fbff;
+        }
+
+        .request-id {
+            color: #2563eb;
+            font-weight: 700;
+        }
+
+        .applicant-name {
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .department {
+            color: #64748b;
+        }
+
+        .problem-text {
+            max-width: 220px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* =====================================================
+           STATUS
+        ===================================================== */
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 11px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .status::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-pending::before {
+            background: #f59e0b;
+        }
+
+        .status-progress {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .status-progress::before {
+            background: #2563eb;
+        }
+
+        .status-completed {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-completed::before {
+            background: #22c55e;
+        }
+
+        .status-cancelled {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status-cancelled::before {
+            background: #ef4444;
+        }
+
+        /* =====================================================
+           ACTION BUTTONS
+        ===================================================== */
+
+        .actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .action-btn {
+            width: 34px;
+            height: 32px;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .view-btn {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .edit-btn {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .delete-btn {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        /* =====================================================
+           EMPTY STATE
+        ===================================================== */
+
+        .empty-state {
+            display: none;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-icon {
+            font-size: 45px;
+            margin-bottom: 10px;
+        }
+
+        .empty-state h3 {
+            color: #334155;
+            margin-bottom: 5px;
+        }
+
+        .empty-state p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        /* =====================================================
+           MODAL
+        ===================================================== */
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.65);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            z-index: 9999;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            width: 720px;
+            max-width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #e2e8f0;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-size: 19px;
+            color: #0f172a;
+        }
+
+        .close-modal {
+            width: 35px;
+            height: 35px;
+            border: none;
+            border-radius: 50%;
+            background: #f1f5f9;
+            color: #475569;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 22px;
+        }
+
+        .modal-footer {
+            padding: 18px 22px;
+            border-top: 1px solid #e2e8f0;
+
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        /* =====================================================
+           DETAILS
+        ===================================================== */
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .detail-box {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 14px;
+        }
+
+        .detail-box.full {
+            grid-column: 1 / -1;
+        }
+
+        .detail-label {
+            display: block;
+            color: #64748b;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            color: #0f172a;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* =====================================================
+           FORM
+        ===================================================== */
+
+        .form-group {
+            margin-bottom: 17px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            color: #334155;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 11px 12px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        /* =====================================================
+           MODAL BUTTONS
+        ===================================================== */
+
+        .btn {
+            border: none;
+            padding: 10px 17px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #334155;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #dc2626;
+            color: white;
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 1200px) {
+
+            .statistics {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+        }
+
+        @media (max-width: 800px) {
+
+            .manage-container {
+                padding: 20px;
+            }
+
+            .statistics {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .page-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .search-container {
+                width: 100%;
+            }
+
+        }
+
+        @media (max-width: 550px) {
+
+            .statistics {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-options {
+                width: 100%;
+            }
+
+            .filter-options select {
+                flex: 1;
+                min-width: 0;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .detail-box.full {
+                grid-column: auto;
+            }
+
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <!-- =====================================================
+         MANAGE REQUESTS MAIN CONTENT ONLY
+    ===================================================== -->
+
+    <div class="manage-container">
+
+
+        <!-- =================================================
+             PAGE HEADER
+        ================================================== -->
+
+        <div class="page-header">
+
+            <div class="page-title">
+
+                <h1>Manage Requests</h1>
+
+                <p>
+                    View, manage, assign and update maintenance service requests.
+                </p>
+
+            </div>
+
+            <button class="add-request-btn" onclick="openAddModal()">
+
+                + Add Request
+
+            </button>
+
+        </div>
+
+
+        <!-- =================================================
+             STATISTICS
+        ================================================== -->
+
+        <div class="statistics">
+
+
+            <div class="stat-card">
+
+                <span class="stat-label">
+                    Total Requests
+                </span>
+
+                <div class="stat-number" id="totalRequests">
+
+                    0
+
+                </div>
+
+                <span class="stat-icon">
+                    📋
+                </span>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span class="stat-label">
+                    Pending
+                </span>
+
+                <div class="stat-number" id="pendingRequests">
+
+                    0
+
+                </div>
+
+                <span class="stat-icon">
+                    ⏳
+                </span>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span class="stat-label">
+                    In Progress
+                </span>
+
+                <div class="stat-number" id="progressRequests">
+
+                    0
+
+                </div>
+
+                <span class="stat-icon">
+                    🔧
+                </span>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span class="stat-label">
+                    Completed
+                </span>
+
+                <div class="stat-number" id="completedRequests">
+
+                    0
+
+                </div>
+
+                <span class="stat-icon">
+                    ✅
+                </span>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span class="stat-label">
+                    Cancelled
+                </span>
+
+                <div class="stat-number" id="cancelledRequests">
+
+                    0
+
+                </div>
+
+                <span class="stat-icon">
+                    ❌
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             SEARCH + FILTER
+        ================================================== -->
+
+        <div class="filter-container">
+
+
+            <div class="search-container">
+
+                <span class="search-icon">
+                    🔍
+                </span>
+
+                <input type="text" id="searchInput" placeholder="Search request, applicant, department..."
+                    oninput="filterRequests()">
+
+            </div>
+
+
+            <div class="filter-options">
+
+
+                <select id="statusFilter" onchange="filterRequests()">
+
+                    <option value="all">
+                        All Status
+                    </option>
+
+                    <option value="Pending">
+                        Pending
+                    </option>
+
+                    <option value="In Progress">
+                        In Progress
+                    </option>
+
+                    <option value="Completed">
+                        Completed
+                    </option>
+
+                    <option value="Cancelled">
+                        Cancelled
+                    </option>
+
+                </select>
+
+
+                <select id="equipmentFilter" onchange="filterRequests()">
+
+                    <option value="all">
+                        All Equipment
+                    </option>
+
+                    <option value="Computer / Laptop">
+                        Computer / Laptop
+                    </option>
+
+                    <option value="Printer / Scanner">
+                        Printer / Scanner
+                    </option>
+
+                    <option value="Network / Wi-Fi">
+                        Network / Wi-Fi
+                    </option>
+
+                    <option value="Projector">
+                        Projector
+                    </option>
+
+                    <option value="Other">
+                        Other
+                    </option>
+
+                </select>
+
+
+                <select id="dateFilter" onchange="filterRequests()">
+
+                    <option value="all">
+                        All Dates
+                    </option>
+
+                    <option value="today">
+                        Today
+                    </option>
+
+                    <option value="week">
+                        This Week
+                    </option>
+
+                    <option value="month">
+                        This Month
+                    </option>
+
+                </select>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             REQUEST TABLE
+        ================================================== -->
+
+        <div class="request-card">
+
+
+            <div class="request-card-header">
+
+                <h2>
+                    Submitted Maintenance Requests
+                </h2>
+
+                <span class="request-count" id="requestCount">
+
+                    0 Requests
+
+                </span>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Request ID
+                            </th>
+
+                            <th>
+                                Date
+                            </th>
+
+                            <th>
+                                Applicant
+                            </th>
+
+                            <th>
+                                Department
+                            </th>
+
+                            <th>
+                                Equipment
+                            </th>
+
+                            <th>
+                                Problem
+                            </th>
+
+                            <th>
+                                Technician
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="requestTable">
+
+                    </tbody>
+
+                </table>
+
+
+                <div class="empty-state" id="emptyState">
+
+                    <div class="empty-icon">
+                        📭
+                    </div>
+
+                    <h3>
+                        No Requests Found
+                    </h3>
+
+                    <p>
+                        No maintenance request matches your search or filter.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         VIEW REQUEST MODAL
+    ===================================================== -->
+
+    <div class="modal-overlay" id="viewModal">
+
+
+        <div class="modal">
+
+
+            <div class="modal-header">
+
+                <h2>
+                    Request Details
+                </h2>
+
+                <button class="close-modal" onclick="closeModal('viewModal')">
+
+                    ×
+
+                </button>
+
+            </div>
+
+
+            <div class="modal-body">
+
+                <div class="details-grid">
+
+
+                    <div class="detail-box">
+
+                        <span class="detail-label">
+                            Request ID
+                        </span>
+
+                        <span class="detail-value" id="viewId">
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-box">
+
+                        <span class="detail-label">
+                            Request Date
+                        </span>
+
+                        <span class="detail-value" id="viewDate">
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-box">
+
+                        <span class="detail-label">
+                            Applicant Name
+                        </span>
+
+                        <span class="detail-value" id="viewApplicant">
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-box">
+
+                        <span class="detail-label">
+                            Phone Number
+                        </span>
+
+                        <span class="detail-value" id="viewPhone">
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-box">
+
+                        <span class="detail-label">
+                            Department
+                        </span>
+
+                        <span class="detail-value" id="viewDepartment">
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-box">
+
+                        <span class="detail-label">
+                            Equipment Type
+                        </span>
+
+                        <span class="detail-value" id="viewEquipment">
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-box full">
+
+                        <span class="detail-label">
+                            Problem Description
+                        </span>
+
+                        <span class="detail-value" id="viewProblem">
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-box">
+
+                        <span class="detail-label">
+                            Technician
+                        </span>
+
+                        <span class="detail-value" id="viewTechnician">
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-box">
+
+                        <span class="detail-label">
+                            Status
+                        </span>
+
+                        <span class="detail-value" id="viewStatus">
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-box full">
+
+                        <span class="detail-label">
+                            Technician Feedback / Resolution
+                        </span>
+
+                        <span class="detail-value" id="viewFeedback">
+
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button class="btn btn-secondary" onclick="closeModal('viewModal')">
+
+                    Close
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         EDIT REQUEST MODAL
+    ===================================================== -->
+
+    <div class="modal-overlay" id="editModal">
+
+
+        <div class="modal">
+
+
+            <div class="modal-header">
+
+                <h2>
+                    Update Maintenance Request
+                </h2>
+
+                <button class="close-modal" onclick="closeModal('editModal')">
+
+                    ×
+
+                </button>
+
+            </div>
+
+
+            <div class="modal-body">
+
+
+                <input type="hidden" id="editId">
+
+
+                <div class="form-group">
+
+                    <label>
+                        Applicant Name
+                    </label>
+
+                    <input type="text" id="editApplicant">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Department
+                    </label>
+
+                    <input type="text" id="editDepartment">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Equipment Type
+                    </label>
+
+                    <select id="editEquipment">
+
+                        <option>
+                            Computer / Laptop
+                        </option>
+
+                        <option>
+                            Printer / Scanner
+                        </option>
+
+                        <option>
+                            Network / Wi-Fi
+                        </option>
+
+                        <option>
+                            Projector
+                        </option>
+
+                        <option>
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Problem Description
+                    </label>
+
+                    <textarea id="editProblem"></textarea>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Assign Technician
+                    </label>
+
+                    <select id="editTechnician">
+
+                        <option value="Not Assigned">
+                            Not Assigned
+                        </option>
+
+                        <option value="Abebe Kebede">
+                            Abebe Kebede
+                        </option>
+
+                        <option value="Sara Ahmed">
+                            Sara Ahmed
+                        </option>
+
+                        <option value="Dawit Tesfaye">
+                            Dawit Tesfaye
+                        </option>
+
+                        <option value="Marta Alemu">
+                            Marta Alemu
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Request Status
+                    </label>
+
+                    <select id="editStatus">
+
+                        <option value="Pending">
+                            Pending
+                        </option>
+
+                        <option value="In Progress">
+                            In Progress
+                        </option>
+
+                        <option value="Completed">
+                            Completed
+                        </option>
+
+                        <option value="Cancelled">
+                            Cancelled
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Technician Feedback / Resolution
+                    </label>
+
+                    <textarea id="editFeedback" placeholder="Enter technician feedback or resolution..."></textarea>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button class="btn btn-secondary" onclick="closeModal('editModal')">
+
+                    Cancel
+
+                </button>
+
+
+                <button class="btn btn-primary" onclick="saveRequest()">
+
+                    Save Changes
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         ADD REQUEST MODAL
+    ===================================================== -->
+
+    <div class="modal-overlay" id="addModal">
+
+
+        <div class="modal">
+
+
+            <div class="modal-header">
+
+                <h2>
+                    Add Maintenance Request
+                </h2>
+
+                <button class="close-modal" onclick="closeModal('addModal')">
+
+                    ×
+
+                </button>
+
+            </div>
+
+
+            <div class="modal-body">
+
+
+                <div class="form-group">
+
+                    <label>
+                        Applicant Name *
+                    </label>
+
+                    <input type="text" id="addApplicant" placeholder="Enter applicant name">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Phone Number *
+                    </label>
+
+                    <input type="text" id="addPhone" placeholder="09XXXXXXXX">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Department *
+                    </label>
+
+                    <input type="text" id="addDepartment" placeholder="Enter department">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Equipment Type *
+                    </label>
+
+                    <select id="addEquipment">
+
+                        <option value="Computer / Laptop">
+                            Computer / Laptop
+                        </option>
+
+                        <option value="Printer / Scanner">
+                            Printer / Scanner
+                        </option>
+
+                        <option value="Network / Wi-Fi">
+                            Network / Wi-Fi
+                        </option>
+
+                        <option value="Projector">
+                            Projector
+                        </option>
+
+                        <option value="Other">
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Problem Description *
+                    </label>
+
+                    <textarea id="addProblem" placeholder="Describe the maintenance problem..."></textarea>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button class="btn btn-secondary" onclick="closeModal('addModal')">
+
+                    Cancel
+
+                </button>
+
+
+                <button class="btn btn-primary" onclick="addRequest()">
+
+                    Submit Request
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        /* =====================================================
+           REQUEST DATA
+        ===================================================== */
+
+        let requests = [
+
+            {
+                id: "REQ-001",
+                date: "2026-08-10",
+                applicant: "Abebe Kebede",
+                phone: "0911223344",
+                department: "Computer Science",
+                equipment: "Computer / Laptop",
+                problem: "Computer does not turn on.",
+                technician: "Not Assigned",
+                status: "Pending",
+                feedback: "Waiting for technician inspection."
+            },
+
+            {
+                id: "REQ-002",
+                date: "2026-08-11",
+                applicant: "Sara Ahmed",
+                phone: "0922334455",
+                department: "Accounting",
+                equipment: "Printer / Scanner",
+                problem: "Printer is not printing documents.",
+                technician: "Sara Ahmed",
+                status: "In Progress",
+                feedback: "Printer driver is being checked."
+            },
+
+            {
+                id: "REQ-003",
+                date: "2026-08-12",
+                applicant: "Dawit Tesfaye",
+                phone: "0933445566",
+                department: "Registrar",
+                equipment: "Network / Wi-Fi",
+                problem: "Internet connection is very slow.",
+                technician: "Dawit Tesfaye",
+                status: "Completed",
+                feedback: "Network cable replaced and connection tested."
+            },
+
+            {
+                id: "REQ-004",
+                date: "2026-08-13",
+                applicant: "Marta Alemu",
+                phone: "0944556677",
+                department: "Library",
+                equipment: "Projector",
+                problem: "Projector displays no image.",
+                technician: "Not Assigned",
+                status: "Pending",
+                feedback: "Waiting for technician assignment."
+            },
+
+            {
+                id: "REQ-005",
+                date: "2026-08-14",
+                applicant: "Hana Worku",
+                phone: "0955667788",
+                department: "Human Resource",
+                equipment: "Computer / Laptop",
+                problem: "Laptop keyboard is not working.",
+                technician: "Abebe Kebede",
+                status: "In Progress",
+                feedback: "Keyboard replacement is required."
+            },
+
+            {
+                id: "REQ-006",
+                date: "2026-08-15",
+                applicant: "Yonas Getachew",
+                phone: "0966778899",
+                department: "Finance",
+                equipment: "Printer / Scanner",
+                problem: "Printer paper jam problem.",
+                technician: "Sara Ahmed",
+                status: "Completed",
+                feedback: "Paper jam removed and printer tested successfully."
+            },
+
+            {
+                id: "REQ-007",
+                date: "2026-08-16",
+                applicant: "Meron Tadesse",
+                phone: "0977889900",
+                department: "Management",
+                equipment: "Other",
+                problem: "UPS battery is not charging.",
+                technician: "Not Assigned",
+                status: "Cancelled",
+                feedback: "Request cancelled by applicant."
+            }
+
+        ];
+
+
+        /* =====================================================
+           RENDER REQUESTS
+        ===================================================== */
+
+        function renderRequests ( data = requests )
+        {
+
+            const table =
+                document.getElementById( "requestTable" );
+
+            const emptyState =
+                document.getElementById( "emptyState" );
+
+            table.innerHTML = "";
+
+
+            if ( data.length === 0 )
+            {
+
+                emptyState.style.display = "block";
+
+            } else
+            {
+
+                emptyState.style.display = "none";
+
+            }
+
+
+            data.forEach( request =>
+            {
+
+                const row =
+                    document.createElement( "tr" );
+
+
+                row.innerHTML = `
+
+                    <td>
+                        <span class="request-id">
+                            ${ escapeHTML( request.id ) }
+                        </span>
+                    </td>
+
+                    <td>
+                        ${ escapeHTML( request.date ) }
+                    </td>
+
+                    <td>
+                        <span class="applicant-name">
+                            ${ escapeHTML( request.applicant ) }
+                        </span>
+                    </td>
+
+                    <td>
+                        <span class="department">
+                            ${ escapeHTML( request.department ) }
+                        </span>
+                    </td>
+
+                    <td>
+                        ${ escapeHTML( request.equipment ) }
+                    </td>
+
+                    <td>
+                        <div
+                            class="problem-text"
+                            title="${ escapeHTML( request.problem ) }">
+
+                            ${ escapeHTML( request.problem ) }
+
+                        </div>
+                    </td>
+
+                    <td>
+                        ${ escapeHTML( request.technician ) }
+                    </td>
+
+                    <td>
+                        ${ getStatusHTML( request.status ) }
+                    </td>
+
+                    <td>
+
+                        <div class="actions">
+
+                            <button
+                                class="action-btn view-btn"
+                                title="View"
+                                onclick="viewRequest('${ request.id }')">
+
+                                👁
+
+                            </button>
+
+                            <button
+                                class="action-btn edit-btn"
+                                title="Edit"
+                                onclick="editRequest('${ request.id }')">
+
+                                ✏️
+
+                            </button>
+
+                            <button
+                                class="action-btn delete-btn"
+                                title="Delete"
+                                onclick="deleteRequest('${ request.id }')">
+
+                                🗑
+
+                            </button>
+
+                        </div>
+
+                    </td>
+
+                `;
+
+
+                table.appendChild( row );
+
+            } );
+
+
+            document.getElementById( "requestCount" )
+                .textContent =
+                `${ data.length } Request${ data.length !== 1 ? "s" : "" }`;
+
+
+            updateStatistics();
+
+        }
+
+
+        /* =====================================================
+           STATUS HTML
+        ===================================================== */
+
+        function getStatusHTML ( status )
+        {
+
+            let className = "status-pending";
+
+
+            if ( status === "In Progress" )
+            {
+                className = "status-progress";
+            }
+
+            else if ( status === "Completed" )
+            {
+                className = "status-completed";
+            }
+
+            else if ( status === "Cancelled" )
+            {
+                className = "status-cancelled";
+            }
+
+
+            return `
+                <span class="status ${ className }">
+                    ${ escapeHTML( status ) }
+                </span>
+            `;
+
+        }
+
+
+        /* =====================================================
+           STATISTICS
+        ===================================================== */
+
+        function updateStatistics ()
+        {
+
+            const total =
+                requests.length;
+
+            const pending =
+                requests.filter(
+                    r => r.status === "Pending"
+                ).length;
+
+            const progress =
+                requests.filter(
+                    r => r.status === "In Progress"
+                ).length;
+
+            const completed =
+                requests.filter(
+                    r => r.status === "Completed"
+                ).length;
+
+            const cancelled =
+                requests.filter(
+                    r => r.status === "Cancelled"
+                ).length;
+
+
+            document.getElementById( "totalRequests" )
+                .textContent = total;
+
+            document.getElementById( "pendingRequests" )
+                .textContent = pending;
+
+            document.getElementById( "progressRequests" )
+                .textContent = progress;
+
+            document.getElementById( "completedRequests" )
+                .textContent = completed;
+
+            document.getElementById( "cancelledRequests" )
+                .textContent = cancelled;
+
+        }
+
+
+        /* =====================================================
+           SEARCH + FILTER
+        ===================================================== */
+
+        function filterRequests ()
+        {
+
+            const search =
+                document.getElementById( "searchInput" )
+                    .value
+                    .toLowerCase()
+                    .trim();
+
+
+            const status =
+                document.getElementById( "statusFilter" )
+                    .value;
+
+
+            const equipment =
+                document.getElementById( "equipmentFilter" )
+                    .value;
+
+
+            const dateFilter =
+                document.getElementById( "dateFilter" )
+                    .value;
+
+
+            const today =
+                new Date();
+
+
+            const filtered =
+                requests.filter( request =>
+                {
+
+
+                    const text = `
+
+                        ${ request.id }
+                        ${ request.applicant }
+                        ${ request.department }
+                        ${ request.equipment }
+                        ${ request.problem }
+                        ${ request.technician }
+                        ${ request.status }
+
+                    `.toLowerCase();
+
+
+                    const searchMatch =
+                        text.includes( search );
+
+
+                    const statusMatch =
+                        status === "all" ||
+                        request.status === status;
+
+
+                    const equipmentMatch =
+                        equipment === "all" ||
+                        request.equipment === equipment;
+
+
+                    let dateMatch = true;
+
+
+                    if ( dateFilter !== "all" )
+                    {
+
+                        const requestDate =
+                            new Date( request.date );
+
+
+                        if ( dateFilter === "today" )
+                        {
+
+                            dateMatch =
+                                requestDate.toDateString() ===
+                                today.toDateString();
+
+                        }
+
+
+                        if ( dateFilter === "week" )
+                        {
+
+                            const weekAgo =
+                                new Date();
+
+                            weekAgo.setDate(
+                                today.getDate() - 7
+                            );
+
+                            dateMatch =
+                                requestDate >= weekAgo;
+
+                        }
+
+
+                        if ( dateFilter === "month" )
+                        {
+
+                            dateMatch =
+                                requestDate.getMonth() ===
+                                today.getMonth() &&
+                                requestDate.getFullYear() ===
+                                today.getFullYear();
+
+                        }
+
+                    }
+
+
+                    return (
+                        searchMatch &&
+                        statusMatch &&
+                        equipmentMatch &&
+                        dateMatch
+                    );
+
+                } );
+
+
+            renderRequests( filtered );
+
+        }
+
+
+        /* =====================================================
+           VIEW REQUEST
+        ===================================================== */
+
+        function viewRequest ( id )
+        {
+
+            const request =
+                requests.find(
+                    r => r.id === id
+                );
+
+
+            if ( !request )
+            {
+                return;
+            }
+
+
+            document.getElementById( "viewId" )
+                .textContent = request.id;
+
+            document.getElementById( "viewDate" )
+                .textContent = request.date;
+
+            document.getElementById( "viewApplicant" )
+                .textContent = request.applicant;
+
+            document.getElementById( "viewPhone" )
+                .textContent = request.phone;
+
+            document.getElementById( "viewDepartment" )
+                .textContent = request.department;
+
+            document.getElementById( "viewEquipment" )
+                .textContent = request.equipment;
+
+            document.getElementById( "viewProblem" )
+                .textContent = request.problem;
+
+            document.getElementById( "viewTechnician" )
+                .textContent = request.technician;
+
+            document.getElementById( "viewStatus" )
+                .innerHTML =
+                getStatusHTML( request.status );
+
+            document.getElementById( "viewFeedback" )
+                .textContent =
+                request.feedback ||
+                "No feedback available.";
+
+
+            document.getElementById( "viewModal" )
+                .classList.add( "active" );
+
+        }
+
+
+        /* =====================================================
+           EDIT REQUEST
+        ===================================================== */
+
+        function editRequest ( id )
+        {
+
+            const request =
+                requests.find(
+                    r => r.id === id
+                );
+
+
+            if ( !request )
+            {
+                return;
+            }
+
+
+            document.getElementById( "editId" )
+                .value = request.id;
+
+            document.getElementById( "editApplicant" )
+                .value = request.applicant;
+
+            document.getElementById( "editDepartment" )
+                .value = request.department;
+
+            document.getElementById( "editEquipment" )
+                .value = request.equipment;
+
+            document.getElementById( "editProblem" )
+                .value = request.problem;
+
+            document.getElementById( "editTechnician" )
+                .value = request.technician;
+
+            document.getElementById( "editStatus" )
+                .value = request.status;
+
+            document.getElementById( "editFeedback" )
+                .value = request.feedback;
+
+
+            document.getElementById( "editModal" )
+                .classList.add( "active" );
+
+        }
+
+
+        /* =====================================================
+           SAVE REQUEST
+        ===================================================== */
+
+        function saveRequest ()
+        {
+
+            const id =
+                document.getElementById( "editId" )
+                    .value;
+
+
+            const request =
+                requests.find(
+                    r => r.id === id
+                );
+
+
+            if ( !request )
+            {
+                return;
+            }
+
+
+            request.applicant =
+                document.getElementById( "editApplicant" )
+                    .value.trim();
+
+
+            request.department =
+                document.getElementById( "editDepartment" )
+                    .value.trim();
+
+
+            request.equipment =
+                document.getElementById( "editEquipment" )
+                    .value;
+
+
+            request.problem =
+                document.getElementById( "editProblem" )
+                    .value.trim();
+
+
+            request.technician =
+                document.getElementById( "editTechnician" )
+                    .value;
+
+
+            request.status =
+                document.getElementById( "editStatus" )
+                    .value;
+
+
+            request.feedback =
+                document.getElementById( "editFeedback" )
+                    .value.trim();
+
+
+            closeModal( "editModal" );
+
+            renderRequests();
+
+            alert(
+                "Request updated successfully."
+            );
+
+        }
+
+
+        /* =====================================================
+           DELETE REQUEST
+        ===================================================== */
+
+        function deleteRequest ( id )
+        {
+
+            const request =
+                requests.find(
+                    r => r.id === id
+                );
+
+
+            if ( !request )
+            {
+                return;
+            }
+
+
+            const confirmed =
+                confirm(
+                    "Are you sure you want to delete " +
+                    request.id +
+                    "?"
+                );
+
+
+            if ( !confirmed )
+            {
+                return;
+            }
+
+
+            requests =
+                requests.filter(
+                    r => r.id !== id
+                );
+
+
+            renderRequests();
+
+            alert(
+                "Request deleted successfully."
+            );
+
+        }
+
+
+        /* =====================================================
+           OPEN ADD REQUEST MODAL
+        ===================================================== */
+
+        function openAddModal ()
+        {
+
+            document.getElementById( "addApplicant" )
+                .value = "";
+
+            document.getElementById( "addPhone" )
+                .value = "";
+
+            document.getElementById( "addDepartment" )
+                .value = "";
+
+            document.getElementById( "addEquipment" )
+                .value = "Computer / Laptop";
+
+            document.getElementById( "addProblem" )
+                .value = "";
+
+
+            document.getElementById( "addModal" )
+                .classList.add( "active" );
+
+        }
+
+
+        /* =====================================================
+           ADD REQUEST
+        ===================================================== */
+
+        function addRequest ()
+        {
+
+            const applicant =
+                document.getElementById( "addApplicant" )
+                    .value.trim();
+
+
+            const phone =
+                document.getElementById( "addPhone" )
+                    .value.trim();
+
+
+            const department =
+                document.getElementById( "addDepartment" )
+                    .value.trim();
+
+
+            const equipment =
+                document.getElementById( "addEquipment" )
+                    .value;
+
+
+            const problem =
+                document.getElementById( "addProblem" )
+                    .value.trim();
+
+
+            if (
+                !applicant ||
+                !phone ||
+                !department ||
+                !problem
+            )
+            {
+
+                alert(
+                    "Please fill in all required fields."
+                );
+
+                return;
+
+            }
+
+
+            const nextNumber =
+                requests.length + 1;
+
+
+            const newRequest = {
+
+                id:
+                    "REQ-" +
+                    String( nextNumber )
+                        .padStart( 3, "0" ),
+
+                date:
+                    new Date()
+                        .toISOString()
+                        .split( "T" )[0],
+
+                applicant:
+                    applicant,
+
+                phone:
+                    phone,
+
+                department:
+                    department,
+
+                equipment:
+                    equipment,
+
+                problem:
+                    problem,
+
+                technician:
+                    "Not Assigned",
+
+                status:
+                    "Pending",
+
+                feedback:
+                    "Waiting for technician assignment."
+
+            };
+
+
+            requests.unshift(
+                newRequest
+            );
+
+
+            closeModal( "addModal" );
+
+            renderRequests();
+
+            alert(
+                "Maintenance request added successfully."
+            );
+
+        }
+
+
+        /* =====================================================
+           CLOSE MODAL
+        ===================================================== */
+
+        function closeModal ( id )
+        {
+
+            document
+                .getElementById( id )
+                .classList.remove( "active" );
+
+        }
+
+
+        /* =====================================================
+           CLOSE MODAL WHEN CLICKING OUTSIDE
+        ===================================================== */
+
+        document.addEventListener(
+            "click",
+            function ( event )
+            {
+
+                if (
+                    event.target.classList.contains(
+                        "modal-overlay"
+                    )
+                )
+                {
+
+                    event.target.classList.remove(
+                        "active"
+                    );
+
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           ESCAPE KEY CLOSE MODAL
+        ===================================================== */
+
+        document.addEventListener(
+            "keydown",
+            function ( event )
+            {
+
+                if ( event.key === "Escape" )
+                {
+
+                    document
+                        .querySelectorAll( ".modal-overlay" )
+                        .forEach( modal =>
+                        {
+
+                            modal.classList.remove(
+                                "active"
+                            );
+
+                        } );
+
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           HTML ESCAPE
+        ===================================================== */
+
+        function escapeHTML ( value )
+        {
+
+            if (
+                value === null ||
+                value === undefined
+            )
+            {
+
+                return "";
+
+            }
+
+
+            return String( value )
+                .replace(
+                    /&/g,
+                    "&amp;"
+                )
+                .replace(
+                    /</g,
+                    "&lt;"
+                )
+                .replace(
+                    />/g,
+                    "&gt;"
+                )
+                .replace(
+                    /"/g,
+                    "&quot;"
+                )
+                .replace(
+                    /'/g,
+                    "&#039;"
+                );
+
+        }
+
+
+        /* =====================================================
+           INITIAL LOAD
+        ===================================================== */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function ()
+            {
+
+                renderRequests();
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>
+```

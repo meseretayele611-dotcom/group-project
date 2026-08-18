@@ -1,0 +1,1542 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Update Status - DBU MSRTS</title>
+
+    <style>
+        /* =====================================================
+           GLOBAL
+        ===================================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+
+            min-height: 100vh;
+
+            color: #444;
+
+            background:
+                radial-gradient(circle at top right,
+                    rgba(0, 123, 255, 0.35),
+                    transparent 35%),
+
+                radial-gradient(circle at bottom left,
+                    rgba(0, 80, 180, 0.30),
+                    transparent 40%),
+
+                linear-gradient(135deg,
+                    #020617 0%,
+                    #06152f 45%,
+                    #0a2a55 100%);
+
+            background-attachment: fixed;
+            background-size: cover;
+        }
+
+
+        /* =====================================================
+           LEFT SIDEBAR
+        ===================================================== */
+
+        .sidebar {
+
+            position: fixed;
+
+            left: 0;
+            top: 0;
+
+            width: 250px;
+            height: 100vh;
+
+            padding: 25px 15px;
+
+            display: flex;
+            flex-direction: column;
+
+            background:
+                linear-gradient(180deg,
+                    #020617 0%,
+                    #061b3a 50%,
+                    #082b5c 100%);
+
+            border-right:
+                1px solid rgba(255, 255, 255, 0.10);
+
+            box-shadow:
+                5px 0 25px rgba(0, 0, 0, 0.35);
+
+            z-index: 1000;
+
+            overflow-y: auto;
+        }
+
+
+        /* =====================================================
+           SIDEBAR HEADER
+        ===================================================== */
+
+        .sidebar-header {
+
+            padding:
+                10px 12px 25px;
+
+            margin-bottom: 15px;
+
+            border-bottom:
+                1px solid rgba(255, 255, 255, 0.10);
+        }
+
+
+        .sidebar-header h2 {
+
+            color: white;
+
+            font-size: 20px;
+
+            font-weight: 700;
+
+            line-height: 1.3;
+        }
+
+
+        .sidebar-header span {
+
+            display: block;
+
+            margin-top: 6px;
+
+            color: #60a5fa;
+
+            font-size: 12px;
+
+            font-weight: 500;
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+        ===================================================== */
+
+        .nav-links {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 8px;
+
+            width: 100%;
+        }
+
+
+        .nav-links a {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            width: 100%;
+
+            padding: 13px 15px;
+
+            color: #cbd5e1;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            border-radius: 9px;
+
+            transition:
+                all 0.25s ease;
+        }
+
+
+        .nav-icon {
+
+            width: 25px;
+
+            text-align: center;
+
+            font-size: 17px;
+        }
+
+
+        .nav-links a:hover {
+
+            color: white;
+
+            background:
+                rgba(37, 99, 235, 0.25);
+
+            transform:
+                translateX(4px);
+        }
+
+
+        /* =====================================================
+           ACTIVE NAVIGATION
+        ===================================================== */
+
+        .nav-links a.active {
+
+            color: white;
+
+            background:
+                linear-gradient(135deg,
+                    #2563eb,
+                    #0ea5e9);
+
+            box-shadow:
+                0 5px 15px rgba(37, 99, 235, 0.35);
+        }
+
+
+        /* =====================================================
+           LOGOUT
+        ===================================================== */
+
+        .nav-links a.logout {
+
+            margin-top: 15px;
+
+            color: #fca5a5;
+
+            border-top:
+                1px solid rgba(255, 255, 255, 0.08);
+
+            padding-top: 18px;
+        }
+
+
+        .nav-links a.logout:hover {
+
+            color: white;
+
+            background:
+                rgba(220, 38, 38, 0.25);
+
+            transform:
+                translateX(4px);
+        }
+
+
+        /* =====================================================
+           SIDEBAR FOOTER
+        ===================================================== */
+
+        .sidebar-footer {
+
+            margin-top: auto;
+
+            padding:
+                20px 10px 5px;
+
+            text-align: center;
+
+            color: #04142c;
+
+            font-size: 11px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =====================================================
+           MAIN CONTENT
+        ===================================================== */
+
+        .main-content {
+
+            margin-left: 250px;
+
+            min-height: 100vh;
+
+            padding: 30px;
+        }
+
+
+        .container {
+
+            width: 100%;
+
+            max-width: 1000px;
+
+            margin: 0 auto;
+        }
+
+
+        /* =====================================================
+           PAGE HEADER
+        ===================================================== */
+
+        .page-header {
+
+            background:
+                rgba(255, 255, 255, 0.97);
+
+            padding:
+                25px 30px;
+
+            border-radius: 15px;
+
+            margin-bottom: 22px;
+
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.25);
+
+            border-left:
+                6px solid #2563eb;
+        }
+
+
+        .page-header h1 {
+
+            color: #0f2f63;
+
+            font-size: 27px;
+
+            margin-bottom: 7px;
+        }
+
+
+        .page-header p {
+
+            color: #777;
+
+            font-size: 14px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =====================================================
+           SUCCESS MESSAGE
+        ===================================================== */
+
+        .success-message {
+
+            display: none;
+
+            background:
+                #e8f5e9;
+
+            border-left:
+                4px solid #22c55e;
+
+            color:
+                #166534;
+
+            padding:
+                13px 15px;
+
+            border-radius: 7px;
+
+            margin-bottom: 20px;
+
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           FORM CARD
+        ===================================================== */
+
+        .form-card {
+
+            background:
+                rgba(255, 255, 255, 0.97);
+
+            padding: 30px;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.25);
+        }
+
+
+        .form-card h3 {
+
+            color: #0f2f63;
+
+            font-size: 21px;
+
+            margin-bottom: 6px;
+        }
+
+
+        .form-description {
+
+            color: #888;
+
+            font-size: 13px;
+
+            margin-bottom: 25px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =====================================================
+           FORM GROUP
+        ===================================================== */
+
+        .form-group {
+
+            margin-bottom: 22px;
+        }
+
+
+        .form-group label {
+
+            display: block;
+
+            color: #444;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            margin-bottom: 8px;
+        }
+
+
+        .required {
+
+            color: #2563eb;
+        }
+
+
+        /* =====================================================
+           INPUTS
+        ===================================================== */
+
+        input,
+        textarea,
+        select {
+
+            width: 100%;
+
+            padding:
+                12px 13px;
+
+            border:
+                1px solid #d5d5d5;
+
+            border-radius: 7px;
+
+            background:
+                #ffffff;
+
+            color:
+                #333;
+
+            font-family:
+                inherit;
+
+            font-size:
+                14px;
+
+            outline:
+                none;
+
+            transition:
+                0.3s;
+        }
+
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+
+            border-color:
+                #2563eb;
+
+            box-shadow:
+                0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+
+        textarea {
+
+            min-height: 120px;
+
+            resize: vertical;
+        }
+
+
+        .large-textarea {
+
+            min-height: 150px;
+        }
+
+
+        .signature-input {
+
+            font-style: italic;
+        }
+
+
+        /* =====================================================
+           TWO COLUMN FORM
+        ===================================================== */
+
+        .form-row {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 20px;
+        }
+
+
+        /* =====================================================
+           MAINTENANCE RESULT
+        ===================================================== */
+
+        .result-group {
+
+            margin-top: 5px;
+        }
+
+
+        .radio-options {
+
+            display: flex;
+
+            gap: 25px;
+
+            flex-wrap: wrap;
+        }
+
+
+        .radio-option {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            cursor: pointer;
+
+            color: #555;
+
+            font-size: 14px;
+        }
+
+
+        .radio-option input {
+
+            width: 17px;
+
+            height: 17px;
+
+            accent-color:
+                #2563eb;
+
+            cursor: pointer;
+        }
+
+
+        /* =====================================================
+           REASON BOX
+        ===================================================== */
+
+        #reasonGroup {
+
+            display: none;
+        }
+
+
+        /* =====================================================
+           BUTTONS
+        ===================================================== */
+
+        .button-area {
+
+            display: flex;
+
+            justify-content: flex-end;
+
+            gap: 12px;
+
+            margin-top: 10px;
+
+            padding-top: 20px;
+
+            border-top:
+                1px solid #eeeeee;
+        }
+
+
+        .btn {
+
+            border: none;
+
+            padding:
+                11px 22px;
+
+            border-radius: 7px;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            text-decoration: none;
+
+            transition:
+                0.3s;
+        }
+
+
+        .btn-cancel {
+
+            background:
+                #eeeeee;
+
+            color:
+                #555;
+        }
+
+
+        .btn-cancel:hover {
+
+            background:
+                #dddddd;
+        }
+
+
+        .btn-submit {
+
+            background:
+                linear-gradient(135deg,
+                    #2563eb,
+                    #0284c7);
+
+            color: white;
+
+            box-shadow:
+                0 4px 10px rgba(37, 99, 235, 0.25);
+        }
+
+
+        .btn-submit:hover {
+
+            background:
+                linear-gradient(135deg,
+                    #1d4ed8,
+                    #0369a1);
+
+            transform:
+                translateY(-1px);
+
+            box-shadow:
+                0 5px 13px rgba(37, 99, 235, 0.35);
+        }
+
+
+        .btn-submit:disabled {
+
+            cursor:
+                not-allowed;
+
+            opacity:
+                0.7;
+
+            transform:
+                none;
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .footer {
+
+            text-align:
+                center;
+
+            padding:
+                20px;
+
+            margin-top:
+                25px;
+
+            color:
+                #cbd5e1;
+
+            font-size:
+                12px;
+        }
+
+
+        /* =====================================================
+           TABLET
+        ===================================================== */
+
+        @media (max-width: 1000px) {
+
+            .sidebar {
+
+                width:
+                    220px;
+            }
+
+
+            .main-content {
+
+                margin-left:
+                    220px;
+
+                padding:
+                    25px;
+            }
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .sidebar {
+
+                position:
+                    relative;
+
+                width:
+                    100%;
+
+                height:
+                    auto;
+
+                min-height:
+                    auto;
+
+                padding:
+                    15px;
+
+                border-right:
+                    none;
+
+                border-bottom:
+                    1px solid rgba(255, 255, 255, 0.10);
+            }
+
+
+            .sidebar-header {
+
+                text-align:
+                    center;
+
+                padding-bottom:
+                    15px;
+            }
+
+
+            .nav-links {
+
+                display:
+                    grid;
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+                gap:
+                    7px;
+            }
+
+
+            .nav-links a {
+
+                justify-content:
+                    center;
+
+                font-size:
+                    12px;
+
+                padding:
+                    10px 5px;
+            }
+
+
+            .nav-icon {
+
+                display:
+                    none;
+            }
+
+
+            .nav-links a.logout {
+
+                margin-top:
+                    0;
+
+                padding-top:
+                    10px;
+
+                border-top:
+                    none;
+            }
+
+
+            .sidebar-footer {
+
+                display:
+                    none;
+            }
+
+
+            .main-content {
+
+                margin-left:
+                    0;
+
+                padding:
+                    20px 15px;
+            }
+
+
+            .page-header {
+
+                padding:
+                    20px;
+            }
+
+
+            .page-header h1 {
+
+                font-size:
+                    23px;
+            }
+
+
+            .form-card {
+
+                padding:
+                    20px;
+            }
+
+
+            .form-row {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .radio-options {
+
+                flex-direction:
+                    column;
+
+                gap:
+                    12px;
+            }
+
+
+            .button-area {
+
+                flex-direction:
+                    column;
+            }
+
+
+            .btn {
+
+                width:
+                    100%;
+
+                text-align:
+                    center;
+            }
+        }
+
+
+        /* =====================================================
+           VERY SMALL MOBILE
+        ===================================================== */
+
+        @media (max-width: 400px) {
+
+            .sidebar-header h2 {
+
+                font-size:
+                    17px;
+            }
+
+
+            .nav-links {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .page-header h1 {
+
+                font-size:
+                    20px;
+            }
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         LEFT SIDEBAR
+    ===================================================== -->
+
+    <aside class="sidebar">
+
+
+        <!-- SIDEBAR HEADER -->
+
+        <div class="sidebar-header">
+
+            <h2>
+                DBU Technician Portal
+            </h2>
+
+            <span>
+                Computer Maintenance System
+            </span>
+
+        </div>
+
+
+        <!-- NAVIGATION -->
+
+        <nav class="nav-links">
+
+
+            <a href="dashboard.html">
+
+                <span class="nav-icon">
+                    📊
+                </span>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </a>
+
+
+            <a href="assigned-request.html">
+
+                <span class="nav-icon">
+                    🛠️
+                </span>
+
+                <span>
+                    Assigned Tasks
+                </span>
+
+            </a>
+
+
+            <a href="update-status.html" class="active">
+
+                <span class="nav-icon">
+                    🔄
+                </span>
+
+                <span>
+                    Update Status
+                </span>
+
+            </a>
+
+
+            <a href="schedule.html">
+
+                <span class="nav-icon">
+                    📅
+                </span>
+
+                <span>
+                    Schedule
+                </span>
+
+            </a>
+
+
+            <a href="profile.html">
+
+                <span class="nav-icon">
+                    👤
+                </span>
+
+                <span>
+                    Profile
+                </span>
+
+            </a>
+
+
+            <a href="#" class="logout" onclick="logout()">
+
+                <span class="nav-icon">
+                    🚪
+                </span>
+
+                <span>
+                    Logout
+                </span>
+
+            </a>
+
+
+        </nav>
+
+
+        <!-- SIDEBAR FOOTER -->
+
+        <div class="sidebar-footer">
+
+            DBU MSRTS
+            <br>
+            Technician Portal
+            <br>
+            © 2026
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ===================================================== -->
+
+    <main class="main-content">
+
+
+        <div class="container">
+
+
+            <!-- =================================================
+                 SUCCESS MESSAGE
+            ================================================= -->
+
+            <div class="success-message" id="successMessage">
+
+                Technician feedback has been submitted
+                successfully.
+
+            </div>
+
+
+
+            <!-- =================================================
+                 TECHNICIAN FORM
+            ================================================= -->
+
+            <div class="form-card">
+
+                <h3>
+                    Update Maintenance Status
+                </h3>
+
+                <p class="form-description">
+
+                    Only the assigned technician should
+                    complete this section.
+
+                </p>
+
+
+                <form id="feedbackForm" onsubmit="submitFeedback(event)">
+
+
+                    <!-- IDENTIFIED PROBLEM -->
+
+                    <div class="form-group">
+
+                        <label for="identifiedProblem">
+
+                            Identified Problem Description
+
+                        </label>
+
+
+                        <textarea id="identifiedProblem" name="identifiedProblem"
+                            placeholder="Enter the problem identified during inspection..." required></textarea>
+
+                    </div>
+
+
+
+                    <!-- MAINTENANCE RESULT -->
+
+                    <div class="form-group result-group">
+
+                        <label>
+
+                            Maintenance Result
+                            </span>
+
+                        </label>
+
+
+                        <div class="radio-options">
+
+
+                            <label class="radio-option">
+
+                                <input type="radio" name="maintenanceResult" value="Fixed" onchange="checkResult()"
+                                    required>
+
+                                Fixed
+
+                            </label>
+
+
+                            <label class="radio-option">
+
+                                <input type="radio" name="maintenanceResult" value="Not Fixed" onchange="checkResult()">
+
+                                Not Fixed
+
+                            </label>
+
+
+                            <label class="radio-option">
+
+                                <input type="radio" name="maintenanceResult" value="In Progress"
+                                    onchange="checkResult()">
+
+                                In Progress
+
+                            </label>
+
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- REASON IF NOT FIXED -->
+
+                    <div class="form-group" id="reasonGroup">
+
+
+                        <label for="reason">
+
+                            Reason if Not Fixed
+
+                        </label>
+
+
+                        <textarea id="reason" name="reason"
+                            placeholder="Explain why the problem could not be fixed..."></textarea>
+
+                    </div>
+
+
+
+                    <!-- TECHNICIAN + DATE -->
+
+                    <div class="form-row">
+
+
+                        <div class="form-group">
+
+                            <label for="technicianName">
+
+                                Technician Name
+
+                            </label>
+
+
+                            <input type="text" id="technicianName" name="technicianName"
+                                placeholder="Enter technician name" required>
+
+                        </div>
+
+
+
+                        <div class="form-group">
+
+                            <label for="completionDate">
+
+                                Completion / Response Date
+
+                            </label>
+
+
+                            <input type="date" id="completionDate" name="completionDate" required>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- FEEDBACK / RESOLUTION -->
+
+                    <div class="form-group">
+
+                        <label for="feedback">
+
+                            Technician Feedback / Resolution
+
+                        </label>
+
+
+                        <textarea class="large-textarea" id="feedback" name="feedback"
+                            placeholder="Describe the solution, maintenance action taken, spare parts used, or additional feedback..."
+                            required></textarea>
+
+                    </div>
+
+
+
+                    <!-- TECHNICIAN SIGNATURE -->
+
+                    <div class="form-group">
+
+                        <label for="signature">
+
+                            Technician Signature
+
+                        </label>
+
+
+                        <input type="text" id="signature" name="signature" class="signature-input"
+                            placeholder="Enter technician signature" required>
+
+                    </div>
+
+
+
+                    <!-- BUTTONS -->
+
+                    <div class="button-area">
+
+
+                        <a href="assigned-request.html" class="btn btn-cancel">
+
+                            Cancel
+
+                        </a>
+
+
+                        <button type="submit" class="btn btn-submit">
+
+                            Update Status
+
+                        </button>
+
+
+                    </div>
+
+
+                </form>
+
+            </div>
+
+
+
+            <!-- FOOTER -->
+
+            <div class="footer">
+
+                DBU Computer Maintenance Service Request
+                &amp; Tracking System
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ===================================================== -->
+
+    <script>
+
+
+        /* =====================================================
+           SET TODAY'S DATE
+        ===================================================== */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function ()
+            {
+
+                const dateInput =
+                    document.getElementById(
+                        "completionDate"
+                    );
+
+                const today =
+                    new Date()
+                        .toISOString()
+                        .split( "T" )[0];
+
+                dateInput.value = today;
+
+            }
+        );
+
+
+        /* =====================================================
+           CHECK MAINTENANCE RESULT
+        ===================================================== */
+
+        function checkResult ()
+        {
+
+            const selected =
+                document.querySelector(
+                    'input[name="maintenanceResult"]:checked'
+                );
+
+
+            const reasonGroup =
+                document.getElementById(
+                    "reasonGroup"
+                );
+
+
+            const reason =
+                document.getElementById(
+                    "reason"
+                );
+
+
+            if (
+                selected &&
+                selected.value === "Not Fixed"
+            )
+            {
+
+                reasonGroup.style.display =
+                    "block";
+
+                reason.required =
+                    true;
+
+            } else
+            {
+
+                reasonGroup.style.display =
+                    "none";
+
+                reason.required =
+                    false;
+
+                reason.value =
+                    "";
+
+            }
+
+        }
+
+
+        /* =====================================================
+           SUBMIT FEEDBACK
+        ===================================================== */
+
+        function submitFeedback ( event )
+        {
+
+            event.preventDefault();
+
+
+            const result =
+                document.querySelector(
+                    'input[name="maintenanceResult"]:checked'
+                );
+
+
+            if ( !result )
+            {
+
+                alert(
+                    "Please select the maintenance result."
+                );
+
+                return;
+
+            }
+
+
+            const feedbackData = {
+
+                identifiedProblem:
+                    document.getElementById(
+                        "identifiedProblem"
+                    ).value,
+
+                maintenanceResult:
+                    result.value,
+
+                reason:
+                    document.getElementById(
+                        "reason"
+                    ).value,
+
+                technicianName:
+                    document.getElementById(
+                        "technicianName"
+                    ).value,
+
+                completionDate:
+                    document.getElementById(
+                        "completionDate"
+                    ).value,
+
+                feedback:
+                    document.getElementById(
+                        "feedback"
+                    ).value,
+
+                signature:
+                    document.getElementById(
+                        "signature"
+                    ).value,
+
+                updatedAt:
+                    new Date().toISOString()
+
+            };
+
+
+            /* SAVE DATA */
+
+            localStorage.setItem(
+                "technicianFeedback",
+                JSON.stringify( feedbackData )
+            );
+
+
+            /* SUCCESS MESSAGE */
+
+            const success =
+                document.getElementById(
+                    "successMessage"
+                );
+
+
+            success.style.display =
+                "block";
+
+
+            /* SCROLL TOP */
+
+            window.scrollTo( {
+                top: 0,
+                behavior: "smooth"
+            } );
+
+
+            /* BUTTON */
+
+            const submitButton =
+                document.querySelector(
+                    ".btn-submit"
+                );
+
+
+            submitButton.innerText =
+                "Status Updated ✓";
+
+
+            submitButton.disabled =
+                true;
+
+
+            /* REDIRECT */
+
+            setTimeout( function ()
+            {
+
+                window.location.href =
+                    "assigned-request.html";
+
+            }, 1800 );
+
+        }
+
+
+        /* =====================================================
+           LOGOUT
+        ===================================================== */
+
+        function logout ()
+        {
+
+            const confirmLogout =
+                confirm(
+                    "Are you sure you want to logout?"
+                );
+
+
+            if ( !confirmLogout )
+            {
+
+                return;
+
+            }
+
+
+            localStorage.removeItem( "token" );
+
+            localStorage.removeItem( "user" );
+
+            localStorage.removeItem( "role" );
+
+            localStorage.removeItem( "userId" );
+
+
+            window.location.href =
+                "../login.html";
+
+        }
+
+    </script>
+
+</body>
+
+</html>

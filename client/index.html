@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DBU computer Maintenance Service Request & Tracking System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #f0f2f5;
+            color: #333;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            background: #007bff;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 40px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, .15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-brand img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: white;
+            padding: 2px;
+        }
+
+        .navbar h1 {
+            font-size: 19px;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            opacity: .8;
+        }
+
+        .btn-nav-register {
+            background: white;
+            color: #007bff !important;
+            padding: 8px 16px;
+            border-radius: 5px;
+            font-weight: bold !important;
+        }
+
+        /* ================= HERO ================= */
+
+        .hero-section {
+
+            background:
+                linear-gradient(rgba(0, 80, 160, .85),
+                    rgba(0, 50, 110, .90)),
+                url("https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1920&q=80") center/cover;
+
+            color: white;
+            text-align: center;
+            padding: 110px 20px;
+        }
+
+        .hero-section h2 {
+            font-size: 38px;
+            margin-bottom: 15px;
+        }
+
+        .hero-section p {
+            font-size: 18px;
+            max-width: 750px;
+            margin: auto auto 30px;
+            line-height: 1.6;
+        }
+
+        .hero-btns {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .btn-light {
+            background: white;
+            color: #007bff;
+        }
+
+        .btn-outline {
+            border: 2px solid white;
+            color: white;
+        }
+
+        .btn-outline:hover {
+            background: white;
+            color: #007bff;
+        }
+
+        /* ================= CONTAINER ================= */
+
+        .container {
+            max-width: 1150px;
+            margin: 55px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            color: #007bff;
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .section-desc {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 16px;
+        }
+
+        /* ================= CARDS ================= */
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-bottom: 70px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .08);
+            overflow: hidden;
+            transition: .3s;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, .15);
+        }
+
+        .card img {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 19px;
+        }
+
+        .card p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* ================= SERVICES ================= */
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 22px;
+            margin-bottom: 70px;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .08);
+            transition: .3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, .15);
+        }
+
+        .service-card img {
+            width: 100%;
+            height: 170px;
+            object-fit: cover;
+        }
+
+        .service-content {
+            padding: 18px;
+        }
+
+        .service-content h3 {
+            color: #007bff;
+            font-size: 17px;
+            margin-bottom: 8px;
+        }
+
+        .service-content p {
+            color: #666;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        /* ================= CONTACT ================= */
+
+        .contact-box {
+            background:
+                linear-gradient(135deg,
+                    #007bff,
+                    #0056b3);
+
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .contact-box h2 {
+            margin-bottom: 12px;
+        }
+
+        .contact-box p {
+            line-height: 1.7;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: #222;
+            color: white;
+            text-align: center;
+            padding: 25px;
+            font-size: 14px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media(max-width: 1000px) {
+
+            .services-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .grid-3 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media(max-width: 768px) {
+
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                gap: 12px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero-section h2 {
+                font-size: 28px;
+            }
+
+            .hero-section p {
+                font-size: 16px;
+            }
+
+            .grid-3,
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media(max-width: 500px) {
+
+            .navbar {
+                padding: 12px 15px;
+            }
+
+            .navbar h1 {
+                font-size: 16px;
+            }
+
+            .hero-section {
+                padding: 80px 15px;
+            }
+
+            .hero-btns {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+    <nav class="navbar">
+
+        <div class="nav-brand">
+
+            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/Debre_Berhan_University_logo.jpg"
+                alt="DBU Logo">
+
+            <h1>
+                DBU computer Maintenance Portal
+            </h1>
+
+        </div>
+
+
+        <ul class="nav-links">
+
+            <li>
+                <a href="#home">
+                    Home
+                </a>
+            </li>
+
+            <li>
+                <a href="#about">
+                    About Us
+                </a>
+            </li>
+
+            <li>
+                <a href="#services">
+                    Services
+                </a>
+            </li>
+
+            <li>
+                <a href="login.html">
+                    Login
+                </a>
+            </li>
+
+            <li>
+                <a href="register.html" class="btn-nav-register">
+                    Register
+                </a>
+            </li>
+
+        </ul>
+
+    </nav>
+
+
+
+    <!-- =====================================================
+     HERO
+===================================================== -->
+
+    <section id="home" class="hero-section">
+
+        <h2>
+            Welcome to Debre Berhan University computer Service Portal
+        </h2>
+
+        <p>
+            Submit computer maintenance requests, track your request status,
+            communicate with technicians and receive timely maintenance
+            services across the university.
+        </p>
+
+
+        <div class="hero-btns">
+
+            <a href="login.html" class="btn btn-light">
+                Login to Portal
+            </a>
+
+            <a href="register.html" class="btn btn-outline">
+                Create Account
+            </a>
+
+        </div>
+
+    </section>
+
+
+
+    <div class="container">
+
+
+        <!-- =====================================================
+     ABOUT US
+===================================================== -->
+
+        <section id="about">
+
+            <h2 class="section-title">
+                About Us
+            </h2>
+
+            <p class="section-desc">
+                Reliable computer maintenance and technical support
+                for the DBU university community.
+            </p>
+
+
+            <div class="grid-3">
+
+
+                <!-- WHO WE ARE -->
+
+                <div class="card">
+
+                    <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=600&q=80"
+                        alt="ICT Team">
+
+                    <div class="card-content">
+
+                        <h3>
+                            Who We Are
+                        </h3>
+
+                        <p>
+                            We are an computer maintenance service team
+                            supporting students, academic staff,
+                            administrative offices and university
+                            facilities.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- MISSION -->
+
+                <div class="card">
+
+                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=600&q=80"
+                        alt="Technical Team">
+
+                    <div class="card-content">
+
+                        <h3>
+                            Our Mission
+                        </h3>
+
+                        <p>
+                            To provide fast, reliable and transparent
+                            computer maintenance services while reducing
+                            equipment downtime.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- VISION -->
+
+                <div class="card">
+
+                    <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80"
+                        alt="ICT Planning">
+
+                    <div class="card-content">
+
+                        <h3>
+                            Vision & Goals
+                        </h3>
+
+                        <p>
+                            To create an efficient digital maintenance
+                            environment where requests are tracked,
+                            assigned and completed efficiently.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+     SERVICES
+===================================================== -->
+
+        <section id="services">
+
+            <h2 class="section-title">
+                Our computer Maintenance Services
+            </h2>
+
+            <p class="section-desc">
+                We provide maintenance and technical support for
+                computers, printers, networks, cables and other computer equipment.
+            </p>
+
+
+            <div class="services-grid">
+
+
+                <!-- 1 COMPUTER -->
+
+                <div class="service-card">
+
+                    <img src="https://images.unsplash.com/photo-1593642532973-d31b6557fa68?auto=format&fit=crop&w=600&q=80"
+                        alt="Computer Hardware">
+
+                    <div class="service-content">
+
+                        <h3>
+                            🖥️ Computer & Hardware
+                        </h3>
+
+                        <p>
+                            Desktop and laptop troubleshooting,
+                            hardware replacement, RAM, hard disk,
+                            motherboard and performance problems.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- 2 PRINTER -->
+
+                <div class="service-card">
+
+                    <img src="https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?auto=format&fit=crop&w=600&q=80"
+                        alt="Printer Maintenance">
+
+                    <div class="service-content">
+
+                        <h3>
+                            🖨️ Printer Maintenance
+                        </h3>
+
+                        <p>
+                            Printer troubleshooting, paper jams,
+                            printing problems, driver installation,
+                            cartridge and network printer support.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- 3 NETWORK -->
+
+                <div class="service-card">
+
+                    <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=600&q=80"
+                        alt="Network Equipment">
+
+                    <div class="service-content">
+
+                        <h3>
+                            🌐 Network & Internet
+                        </h3>
+
+                        <p>
+                            LAN and Wi-Fi troubleshooting,
+                            internet connection problems,
+                            IP configuration and network connectivity.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+
+                <!-- 5 ROUTER SWITCH -->
+
+                <div class="service-card">
+
+                    <img src="https://images.unsplash.com/photo-1606904825846-647eb07f5be2?auto=format&fit=crop&w=600&q=80"
+                        alt="Router and Switch">
+
+                    <div class="service-content">
+
+                        <h3>
+                            📡 Router & Switch
+                        </h3>
+
+                        <p>
+                            Router configuration, switch setup,
+                            network device troubleshooting and
+                            connectivity management.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- 6 SOFTWARE -->
+
+                <div class="service-card">
+
+                    <img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=600&q=80"
+                        alt="Software Support">
+
+                    <div class="service-content">
+
+                        <h3>
+                            💿 Software & OS
+                        </h3>
+
+                        <p>
+                            Operating system installation,
+                            software configuration, updates,
+                            drivers and application troubleshooting.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- 7 PROJECTOR -->
+
+                <div class="service-card">
+
+                    <img src="https://images.unsplash.com/photo-1492724441997-5dc865305da7?auto=format&fit=crop&w=600&q=80"
+                        alt="Projector Support">
+
+                    <div class="service-content">
+
+                        <h3>
+                            📽️ Projector & Display
+                        </h3>
+
+                        <p>
+                            Projector setup, display problems,
+                            HDMI/VGA connections, classroom display
+                            and presentation equipment support.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- 8 GENERAL ICT -->
+
+                <div class="service-card">
+
+                    <img src="https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=600&q=80"
+                        alt="ICT Technical Support">
+
+                    <div class="service-content">
+
+                        <h3>
+                            🔧 General ICT Support
+                        </h3>
+
+                        <p>
+                            Technical inspection, equipment setup,
+                            troubleshooting and other ICT maintenance
+                            services requested by university users.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+     CONTACT / REQUEST SECTION
+===================================================== -->
+
+        <section class="contact-box">
+
+            <h2>
+                Need computer Maintenance Service Request & Tracking System?
+            </h2>
+
+            <p>
+                Submit your maintenance request through the DBU ICT
+                Maintenance Portal and track its progress from submission
+                until completion.
+            </p>
+
+            <br>
+
+            <a href="login.html" class="btn btn-light">
+                Submit Maintenance Request
+            </a>
+
+        </section>
+
+
+    </div>
+
+
+
+    <!-- =====================================================
+     FOOTER
+===================================================== -->
+
+    <footer>
+
+        <p>
+            &copy; 2026 Debre Berhan University computer Maintenance
+            Service Request & Tracking System.
+            All Rights Reserved.
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>

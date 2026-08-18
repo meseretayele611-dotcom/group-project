@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Notifications - DBU Admin</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif
+        }
+
+        body {
+            margin: 0;
+            background: linear-gradient(135deg, #430653, #c21870);
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            position: fixed;
+            width: 250px;
+            height: 100vh;
+            background: linear-gradient(180deg, #30043f, #72004f);
+            color: white;
+            padding-top: 25px;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 30px
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 14px 25px;
+            color: #f4dcef;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            background: linear-gradient(90deg, #ec176c, #a718b5);
+            border-radius: 8px;
+            margin: 0 10px;
+            color: white;
+        }
+
+        .main {
+            margin-left: 250px;
+            padding: 40px
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, .25);
+        }
+
+        h1 {
+            color: #80145f
+        }
+
+        .notification {
+            padding: 18px;
+            margin: 15px 0;
+            background: #fff5fa;
+            border-left: 5px solid #d41474;
+            border-radius: 8px;
+        }
+
+        .notification strong {
+            color: #80145f
+        }
+
+        .notification p {
+            margin: 7px 0;
+            color: #555
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+
+        <h2>DBU Admin</h2>
+
+        <a href="dashboard.html">📊 Dashboard</a>
+        <a href="requests.html">📋 Manage Requests</a>
+        <a href="technicians.html">👨‍🔧 Technicians</a>
+        <a href="add-technician.html">➕ Add Technician</a>
+        <a href="assign-technician.html">📌 Assign Technician</a>
+        <a href="users.html">👥 Users</a>
+        <a href="notifications.html" class="active">🔔 Notifications</a>
+        <a href="reports.html">📈 Reports</a>
+        <a href="settings.html">⚙️ Settings</a>
+
+    </div>
+
+    <div class="main">
+
+        <div class="card">
+
+            <h1>🔔 Notifications</h1>
+
+            <div id="notifications">
+                Loading notifications...
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        async function loadNotifications ()
+        {
+
+            try
+            {
+
+                const response = await fetch(
+                    'http://localhost:5000/api/notifications',
+                    {
+                        headers: {
+                            'Authorization':
+                                'Bearer ' + localStorage.getItem( 'token' )
+                        }
+                    } );
+
+                const data = await response.json();
+
+                const notifications =
+                    data.notifications || data || [];
+
+                const container =
+                    document.getElementById( 'notifications' );
+
+                if ( !notifications.length )
+                {
+
+                    container.innerHTML =
+                        '<p>No notifications found.</p>';
+
+                    return;
+
+                }
+
+                container.innerHTML =
+                    notifications.map( n => `
+
+<div class="notification">
+
+<strong>
+${ n.title || 'Maintenance Notification' }
+</strong>
+
+<p>
+${ n.message || n.text || '-' }
+</p>
+
+<small>
+${ n.createdAt ?
+                            new Date( n.createdAt ).toLocaleString() :
+                            '' }
+</small>
+
+</div>
+
+`).join( '' );
+
+            } catch ( error )
+            {
+
+                document.getElementById( 'notifications' ).innerHTML =
+                    'Unable to load notifications.';
+
+            }
+
+        }
+
+        loadNotifications();
+
+    </script>
+
+</body>
+
+</html>
